@@ -34,3 +34,9 @@ coverage/
 target/
 src-tauri/target/
 src-tauri/gen/
+
+# svc-admin
+.tools/
+.build/
+go.work
+go.work.sum

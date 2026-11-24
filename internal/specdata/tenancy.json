@@ -1,0 +1,2892 @@
+{
+ "service": "tenancy",
+ "operations": [
+  {
+   "id": "acceptLink",
+   "method": "POST",
+   "path": "/v1/link-acceptances",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:10:11.120Z",
+       "counterparty": {
+        "display_name": "Example Restaurants",
+        "registrations": [
+         {
+          "gstin": "33AAAAA0000A1Z5",
+          "gstin_verified": true,
+          "legal_name": "Example Restaurants LLP",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "outbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "active"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "acceptor",
+       "status": "accepted",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "invitation_code_invalid",
+       "status": 409,
+       "title": "Invitation code invalid",
+       "type": "urn:hostry:problem:invitation_code_invalid"
+      },
+      "state": {
+       "code": "link_state_conflict",
+       "status": 409,
+       "title": "The link is not in a state that allows this",
+       "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "closeDeviceSeries",
+   "method": "PUT",
+   "path": "/internal/v1/devices/{device_id}/series-closure",
+   "permission": "series.issue",
+   "service_callers": [
+    "identity"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "closed": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "closeDocumentSeriesUnreconciled",
+   "method": "PUT",
+   "path": "/v1/document-series/{series_id}/closure",
+   "permission": "series.close_unreconciled",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "closed_at": "2026-11-24T13:10:11.120Z",
+       "code": "A7",
+       "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "doc_type": "tax_invoice",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6c",
+       "issued_at": "2026-11-24T13:05:11.120Z",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "status": "closed_unreconciled",
+       "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_required",
+       "status": 403,
+       "title": "Approval required",
+       "type": "urn:hostry:problem:approval_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "confirmLink",
+   "method": "PUT",
+   "path": "/v1/links/{link_id}/confirmation",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:10:11.120Z",
+       "confirmed_at": "2026-11-24T13:20:11.120Z",
+       "counterparty": {
+        "display_name": "Example Restaurants",
+        "registrations": [
+         {
+          "gstin": "33AAAAA0000A1Z5",
+          "gstin_verified": true,
+          "legal_name": "Example Restaurants LLP",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "outbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "active"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "proposer",
+       "status": "active",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "invitation_code_invalid",
+       "status": 409,
+       "title": "Invitation code invalid",
+       "type": "urn:hostry:problem:invitation_code_invalid"
+      },
+      "state": {
+       "code": "link_state_conflict",
+       "status": 409,
+       "title": "The link is not in a state that allows this",
+       "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createBrand",
+   "method": "POST",
+   "path": "/v1/brands",
+   "permission": "brand.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+       "is_default": false,
+       "name": "Example Bakery"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createOrganisation",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations",
+   "permission": "admin.org.create",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "brand": {
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+        "is_default": true,
+        "name": "Example Hospitality"
+       },
+       "organisation": {
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+        "name": "Example Hospitality",
+        "status": "trial",
+        "updated_at": "2026-11-24T13:05:11.120Z"
+       },
+       "outlet": {
+        "brand_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+        "kind": "restaurant",
+        "name": "Main Restaurant",
+        "state_code": "33",
+        "status": "active",
+        "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+        "timezone": "Asia/Kolkata"
+       },
+       "tax_registration": {
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "gstin": "33ABCDE1234F1Z5",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+        "legal_name": "Example Hospitality Pvt Ltd",
+        "regime": "regular",
+        "state_code": "33",
+        "status": "open",
+        "verification": {
+         "state": "unverified"
+        }
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "gstin": {
+       "code": "gstin_in_use",
+       "status": 409,
+       "title": "GSTIN already registered to another organisation",
+       "type": "urn:hostry:problem:gstin_in_use"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "gstin": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "gstin_state_mismatch",
+         "field": "tax_registration.gstin",
+         "message": "state code does not match the outlet state"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createOutlet",
+   "method": "POST",
+   "path": "/v1/outlets",
+   "permission": "outlet.create",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "brand_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "kind": "restaurant",
+       "name": "Main Restaurant",
+       "state_code": "33",
+       "status": "active",
+       "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "timezone": "Asia/Kolkata"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createTaxRegistration",
+   "method": "POST",
+   "path": "/v1/tax-registrations",
+   "permission": "tax_registration.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "gstin": "33ABCDE1234F1Z5",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "legal_name": "Example Hospitality Pvt Ltd",
+       "regime": "regular",
+       "state_code": "33",
+       "status": "open",
+       "verification": {
+        "state": "unverified"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "decideLinkAmendment",
+   "method": "PUT",
+   "path": "/v1/links/{link_id}/amendments/{amendment_id}/decision",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "add_grants": [
+        {
+         "direction": "inbound",
+         "scope": "test.echo.post"
+        }
+       ],
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a73",
+       "link_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "status": "accepted"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "invitation_code_invalid",
+       "status": 409,
+       "title": "Invitation code invalid",
+       "type": "urn:hostry:problem:invitation_code_invalid"
+      },
+      "state": {
+       "code": "link_state_conflict",
+       "status": 409,
+       "title": "The link is not in a state that allows this",
+       "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "declineLink",
+   "method": "PUT",
+   "path": "/v1/links/{link_id}/declination",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:10:11.120Z",
+       "confirmed_at": "2026-11-24T13:20:11.120Z",
+       "counterparty": {
+        "display_name": "Example Restaurants",
+        "registrations": [
+         {
+          "gstin": "33AAAAA0000A1Z5",
+          "gstin_verified": true,
+          "legal_name": "Example Restaurants LLP",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "outbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "active"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "proposer",
+       "status": "declined",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "invitation_code_invalid",
+       "status": 409,
+       "title": "Invitation code invalid",
+       "type": "urn:hostry:problem:invitation_code_invalid"
+      },
+      "state": {
+       "code": "link_state_conflict",
+       "status": 409,
+       "title": "The link is not in a state that allows this",
+       "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getBrand",
+   "method": "GET",
+   "path": "/v1/brands/{brand_id}",
+   "permission": "brand.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+       "is_default": true,
+       "name": "Example Hospitality"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getCurrentOrganisation",
+   "method": "GET",
+   "path": "/v1/organisations/current",
+   "permission": "organisation.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "name": "Example Hospitality",
+       "status": "trial",
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getLink",
+   "method": "GET",
+   "path": "/v1/links/{link_id}",
+   "permission": "link.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:10:11.120Z",
+       "confirmed_at": "2026-11-24T13:20:11.120Z",
+       "counterparty": {
+        "display_name": "Example Restaurants",
+        "registrations": [
+         {
+          "gstin": "33AAAAA0000A1Z5",
+          "gstin_verified": true,
+          "legal_name": "Example Restaurants LLP",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "outbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "active"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "proposer",
+       "status": "active",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getLinkDecision",
+   "method": "GET",
+   "path": "/internal/v1/link-decisions",
+   "permission": "link.decide",
+   "service_callers": [
+    "*"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "allowed": true,
+       "cache_seconds": 30,
+       "data_owner_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "outlet_ids": [
+        "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getOrganisationDirectoryEntry",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}",
+   "permission": "admin.org.read",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "brands": [
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+         "is_default": true,
+         "name": "Example Hospitality"
+        }
+       ],
+       "organisation": {
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+        "name": "Example Hospitality",
+        "outlet_count": 1,
+        "status": "trial"
+       },
+       "outlets": [
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "kind": "restaurant",
+         "name": "Main Restaurant",
+         "state_code": "33",
+         "status": "active"
+        }
+       ],
+       "registrations": [
+        {
+         "gstin": "33ABCDE1234F1Z5",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+         "legal_name": "Example Hospitality Pvt Ltd",
+         "regime": "regular",
+         "state_code": "33",
+         "status": "open",
+         "verification_state": "unverified"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getOrganisationSettings",
+   "method": "GET",
+   "path": "/v1/organisation-settings",
+   "permission": "settings.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "idle_lock_minutes": 5,
+       "offline_window_days": 7,
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getOutlet",
+   "method": "GET",
+   "path": "/v1/outlets/{outlet_id}",
+   "permission": "outlet.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "brand_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "kind": "restaurant",
+       "name": "Main Restaurant",
+       "state_code": "33",
+       "status": "active",
+       "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "timezone": "Asia/Kolkata"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getTaxRegistration",
+   "method": "GET",
+   "path": "/v1/tax-registrations/{registration_id}",
+   "permission": "tax_registration.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "gstin": "33ABCDE1234F1Z5",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "legal_name": "Example Hospitality Pvt Ltd",
+       "regime": "regular",
+       "state_code": "33",
+       "status": "open",
+       "verification": {
+        "state": "unverified"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "issueDocumentSeries",
+   "method": "POST",
+   "path": "/internal/v1/document-series-issuances",
+   "permission": "series.issue",
+   "service_callers": [
+    "identity"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "code": "A7",
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "doc_type": "tax_invoice",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6c",
+         "issued_at": "2026-11-24T13:05:11.120Z",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "status": "active",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "unver": {
+       "code": "registration_unverified",
+       "status": 409,
+       "title": "Tax registration not verified",
+       "type": "urn:hostry:problem:registration_unverified"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "cap": {
+       "code": "series_cap_reached",
+       "status": 429,
+       "title": "Daily series cap reached",
+       "type": "urn:hostry:problem:series_cap_reached"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listBrands",
+   "method": "GET",
+   "path": "/v1/brands",
+   "permission": "brand.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+         "is_default": true,
+         "name": "Example Hospitality"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listDocumentSeries",
+   "method": "GET",
+   "path": "/v1/document-series",
+   "permission": "series.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "code": "A7",
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "doc_type": "tax_invoice",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6c",
+         "issued_at": "2026-11-24T13:05:11.120Z",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "status": "active",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listLinkActivity",
+   "method": "GET",
+   "path": "/v1/links/{link_id}/activity",
+   "permission": "link.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "action": "link.confirmed",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a79",
+         "link_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+         "occurred_at": "2026-11-24T13:20:11.120Z",
+         "outcome": "succeeded",
+         "side": "proposer"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listLinks",
+   "method": "GET",
+   "path": "/v1/links",
+   "permission": "link.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "accepted_at": "2026-11-24T13:10:11.120Z",
+         "confirmed_at": "2026-11-24T13:20:11.120Z",
+         "counterparty": {
+          "display_name": "Example Restaurants",
+          "registrations": [
+           {
+            "gstin": "33AAAAA0000A1Z5",
+            "gstin_verified": true,
+            "legal_name": "Example Restaurants LLP",
+            "state_code": "33"
+           }
+          ]
+         },
+         "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+         "expires_at": "2026-12-08T13:05:11.120Z",
+         "grants": [
+          {
+           "direction": "outbound",
+           "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+           "outlet_ids": [
+            "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+           ],
+           "scope": "test.echo.read",
+           "status": "active"
+          }
+         ],
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+         "proposed_at": "2026-11-24T13:05:11.120Z",
+         "role": "proposer",
+         "status": "active",
+         "template": "on_premises_outlet"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listOrganisationDirectory",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations",
+   "permission": "admin.org.read",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "name": "Example Hospitality",
+         "outlet_count": 1,
+         "status": "trial"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listOutlets",
+   "method": "GET",
+   "path": "/v1/outlets",
+   "permission": "outlet.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "brand_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "kind": "restaurant",
+         "name": "Main Restaurant",
+         "state_code": "33",
+         "status": "active",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+         "timezone": "Asia/Kolkata"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listStates",
+   "method": "GET",
+   "path": "/v1/states",
+   "permission": "authenticated",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "code": "33",
+         "name": "Tamil Nadu"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listTaxRegistrations",
+   "method": "GET",
+   "path": "/v1/tax-registrations",
+   "permission": "tax_registration.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "gstin": "33ABCDE1234F1Z5",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+         "legal_name": "Example Hospitality Pvt Ltd",
+         "regime": "regular",
+         "state_code": "33",
+         "status": "open",
+         "verification": {
+          "state": "unverified"
+         }
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "proposeLink",
+   "method": "POST",
+   "path": "/v1/links",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "invitation_code": "7QK3M9XD7QK3M9XD",
+       "link": {
+        "expires_at": "2026-12-08T13:05:11.120Z",
+        "grants": [
+         {
+          "direction": "outbound",
+          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+          "outlet_ids": [
+           "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+          ],
+          "scope": "test.echo.read",
+          "status": "pending"
+         }
+        ],
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+        "proposed_at": "2026-11-24T13:05:11.120Z",
+        "role": "proposer",
+        "status": "proposed",
+        "template": "on_premises_outlet"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "proposeLinkAmendment",
+   "method": "POST",
+   "path": "/v1/links/{link_id}/amendments",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "add_grants": [
+        {
+         "direction": "inbound",
+         "scope": "test.echo.post"
+        }
+       ],
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a73",
+       "link_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "status": "pending"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "invitation_code_invalid",
+       "status": 409,
+       "title": "Invitation code invalid",
+       "type": "urn:hostry:problem:invitation_code_invalid"
+      },
+      "state": {
+       "code": "link_state_conflict",
+       "status": 409,
+       "title": "The link is not in a state that allows this",
+       "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "removeLinkGrant",
+   "method": "DELETE",
+   "path": "/v1/links/{link_id}/grants/{grant_id}",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "resumeLink",
+   "method": "DELETE",
+   "path": "/v1/links/{link_id}/suspension",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:10:11.120Z",
+       "confirmed_at": "2026-11-24T13:20:11.120Z",
+       "counterparty": {
+        "display_name": "Example Restaurants",
+        "registrations": [
+         {
+          "gstin": "33AAAAA0000A1Z5",
+          "gstin_verified": true,
+          "legal_name": "Example Restaurants LLP",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "outbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "active"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "proposer",
+       "status": "active",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "invitation_code_invalid",
+       "status": 409,
+       "title": "Invitation code invalid",
+       "type": "urn:hostry:problem:invitation_code_invalid"
+      },
+      "state": {
+       "code": "link_state_conflict",
+       "status": 409,
+       "title": "The link is not in a state that allows this",
+       "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "revokeLink",
+   "method": "PUT",
+   "path": "/v1/links/{link_id}/revocation",
+   "permission": "link.revoke",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:10:11.120Z",
+       "confirmed_at": "2026-11-24T13:20:11.120Z",
+       "counterparty": {
+        "display_name": "Example Restaurants",
+        "registrations": [
+         {
+          "gstin": "33AAAAA0000A1Z5",
+          "gstin_verified": true,
+          "legal_name": "Example Restaurants LLP",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "outbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "active"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "proposer",
+       "status": "revoked",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "suspendLink",
+   "method": "PUT",
+   "path": "/v1/links/{link_id}/suspension",
+   "permission": "link.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:10:11.120Z",
+       "confirmed_at": "2026-11-24T13:20:11.120Z",
+       "counterparty": {
+        "display_name": "Example Restaurants",
+        "registrations": [
+         {
+          "gstin": "33AAAAA0000A1Z5",
+          "gstin_verified": true,
+          "legal_name": "Example Restaurants LLP",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "outbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "active"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "proposer",
+       "status": "suspended",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "invitation_code_invalid",
+       "status": 409,
+       "title": "Invitation code invalid",
+       "type": "urn:hostry:problem:invitation_code_invalid"
+      },
+      "state": {
+       "code": "link_state_conflict",
+       "status": 409,
+       "title": "The link is not in a state that allows this",
+       "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateCurrentOrganisation",
+   "method": "PATCH",
+   "path": "/v1/organisations/current",
+   "permission": "organisation.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "name": "Example Hospitality",
+       "status": "trial",
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateOrganisationSettings",
+   "method": "PUT",
+   "path": "/v1/organisation-settings",
+   "permission": "settings.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "idle_lock_minutes": 5,
+       "offline_window_days": 7,
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_required",
+       "status": 403,
+       "title": "Approval required",
+       "type": "urn:hostry:problem:approval_required"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateOutlet",
+   "method": "PATCH",
+   "path": "/v1/outlets/{outlet_id}",
+   "permission": "outlet.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "brand_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "kind": "restaurant",
+       "name": "Main Restaurant",
+       "state_code": "33",
+       "status": "active",
+       "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "timezone": "Asia/Kolkata"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateTaxRegistration",
+   "method": "PATCH",
+   "path": "/v1/tax-registrations/{registration_id}",
+   "permission": "tax_registration.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "gstin": "33ABCDE1234F1Z5",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "legal_name": "Example Hospitality Pvt Ltd",
+       "regime": "regular",
+       "state_code": "33",
+       "status": "open",
+       "verification": {
+        "state": "unverified"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "verifyTaxRegistration",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/tax-registrations/{registration_id}/verification",
+   "permission": "admin.registration.verify",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "gstin": "33ABCDE1234F1Z5",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "legal_name": "Example Hospitality Pvt Ltd",
+       "regime": "regular",
+       "state_code": "33",
+       "status": "open",
+       "verification": {
+        "method": "certificate_seen",
+        "state": "verified",
+        "verified_at": "2026-11-24T13:10:11.120Z"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "gstin": {
+       "code": "gstin_in_use",
+       "status": 409,
+       "title": "GSTIN already registered to another organisation",
+       "type": "urn:hostry:problem:gstin_in_use"
+      }
+     }
+    }
+   ]
+  }
+ ]
+}
