@@ -541,7 +541,7 @@ func (u *Upstream) Ping(ctx context.Context) error {
 		name string
 		base string
 	}{{"identity", u.ident.Server}, {"tenancy", u.ten.Server}, {"billing", u.bill.Server}} {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.base+"/healthz", nil)
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, strings.TrimRight(c.base, "/")+"/healthz", nil)
 		if err != nil {
 			return err
 		}
