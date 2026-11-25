@@ -1,0 +1,23 @@
+module github.com/hostryhq/svc-admin
+
+go 1.27.1
+
+require (
+	github.com/hostryhq/api-specs v0.0.0-20261125001959-c92ca77ecb4e
+	github.com/hostryhq/go-auth v0.0.0-20261125000521-b19b5407e3f2
+	github.com/hostryhq/go-common v0.0.0-20261124215603-ad5f1e546d2e
+	github.com/oapi-codegen/runtime v1.9.1
+	gopkg.in/yaml.v3 v3.0.1
+)
+
+require (
+	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
+	github.com/getkin/kin-openapi v0.153.0 // indirect
+	github.com/go-openapi/jsonpointer v0.22.5 // indirect
+	github.com/go-openapi/swag/jsonname v0.25.5 // indirect
+	github.com/google/uuid v1.6.0 // indirect
+	github.com/gorilla/mux v1.8.0 // indirect
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
+	go.yaml.in/yaml/v4 v4.0.0 // indirect
+	golang.org/x/text v0.42.0 // indirect
+)

@@ -1,0 +1,5759 @@
+{
+ "service": "identity",
+ "worlds": [
+  "approval-approved",
+  "approval-pending",
+  "base",
+  "co-owner",
+  "device-drained",
+  "device-revoked",
+  "device-unregistered",
+  "org-no-owner",
+  "otp-challenge-pending",
+  "owner-invited",
+  "owner-recovery-pending",
+  "pin-locked",
+  "pin-reset-authorised",
+  "session-open",
+  "support-session-active",
+  "vendor-approval-approved",
+  "vendor-approval-pending",
+  "vendor-session-active",
+  "vendor-setup-pending"
+ ],
+ "operations": [
+  {
+   "id": "activateDevice",
+   "method": "POST",
+   "path": "/v1/device-activations",
+   "permission": "public",
+   "world": "device-unregistered",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "device": {
+        "billing_capability": "active",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+        "key_protection": "hardware",
+        "kind": "pos",
+        "last_contact_at": "2026-11-24T13:10:11.120Z",
+        "name": "Counter 1",
+        "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+        "registered_at": "2026-11-24T13:05:11.120Z",
+        "state": "active"
+       },
+       "offline_pack": {
+        "claims": {
+         "catalogue_version": 1,
+         "device": {
+          "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+          "kind": "pos",
+          "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+          "public_key": {
+           "crv": "P-256",
+           "kty": "EC",
+           "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+           "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+          }
+         },
+         "identity_public_keys": [
+          {
+           "alg": "ES256",
+           "crv": "P-256",
+           "kid": "k-2026-09",
+           "kty": "EC",
+           "use": "sig",
+           "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+           "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+          }
+         ],
+         "idle_lock_minutes": 5,
+         "intent_table_version": 3,
+         "issued_at": "2026-11-24T13:05:11.120Z",
+         "members": [
+          {
+           "display_name": "Asha",
+           "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+           "permissions": [
+            "organisation.read",
+            "brand.read",
+            "outlet.read",
+            "tax_registration.read",
+            "settings.read",
+            "series.read",
+            "link.read",
+            "device.read",
+            "member.read",
+            "role.read",
+            "audit.read"
+           ],
+           "pin_salt": "c2FsdC1leGFtcGxl",
+           "pin_v": 2,
+           "pin_verifier": "kg",
+           "status": "active",
+           "vbits": 12
+          }
+         ],
+         "offline_valid_until": "2026-12-08T13:05:11.120Z",
+         "op_signing_public_key": {
+          "alg": "ES256",
+          "crv": "P-256",
+          "kid": "o-2026-09",
+          "kty": "EC",
+          "use": "sig",
+          "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+          "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+         },
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "pack_v": 7,
+         "revoked_device_ids": [],
+         "series": [
+          {
+           "code": "A7K",
+           "doc_type": "tax_invoice",
+           "state": "active",
+           "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+          }
+         ]
+        },
+        "issued_at": "2026-11-24T13:05:11.120Z",
+        "jws": "pack.jws.example",
+        "offline_valid_until": "2026-12-08T13:05:11.120Z",
+        "pack_v": 7
+       }
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "unverified": {
+       "code": "registration_unverified",
+       "status": 409,
+       "title": "Tax registration not verified",
+       "type": "urn:hostry:problem:registration_unverified"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "code": {
+       "code": "activation_code_invalid",
+       "status": 422,
+       "title": "Activation code invalid",
+       "type": "urn:hostry:problem:activation_code_invalid"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "approveVendorApproval",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/approvals/{approval_id}/decision",
+   "permission": "admin.approval.decide",
+   "permission_by_kind": {
+    "device_revoke_over_quota": "admin.device.revoke",
+    "org_close": "admin.org.lifecycle.approve",
+    "org_reinstate": "admin.org.lifecycle.approve",
+    "org_suspend": "admin.org.lifecycle.approve",
+    "owner_recovery": "admin.recovery.approve",
+    "sign_in_code": "admin.signin_code.approve",
+    "tax_rule_set_publish": "admin.taxrules.publish"
+   },
+   "world": "vendor-approval-pending",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "approval": {
+        "approved_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "expires_at": "2026-11-24T13:10:11.120Z",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
+        "kind": "sign_in_code",
+        "mobile_masked": "+91*******210",
+        "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+        "requested_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+        "state": "approved",
+        "ticket_reference": "SUP-2041",
+        "verification_method": "callback_to_registered_number"
+       },
+       "code_half": {
+        "half": "9XD2",
+        "position": "second"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "second": {
+       "code": "second_approver_unavailable",
+       "status": 409,
+       "title": "No second approver is available",
+       "type": "urn:hostry:problem:second_approver_unavailable"
+      },
+      "state": {
+       "code": "approval_not_pending",
+       "status": 409,
+       "title": "The approval is not pending",
+       "type": "urn:hostry:problem:approval_not_pending"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "assignOwnerRole",
+   "method": "PUT",
+   "path": "/v1/members/{member_id}/owner-role",
+   "permission": "member.owner.assign",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Ravi",
+       "has_pin": false,
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9e",
+       "mobile_masked": "+91*******211",
+       "role_assignments": [
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9f",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+        },
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8d",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a"
+        }
+       ],
+       "status": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "authorisePinReset",
+   "method": "POST",
+   "path": "/v1/members/{member_id}/pin-reset-authorisations",
+   "permission": "member.pin.authorise",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a76"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "beginVendorSetup",
+   "method": "POST",
+   "path": "/internal/v1/vendor/setup-sessions",
+   "permission": "public",
+   "world": "vendor-setup-pending",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "email": "staff@example.invalid",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "totp_provisioning_uri": "otpauth://totp/Hostry:staff@example.invalid?secret=EXAMPLEEXAMPLE234\u0026issuer=Hostry"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "invalid": {
+       "code": "setup_link_invalid",
+       "status": 422,
+       "title": "Setup link invalid",
+       "type": "urn:hostry:problem:setup_link_invalid"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cancelOwnerInvitation",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations/{invitation_id}/cancellation",
+   "permission": "admin.owner_invite.manage",
+   "world": "owner-invited",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a67",
+       "mobile_masked": "+91*******210",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "owner_name": "Asha",
+       "status": "cancelled"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "notpending": {
+       "code": "invitation_not_pending",
+       "status": 409,
+       "title": "Invitation is not pending",
+       "type": "urn:hostry:problem:invitation_not_pending"
+      },
+      "owner": {
+       "code": "owner_exists",
+       "status": 409,
+       "title": "The organisation already has an owner",
+       "type": "urn:hostry:problem:owner_exists"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "cancelOwnerRecovery",
+   "method": "PUT",
+   "path": "/v1/owner-recoveries/{recovery_id}/cancellation",
+   "permission": "authenticated",
+   "world": "owner-recovery-pending",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8d",
+       "state": "cancelled"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "cancelVendorApproval",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/approvals/{approval_id}/cancellation",
+   "permission": "admin.approval.decide",
+   "world": "vendor-approval-pending",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
+       "kind": "sign_in_code",
+       "mobile_masked": "+91*******210",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "requested_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "state": "cancelled",
+       "ticket_reference": "SUP-2041",
+       "verification_method": "callback_to_registered_number"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "second": {
+       "code": "second_approver_unavailable",
+       "status": 409,
+       "title": "No second approver is available",
+       "type": "urn:hostry:problem:second_approver_unavailable"
+      },
+      "state": {
+       "code": "approval_not_pending",
+       "status": 409,
+       "title": "The approval is not pending",
+       "type": "urn:hostry:problem:approval_not_pending"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "checkPackHistory",
+   "method": "POST",
+   "path": "/internal/v1/pack-history-checks",
+   "permission": "proof.verify",
+   "service_callers": [
+    "sync"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "member_in_pack": true,
+       "pack_known": true,
+       "series_issued": true
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "claimCodeHalf",
+   "method": "POST",
+   "path": "/internal/v1/vendor/approvals/{approval_id}/code-half-claims",
+   "permission": "admin.approval.create",
+   "world": "vendor-approval-approved",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "half": "7QK3",
+       "position": "first"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "second": {
+       "code": "second_approver_unavailable",
+       "status": 409,
+       "title": "No second approver is available",
+       "type": "urn:hostry:problem:second_approver_unavailable"
+      },
+      "state": {
+       "code": "approval_not_pending",
+       "status": 409,
+       "title": "The approval is not pending",
+       "type": "urn:hostry:problem:approval_not_pending"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "clearPinLockout",
+   "method": "DELETE",
+   "path": "/v1/members/{member_id}/pin-lockout",
+   "permission": "member.manage",
+   "world": "pin-locked",
+   "security": [],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "completeVendorSetup",
+   "method": "POST",
+   "path": "/internal/v1/vendor/setup-completions",
+   "permission": "public",
+   "world": "vendor-setup-pending",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Priya",
+       "email": "staff@example.invalid",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "role": "support",
+       "status": "active",
+       "totp_enrolled": true
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "invalid": {
+       "code": "setup_link_invalid",
+       "status": 422,
+       "title": "Setup link invalid",
+       "type": "urn:hostry:problem:setup_link_invalid"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createActivationCode",
+   "method": "POST",
+   "path": "/v1/activation-codes",
+   "permission": "device.activation_code.create",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "code": "7QK3M9XD",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a75",
+       "kind": "pos",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_required",
+       "status": 403,
+       "title": "Approval required",
+       "type": "urn:hostry:problem:approval_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createApprovalRequest",
+   "method": "POST",
+   "path": "/v1/approval-requests",
+   "permission": "authenticated",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
+       "operation_id": "createMember",
+       "state": "pending"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createDeviceNonce",
+   "method": "POST",
+   "path": "/v1/device-nonces",
+   "permission": "public",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "nonce": "nonce_example_01"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createDeviceToken",
+   "method": "POST",
+   "path": "/v1/tokens/device",
+   "permission": "public",
+   "world": "session-open",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "access_token": "tok_example_access",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "session_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5d",
+       "token_type": "Bearer",
+       "typ": "pin"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "invalid": {
+       "code": "invalid_session_proof",
+       "status": 401,
+       "title": "Invalid session proof",
+       "type": "urn:hostry:problem:invalid_session_proof"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "revoked": {
+       "code": "device_revoked",
+       "status": 403,
+       "title": "Device revoked",
+       "type": "urn:hostry:problem:device_revoked"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createDrainToken",
+   "method": "POST",
+   "path": "/v1/tokens/drain",
+   "permission": "public",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "access_token": "tok_example_drain",
+       "expires_at": "2026-11-24T13:10:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createMember",
+   "method": "POST",
+   "path": "/v1/members",
+   "permission": "member.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Latha",
+       "has_pin": false,
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9d",
+       "mobile_masked": "+91*******212",
+       "role_assignments": [
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8e",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+        }
+       ],
+       "status": "invited"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createOtpChallenge",
+   "method": "POST",
+   "path": "/v1/otp-challenges",
+   "permission": "public",
+   "security": [],
+   "responses": [
+    {
+     "status": 202,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b",
+       "resend_after": "2026-11-24T13:05:41.120Z"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createOwnerInvitation",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations",
+   "permission": "admin.owner_invite.manage",
+   "world": "org-no-owner",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a67",
+       "mobile_masked": "+91*******210",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "owner_name": "Asha",
+       "status": "pending"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "notpending": {
+       "code": "invitation_not_pending",
+       "status": 409,
+       "title": "Invitation is not pending",
+       "type": "urn:hostry:problem:invitation_not_pending"
+      },
+      "owner": {
+       "code": "owner_exists",
+       "status": 409,
+       "title": "The organisation already has an owner",
+       "type": "urn:hostry:problem:owner_exists"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createRole",
+   "method": "POST",
+   "path": "/v1/roles",
+   "permission": "role.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "built_in": false,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8f",
+       "name": "Kitchen",
+       "permissions": [
+        "outlet.read"
+       ],
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createRoleAssignment",
+   "method": "POST",
+   "path": "/v1/members/{member_id}/role-assignments",
+   "permission": "member.role.assign",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8c",
+       "outlet_ids": [
+        "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+       ],
+       "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9b"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "owner": {
+       "code": "use_owner_role_operation",
+       "status": 422,
+       "title": "Use the owner role operation",
+       "type": "urn:hostry:problem:use_owner_role_operation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createSession",
+   "method": "POST",
+   "path": "/v1/sessions",
+   "permission": "public",
+   "world": "otp-challenge-pending",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "amr": "otp",
+       "auth_time": "2026-11-24T13:05:11.120Z",
+       "invitation_accepted": false,
+       "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+       "memberships": [
+        {
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60"
+        }
+       ],
+       "session_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5d",
+       "tokens": {
+        "access_token": "tok_example_access",
+        "expires_at": "2026-11-24T13:10:11.120Z",
+        "refresh_expires_at": "2026-12-24T13:05:11.120Z",
+        "refresh_token": "tok_example_refresh",
+        "token_type": "Bearer"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createVendorApproval",
+   "method": "POST",
+   "path": "/internal/v1/vendor/approvals",
+   "permission": "admin.approval.create",
+   "permission_by_kind": {
+    "device_revoke_over_quota": "admin.device.revoke",
+    "org_close": "admin.org.lifecycle.request",
+    "org_reinstate": "admin.org.lifecycle.request",
+    "org_suspend": "admin.org.lifecycle.request",
+    "owner_recovery": "admin.recovery.create",
+    "sign_in_code": "admin.signin_code.create",
+    "tax_rule_set_publish": "admin.taxrules.publish"
+   },
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
+       "kind": "sign_in_code",
+       "mobile_masked": "+91*******210",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "requested_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "state": "pending",
+       "ticket_reference": "SUP-2041",
+       "verification_method": "callback_to_registered_number"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "second": {
+       "code": "second_approver_unavailable",
+       "status": 409,
+       "title": "No second approver is available",
+       "type": "urn:hostry:problem:second_approver_unavailable"
+      },
+      "state": {
+       "code": "approval_not_pending",
+       "status": 409,
+       "title": "The approval is not pending",
+       "type": "urn:hostry:problem:approval_not_pending"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createVendorSession",
+   "method": "POST",
+   "path": "/internal/v1/vendor/sessions",
+   "permission": "public",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "access_token": "tok_example_vendor",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "renewal_handle": "renew_example",
+       "session_ends_at": "2026-11-25T01:05:11.120Z",
+       "user": {
+        "display_name": "Priya",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+        "permissions": [
+         "admin.org.read",
+         "admin.device.read",
+         "admin.device.revoke",
+         "admin.support.session.start",
+         "admin.audit.read_own",
+         "admin.approval.create",
+         "admin.approval.read",
+         "admin.approval.decide"
+        ],
+        "role": "support"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "failed": {
+       "code": "vendor.sign_in_failed",
+       "status": 401,
+       "title": "Sign-in failed",
+       "type": "urn:hostry:problem:vendor.sign_in_failed"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "createVendorUser",
+   "method": "POST",
+   "path": "/internal/v1/vendor/users",
+   "permission": "admin.user.manage",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Karthik",
+       "email": "new.staff@example.invalid",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a88",
+       "role": "support",
+       "status": "setup_pending",
+       "totp_enrolled": false
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "decideApprovalRequest",
+   "method": "PUT",
+   "path": "/v1/approval-requests/{request_id}/decision",
+   "permission": "authenticated",
+   "world": "approval-pending",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
+       "operation_id": "createMember",
+       "state": "approved"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "deleteRole",
+   "method": "DELETE",
+   "path": "/v1/roles/{role_id}",
+   "permission": "role.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "deleteRoleAssignment",
+   "method": "DELETE",
+   "path": "/v1/members/{member_id}/role-assignments/{assignment_id}",
+   "permission": "member.role.assign",
+   "security": [],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "endSession",
+   "method": "DELETE",
+   "path": "/v1/sessions/{session_id}",
+   "permission": "authenticated",
+   "world": "session-open",
+   "security": [],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "endSupportSession",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/support-sessions/{support_session_id}/termination",
+   "permission": "admin.support.session.start",
+   "world": "support-session-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "ended_at": "2026-11-24T13:10:11.120Z",
+       "ends_at": "2026-11-24T13:35:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a68",
+       "mode": "view",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "started_at": "2026-11-24T13:05:11.120Z",
+       "status": "ended",
+       "ticket_reference": "SUP-2041",
+       "vendor_user_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "endVendorSession",
+   "method": "DELETE",
+   "path": "/internal/v1/vendor/sessions/current",
+   "permission": "authenticated",
+   "world": "vendor-session-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getApprovalRequest",
+   "method": "GET",
+   "path": "/v1/approval-requests/{request_id}",
+   "permission": "authenticated",
+   "world": "approval-approved",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "approval_token": "tok_example_approval",
+       "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
+       "operation_id": "createMember",
+       "state": "approved"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getDevice",
+   "method": "GET",
+   "path": "/v1/devices/{device_id}",
+   "permission": "device.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "billing_capability": "active",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "key_protection": "hardware",
+       "kind": "pos",
+       "last_contact_at": "2026-11-24T13:10:11.120Z",
+       "name": "Counter 1",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "registered_at": "2026-11-24T13:05:11.120Z",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getDeviceOfflinePack",
+   "method": "GET",
+   "path": "/v1/devices/{device_id}/offline-packs/latest",
+   "permission": "authenticated",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "claims": {
+        "catalogue_version": 1,
+        "device": {
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "kind": "pos",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "public_key": {
+          "crv": "P-256",
+          "kty": "EC",
+          "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+          "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+         }
+        },
+        "identity_public_keys": [
+         {
+          "alg": "ES256",
+          "crv": "P-256",
+          "kid": "k-2026-09",
+          "kty": "EC",
+          "use": "sig",
+          "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+          "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+         }
+        ],
+        "idle_lock_minutes": 5,
+        "intent_table_version": 3,
+        "issued_at": "2026-11-24T13:05:11.120Z",
+        "members": [
+         {
+          "display_name": "Asha",
+          "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+          "permissions": [
+           "organisation.read",
+           "brand.read",
+           "outlet.read",
+           "tax_registration.read",
+           "settings.read",
+           "series.read",
+           "link.read",
+           "device.read",
+           "member.read",
+           "role.read",
+           "audit.read"
+          ],
+          "pin_salt": "c2FsdC1leGFtcGxl",
+          "pin_v": 2,
+          "pin_verifier": "kg",
+          "status": "active",
+          "vbits": 12
+         }
+        ],
+        "offline_valid_until": "2026-12-08T13:05:11.120Z",
+        "op_signing_public_key": {
+         "alg": "ES256",
+         "crv": "P-256",
+         "kid": "o-2026-09",
+         "kty": "EC",
+         "use": "sig",
+         "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+         "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+        },
+        "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+        "pack_v": 7,
+        "revoked_device_ids": [],
+        "series": [
+         {
+          "code": "A7K",
+          "doc_type": "tax_invoice",
+          "state": "active",
+          "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+         }
+        ]
+       },
+       "issued_at": "2026-11-24T13:05:11.120Z",
+       "jws": "pack.jws.example",
+       "offline_valid_until": "2026-12-08T13:05:11.120Z",
+       "pack_v": 7
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "revoked": {
+       "code": "device_revoked",
+       "status": 403,
+       "title": "Device revoked",
+       "type": "urn:hostry:problem:device_revoked"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getJwks",
+   "method": "GET",
+   "path": "/v1/jwks",
+   "permission": "public",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "keys": [
+        {
+         "alg": "ES256",
+         "crv": "P-256",
+         "kid": "k-2026-09",
+         "kty": "EC",
+         "use": "sig",
+         "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+         "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getMember",
+   "method": "GET",
+   "path": "/v1/members/{member_id}",
+   "permission": "member.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Asha",
+       "has_pin": true,
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+       "mobile_masked": "+91*******210",
+       "role_assignments": [
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a"
+        },
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8b",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+        }
+       ],
+       "status": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getOrganisationDevice",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/devices/{device_id}",
+   "permission": "admin.device.read",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "billing_capable": true,
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "key_protection": "hardware",
+       "kind": "pos",
+       "last_contact_at": "2026-11-24T13:10:11.120Z",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "registered_at": "2026-11-24T13:05:11.120Z",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getOwnerStatuses",
+   "method": "GET",
+   "path": "/internal/v1/vendor/owner-statuses",
+   "permission": "admin.org.read",
+   "world": "owner-invited",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "owner_status": "pending"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getRole",
+   "method": "GET",
+   "path": "/v1/roles/{role_id}",
+   "permission": "role.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "built_in": false,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65",
+       "name": "Cashier",
+       "permissions": [
+        "outlet.read",
+        "device.read"
+       ],
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getSupportSession",
+   "method": "GET",
+   "path": "/internal/v1/vendor/support-sessions/{support_session_id}",
+   "permission": "admin.support.session.start",
+   "world": "support-session-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "ends_at": "2026-11-24T13:35:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a68",
+       "mode": "view",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "started_at": "2026-11-24T13:05:11.120Z",
+       "status": "active",
+       "ticket_reference": "SUP-2041",
+       "vendor_user_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getVendorApproval",
+   "method": "GET",
+   "path": "/internal/v1/vendor/approvals/{approval_id}",
+   "permission": "admin.approval.read",
+   "world": "vendor-approval-pending",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
+       "kind": "sign_in_code",
+       "mobile_masked": "+91*******210",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "requested_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "state": "pending",
+       "ticket_reference": "SUP-2041",
+       "verification_method": "callback_to_registered_number"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getVendorJwks",
+   "method": "GET",
+   "path": "/v1/vendor-jwks",
+   "permission": "public",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "keys": [
+        {
+         "alg": "ES256",
+         "crv": "P-256",
+         "kid": "v-2026-09",
+         "kty": "EC",
+         "use": "sig",
+         "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+         "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getWipeOrder",
+   "method": "GET",
+   "path": "/v1/devices/{device_id}/wipe-order",
+   "permission": "authenticated",
+   "world": "device-drained",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "drained_through": [
+        {
+         "seq": 1842,
+         "stream": "device-ops"
+        }
+       ],
+       "issued_at": "2026-11-24T13:20:11.120Z",
+       "jws": "wipe.jws.example"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "notready": {
+       "code": "wipe_order_not_ready",
+       "status": 409,
+       "title": "Wipe order not ready",
+       "type": "urn:hostry:problem:wipe_order_not_ready"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listApprovalRequests",
+   "method": "GET",
+   "path": "/v1/approval-requests",
+   "permission": "authenticated",
+   "world": "approval-pending",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "expires_at": "2026-11-24T13:10:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
+         "operation_id": "createMember",
+         "state": "pending"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listAuditEntries",
+   "method": "GET",
+   "path": "/v1/audit-entries",
+   "permission": "audit.read",
+   "world": "support-session-active",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "action": "support.session.started",
+         "actor_kind": "vendor",
+         "actor_label": "Hostry support",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a69",
+         "occurred_at": "2026-11-24T13:05:11.120Z",
+         "outcome": "succeeded",
+         "reason": "Owner phoned to report a lost tablet.",
+         "show_to_owner": true,
+         "support_session_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a68",
+         "target_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a68",
+         "ticket_reference": "SUP-2041"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listBindings",
+   "method": "GET",
+   "path": "/v1/bindings",
+   "permission": "authenticated",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "caution_until": "2026-12-08T13:05:11.120Z",
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6e",
+         "state": "active"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listDevices",
+   "method": "GET",
+   "path": "/v1/devices",
+   "permission": "device.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "billing_capability": "active",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "key_protection": "hardware",
+         "kind": "pos",
+         "last_contact_at": "2026-11-24T13:10:11.120Z",
+         "name": "Counter 1",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "registered_at": "2026-11-24T13:05:11.120Z",
+         "state": "active"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listMembers",
+   "method": "GET",
+   "path": "/v1/members",
+   "permission": "member.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "display_name": "Asha",
+         "has_pin": true,
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "mobile_masked": "+91*******210",
+         "role_assignments": [
+          {
+           "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+           "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a"
+          },
+          {
+           "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8b",
+           "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+          }
+         ],
+         "status": "active"
+        },
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "display_name": "Ravi",
+         "has_pin": false,
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9e",
+         "mobile_masked": "+91*******211",
+         "role_assignments": [
+          {
+           "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9f",
+           "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+          }
+         ],
+         "status": "active"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listOrganisationDevices",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/devices",
+   "permission": "admin.device.read",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "billing_capable": true,
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "key_protection": "hardware",
+         "kind": "pos",
+         "last_contact_at": "2026-11-24T13:10:11.120Z",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "registered_at": "2026-11-24T13:05:11.120Z",
+         "state": "active"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listOwnerInvitations",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations",
+   "permission": "admin.org.read",
+   "world": "owner-invited",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "expires_at": "2026-12-08T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a67",
+         "mobile_masked": "+91*******210",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "owner_name": "Asha",
+         "status": "pending"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listPermissions",
+   "method": "GET",
+   "path": "/v1/permissions",
+   "permission": "authenticated",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "catalogue_version": 1,
+       "items": [
+        {
+         "description_key": "perm.organisation.read",
+         "key": "organisation.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.organisation.manage",
+         "key": "organisation.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.brand.read",
+         "key": "brand.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.brand.manage",
+         "key": "brand.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.outlet.read",
+         "key": "outlet.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.outlet.create",
+         "key": "outlet.create",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.outlet.manage",
+         "key": "outlet.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.tax_registration.read",
+         "key": "tax_registration.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.tax_registration.manage",
+         "key": "tax_registration.manage",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.settings.read",
+         "key": "settings.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.settings.manage",
+         "key": "settings.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.series.read",
+         "key": "series.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.series.close_unreconciled",
+         "key": "series.close_unreconciled",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.link.read",
+         "key": "link.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.link.manage",
+         "key": "link.manage",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.link.revoke",
+         "key": "link.revoke",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.device.read",
+         "key": "device.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.device.register",
+         "key": "device.register",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.device.activation_code.create",
+         "key": "device.activation_code.create",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.device.revoke",
+         "key": "device.revoke",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.read",
+         "key": "member.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.member.manage",
+         "key": "member.manage",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.pin.authorise",
+         "key": "member.pin.authorise",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.role.assign",
+         "key": "member.role.assign",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.owner.assign",
+         "key": "member.owner.assign",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.role.read",
+         "key": "role.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.role.manage",
+         "key": "role.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.audit.read",
+         "key": "audit.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.support.code.create",
+         "key": "support.code.create",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listRevocations",
+   "method": "GET",
+   "path": "/internal/v1/revocations",
+   "permission": "revocation.read",
+   "world": "device-revoked",
+   "service_callers": [
+    "sync"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a77",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "revoked_at": "2026-11-24T13:15:11.120Z",
+         "subject_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "subject_type": "device"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listRoles",
+   "method": "GET",
+   "path": "/v1/roles",
+   "permission": "role.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "built_in": true,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a",
+         "name": "Owner",
+         "permissions": [
+          "organisation.read",
+          "organisation.manage",
+          "brand.read",
+          "brand.manage",
+          "outlet.read",
+          "outlet.create",
+          "outlet.manage",
+          "tax_registration.read",
+          "tax_registration.manage",
+          "settings.read",
+          "settings.manage",
+          "series.read",
+          "series.close_unreconciled",
+          "link.read",
+          "link.manage",
+          "link.revoke",
+          "device.read",
+          "device.register",
+          "device.activation_code.create",
+          "device.revoke",
+          "member.read",
+          "member.manage",
+          "member.pin.authorise",
+          "member.role.assign",
+          "member.owner.assign",
+          "role.read",
+          "role.manage",
+          "audit.read",
+          "support.code.create"
+         ],
+         "updated_at": "2026-11-24T13:05:11.120Z"
+        },
+        {
+         "built_in": false,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65",
+         "name": "Cashier",
+         "permissions": [
+          "outlet.read",
+          "device.read"
+         ],
+         "updated_at": "2026-11-24T13:05:11.120Z"
+        },
+        {
+         "built_in": false,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9b",
+         "name": "Waiter",
+         "permissions": [
+          "outlet.read"
+         ],
+         "updated_at": "2026-11-24T13:05:11.120Z"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listVendorApprovals",
+   "method": "GET",
+   "path": "/internal/v1/vendor/approvals",
+   "permission": "admin.approval.read",
+   "world": "vendor-approval-pending",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "expires_at": "2026-11-24T13:10:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
+         "kind": "sign_in_code",
+         "mobile_masked": "+91*******210",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "requested_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+         "state": "pending",
+         "ticket_reference": "SUP-2041",
+         "verification_method": "callback_to_registered_number"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listVendorAuditEntries",
+   "method": "GET",
+   "path": "/internal/v1/vendor/audit-entries",
+   "permission": "admin.audit.read_own",
+   "world": "device-revoked",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "action": "vendor.device.revoked",
+         "actor_vendor_user_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8a",
+         "occurred_at": "2026-11-24T13:15:11.120Z",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "request_id": "req_0190a1b2c3d4",
+         "result": "succeeded",
+         "source_address": "203.0.113.7",
+         "target_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "ticket_reference": "SUP-2041"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listVendorUsers",
+   "method": "GET",
+   "path": "/internal/v1/vendor/users",
+   "permission": "admin.user.manage",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "display_name": "Priya",
+         "email": "staff@example.invalid",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+         "role": "support",
+         "status": "active",
+         "totp_enrolled": true
+        },
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "display_name": "Arun",
+         "email": "admin@example.invalid",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+         "role": "platform_admin",
+         "status": "active",
+         "totp_enrolled": true
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "lookupOrganisationsByOwnerMobile",
+   "method": "POST",
+   "path": "/internal/v1/vendor/owner-lookups",
+   "permission": "admin.org.read",
+   "world": "owner-invited",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "organisation_ids": [
+        "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60"
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "recordDeviceDrained",
+   "method": "PUT",
+   "path": "/internal/v1/devices/{device_id}/drain",
+   "permission": "device.drain.record",
+   "world": "device-revoked",
+   "service_callers": [
+    "sync"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "billing_capability": "active",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "key_protection": "hardware",
+       "kind": "pos",
+       "last_contact_at": "2026-11-24T13:10:11.120Z",
+       "name": "Counter 1",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "registered_at": "2026-11-24T13:05:11.120Z",
+       "state": "drained"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "refreshSession",
+   "method": "POST",
+   "path": "/v1/tokens/refresh",
+   "permission": "public",
+   "world": "session-open",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "access_token": "tok_example_access",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "refresh_expires_at": "2026-12-24T13:05:11.120Z",
+       "refresh_token": "tok_example_refresh",
+       "token_type": "Bearer"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "registerDevice",
+   "method": "POST",
+   "path": "/v1/devices",
+   "permission": "device.register",
+   "world": "device-unregistered",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "billing_capability": "active",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "key_protection": "hardware",
+       "kind": "pos",
+       "last_contact_at": "2026-11-24T13:10:11.120Z",
+       "name": "Counter 1",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "registered_at": "2026-11-24T13:05:11.120Z",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_required",
+       "status": 403,
+       "title": "Approval required",
+       "type": "urn:hostry:problem:approval_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "unverified": {
+       "code": "registration_unverified",
+       "status": 409,
+       "title": "Tax registration not verified",
+       "type": "urn:hostry:problem:registration_unverified"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rejectBinding",
+   "method": "PUT",
+   "path": "/v1/bindings/{binding_id}/rejection",
+   "permission": "authenticated",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6e",
+       "state": "rejected"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "removeOwnerRole",
+   "method": "DELETE",
+   "path": "/v1/members/{member_id}/owner-role",
+   "permission": "member.owner.assign",
+   "world": "co-owner",
+   "security": [],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "renewOwnerInvitation",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations/{invitation_id}/renewals",
+   "permission": "admin.owner_invite.manage",
+   "world": "owner-invited",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-12-08T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a67",
+       "mobile_masked": "+91*******210",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "owner_name": "Asha",
+       "status": "pending"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "notpending": {
+       "code": "invitation_not_pending",
+       "status": 409,
+       "title": "Invitation is not pending",
+       "type": "urn:hostry:problem:invitation_not_pending"
+      },
+      "owner": {
+       "code": "owner_exists",
+       "status": 409,
+       "title": "The organisation already has an owner",
+       "type": "urn:hostry:problem:owner_exists"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "renewSupportToken",
+   "method": "POST",
+   "path": "/internal/v1/vendor/support-sessions/{support_session_id}/tokens",
+   "permission": "admin.support.session.start",
+   "world": "support-session-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "access_token": "tok_example_support",
+       "expires_at": "2026-11-24T13:10:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "active": {
+       "code": "support_session_active",
+       "status": 409,
+       "title": "A support session is already active",
+       "type": "urn:hostry:problem:support_session_active"
+      },
+      "ended": {
+       "code": "support_session_ended",
+       "status": 409,
+       "title": "The support session has ended",
+       "type": "urn:hostry:problem:support_session_ended"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "renewVendorSession",
+   "method": "POST",
+   "path": "/internal/v1/vendor/session-renewals",
+   "permission": "public",
+   "world": "vendor-session-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "access_token": "tok_example_vendor",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "renewal_handle": "renew_example2",
+       "session_ends_at": "2026-11-25T01:05:11.120Z",
+       "user": {
+        "display_name": "Priya",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+        "permissions": [
+         "admin.org.read",
+         "admin.device.read",
+         "admin.device.revoke",
+         "admin.support.session.start",
+         "admin.audit.read_own",
+         "admin.approval.create",
+         "admin.approval.read",
+         "admin.approval.decide"
+        ],
+        "role": "support"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "failed": {
+       "code": "vendor.sign_in_failed",
+       "status": 401,
+       "title": "Sign-in failed",
+       "type": "urn:hostry:problem:vendor.sign_in_failed"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "resetVendorUserTotp",
+   "method": "POST",
+   "path": "/internal/v1/vendor/users/{vendor_user_id}/totp-resets",
+   "permission": "admin.user.manage",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Priya",
+       "email": "staff@example.invalid",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "role": "support",
+       "status": "setup_pending",
+       "totp_enrolled": false
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "revokeDevice",
+   "method": "PUT",
+   "path": "/v1/devices/{device_id}/revocation",
+   "permission": "device.revoke",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "billing_capability": "active",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "key_protection": "hardware",
+       "kind": "pos",
+       "last_contact_at": "2026-11-24T13:10:11.120Z",
+       "name": "Counter 1",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "registered_at": "2026-11-24T13:05:11.120Z",
+       "state": "revoked"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_required",
+       "status": 403,
+       "title": "Approval required",
+       "type": "urn:hostry:problem:approval_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "revokeOrganisationDevice",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/devices/{device_id}/revocation",
+   "permission": "admin.device.revoke",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "changed": true,
+       "device": {
+        "billing_capable": true,
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+        "key_protection": "hardware",
+        "kind": "pos",
+        "last_contact_at": "2026-11-24T13:10:11.120Z",
+        "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+        "registered_at": "2026-11-24T13:05:11.120Z",
+        "state": "revoked"
+       },
+       "outcome": "revoked"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "quota": {
+       "code": "vendor_approval_required",
+       "status": 409,
+       "title": "A second vendor approver is required",
+       "type": "urn:hostry:problem:vendor_approval_required"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "setPin",
+   "method": "PUT",
+   "path": "/v1/members/{member_id}/pin",
+   "permission": "authenticated",
+   "world": "pin-reset-authorised",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "pin_v": 3
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "startSupportSession",
+   "method": "POST",
+   "path": "/internal/v1/vendor/support-sessions",
+   "permission": "admin.support.session.start",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "session": {
+        "ends_at": "2026-11-24T13:35:11.120Z",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a68",
+        "mode": "view",
+        "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+        "started_at": "2026-11-24T13:05:11.120Z",
+        "status": "active",
+        "ticket_reference": "SUP-2041",
+        "vendor_user_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66"
+       },
+       "token": {
+        "access_token": "tok_example_support",
+        "expires_at": "2026-11-24T13:10:11.120Z"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "active": {
+       "code": "support_session_active",
+       "status": 409,
+       "title": "A support session is already active",
+       "type": "urn:hostry:problem:support_session_active"
+      },
+      "ended": {
+       "code": "support_session_ended",
+       "status": 409,
+       "title": "The support session has ended",
+       "type": "urn:hostry:problem:support_session_ended"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "mode": {
+       "code": "mode_not_supported",
+       "errors": [
+        {
+         "code": "mode_not_supported",
+         "field": "mode",
+         "message": "only view is supported"
+        }
+       ],
+       "status": 422,
+       "title": "Act mode is not supported",
+       "type": "urn:hostry:problem:mode_not_supported"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "switchMember",
+   "method": "POST",
+   "path": "/v1/tokens/switch",
+   "permission": "authenticated",
+   "world": "session-open",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "access_token": "tok_example_access",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "refresh_expires_at": "2026-12-24T13:05:11.120Z",
+       "refresh_token": "tok_example_refresh",
+       "token_type": "Bearer"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateMember",
+   "method": "PATCH",
+   "path": "/v1/members/{member_id}",
+   "permission": "member.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Ravi",
+       "has_pin": false,
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9e",
+       "mobile_masked": "+91*******211",
+       "role_assignments": [
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9f",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+        }
+       ],
+       "status": "suspended"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateRole",
+   "method": "PUT",
+   "path": "/v1/roles/{role_id}",
+   "permission": "role.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "built_in": false,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65",
+       "name": "Cashier",
+       "permissions": [
+        "outlet.read",
+        "device.read"
+       ],
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "grant": {
+       "code": "grant_not_permitted",
+       "status": 403,
+       "title": "Grant not permitted",
+       "type": "urn:hostry:problem:grant_not_permitted"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateVendorUser",
+   "method": "PATCH",
+   "path": "/internal/v1/vendor/users/{vendor_user_id}",
+   "permission": "admin.user.manage",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "display_name": "Priya",
+       "email": "staff@example.invalid",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "role": "support",
+       "status": "deactivated",
+       "totp_enrolled": true
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "last": {
+       "code": "last_platform_admin",
+       "status": 409,
+       "title": "The last active platform admin cannot be deactivated or demoted",
+       "type": "urn:hostry:problem:last_platform_admin"
+      },
+      "self": {
+       "code": "cannot_deactivate_self",
+       "status": 409,
+       "title": "You cannot deactivate yourself",
+       "type": "urn:hostry:problem:cannot_deactivate_self"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "verifyProof",
+   "method": "POST",
+   "path": "/internal/v1/proof-verifications",
+   "permission": "proof.verify",
+   "world": "session-open",
+   "service_callers": [
+    "sync"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "label": "verified",
+       "valid": true
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  }
+ ]
+}
