@@ -15,6 +15,7 @@ func valid() map[string]string {
 		"ADMIN_PUBLIC_ORIGIN":    "https://admin.example.invalid",
 		"ADMIN_IDENTITY_URL":     "http://identity.internal:8080",
 		"ADMIN_TENANCY_URL":      "http://tenancy.internal:8080",
+		"ADMIN_BILLING_URL":      "http://billing.internal:8080",
 		"ADMIN_SERVICE_KEY_FILE": "/run/secrets/admin-service-key.pem",
 	}
 }

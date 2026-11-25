@@ -82,6 +82,7 @@ func (t *ContractTransport) session(r *http.Request) *Session {
 	email := "contract-" + ids.New().String() + "@example.invalid"
 	t.Env.AddUser(User{ID: ids.New().String(), Email: email, DisplayName: "Contract", Role: "platform_admin", Permissions: AllAdminPermissions()})
 	s := t.Env.SignInAs(email)
+	t.Env.holdGrant(s)
 	if r.Method != http.MethodPost || r.URL.Path != "/v1/support-sessions" {
 		t.Env.StartSupport(s, OrgID)
 	}
@@ -106,6 +107,10 @@ func (e *Env) SeedWorld(_ context.Context, world string) error {
 		if w == world {
 			e.Identity.Reset()
 			e.Tenancy.Reset()
+			e.Billing.Reset()
+			e.mu.Lock()
+			e.approvedKind = approvedWorlds[world]
+			e.mu.Unlock()
 			// A world starts with every vendor user active: the updateVendorUser example
 			// deactivates the example user, which must not leak into the next operation.
 			e.mu.Lock()
@@ -117,6 +122,15 @@ func (e *Env) SeedWorld(_ context.Context, world string) error {
 		}
 	}
 	return fmt.Errorf("testenv: unknown example world %q", world)
+}
+
+// approvedWorlds are the example worlds in which vendor approval 4a6d was approved by the caller and
+// the admin service holds its grant in memory (kind by world).
+var approvedWorlds = map[string]string{
+	"org-active-approved-close":        "org_close",
+	"org-suspended-approved-reinstate": "org_reinstate",
+	"org-active-approved-suspend":      "org_suspend",
+	"rule-set-signed-approved":         "tax_rule_set_publish",
 }
 
 func adminDoc() *specdata.Doc { return specdata.MustLoad("admin") }
