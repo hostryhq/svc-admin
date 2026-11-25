@@ -19,6 +19,16 @@ type Support struct {
 	EndsAt       time.Time
 }
 
+// Grant is a single-use vendor approval grant issued by identity when an approval of an executing
+// kind (org_suspend, org_reinstate, org_close, tax_rule_set_publish) was approved. It is held in
+// memory against the session that approved it and is never sent to the browser.
+type Grant struct {
+	ApprovalID string
+	Kind       string
+	Token      string
+	Expires    time.Time
+}
+
 // Session is one signed-in vendor user. Fields are guarded by the session's own lock; hold it
 // (Lock/Unlock) around any read or write after the session was handed out by the store.
 type Session struct {
@@ -43,6 +53,9 @@ type Session struct {
 	LastSeen time.Time
 
 	Support *Support
+
+	// Grants are the unused vendor approval grants by approval id.
+	Grants map[string]Grant
 }
 
 // Lock takes the session lock.

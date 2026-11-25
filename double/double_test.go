@@ -1,6 +1,7 @@
 package double_test
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -197,5 +198,40 @@ func TestUnknownRouteAndStatic(t *testing.T) {
 	}
 	if r, b := c.do("GET", "/", "", nil); r.StatusCode != 200 || b != "app" {
 		t.Errorf("static: %d %q", r.StatusCode, b)
+	}
+}
+
+// Approvals: the gate permission is not enough, the kind needs its own (x-permission-by-kind), and
+// the seed platform admin holds every one of them.
+func TestApprovalKindsNeedTheirOwnPermission(t *testing.T) {
+	c := newClient(t, double.New(double.Options{}))
+	r, _ := c.do("POST", "/v1/sessions", `{"email":"staff@example.invalid","password":"correct-horse-battery-staple","totp_code":"123456"}`, nil)
+	var support map[string]string
+	for _, ck := range r.Cookies() {
+		support = map[string]string{"Cookie": ck.Name + "=" + ck.Value}
+	}
+	file := func(kind string, h map[string]string) int {
+		body := `{"kind":"` + kind + `","organisation_id":"0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60","ticket_reference":"SUP-2041","reason":"Owner phoned to report a lost tablet.","verification_method":"callback_to_registered_number"}`
+		r, _ := c.do("POST", "/v1/approvals", body, h)
+		return r.StatusCode
+	}
+	if got := file("device_revoke_over_quota", support); got != 201 {
+		t.Errorf("support role, device revoke approval: %d", got)
+	}
+	if got := file("org_close", support); got != 403 {
+		t.Errorf("support role, org_close: %d, want 403", got)
+	}
+	if got := file("org_close", seed()); got != 201 {
+		t.Errorf("platform admin, org_close: %d", got)
+	}
+}
+
+func TestSeedWorldAcceptsDeclaredWorldsOnly(t *testing.T) {
+	d := double.New(double.Options{})
+	if err := d.SeedWorld(context.Background(), "approval-pending"); err != nil {
+		t.Errorf("declared world refused: %v", err)
+	}
+	if err := d.SeedWorld(context.Background(), "no-such-world"); err == nil {
+		t.Error("an undeclared world must be refused")
 	}
 }

@@ -1,6 +1,8 @@
 package testenv
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"os/exec"
 	"path/filepath"
@@ -92,6 +94,29 @@ func (t *ContractTransport) session(r *http.Request) *Session {
 		t.mu.Unlock()
 	}
 	return s
+}
+
+// SeedWorld puts the fakes into an example world of the admin contract (info.x-example-worlds)
+// before one operation of the shared suite runs. The fakes answer the spec's examples whatever the
+// world, and every request of the suite gets its own vendor user and session (ContractTransport),
+// so seeding checks that the world is declared and starts the operation from fakes with no
+// replays or scripted failures left over and with every vendor user active.
+func (e *Env) SeedWorld(_ context.Context, world string) error {
+	for _, w := range adminDoc().Worlds {
+		if w == world {
+			e.Identity.Reset()
+			e.Tenancy.Reset()
+			// A world starts with every vendor user active: the updateVendorUser example
+			// deactivates the example user, which must not leak into the next operation.
+			e.mu.Lock()
+			for _, u := range e.users {
+				u.Deactivated = false
+			}
+			e.mu.Unlock()
+			return nil
+		}
+	}
+	return fmt.Errorf("testenv: unknown example world %q", world)
 }
 
 func adminDoc() *specdata.Doc { return specdata.MustLoad("admin") }

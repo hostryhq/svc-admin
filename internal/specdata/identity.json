@@ -1,11 +1,33 @@
 {
  "service": "identity",
+ "worlds": [
+  "approval-approved",
+  "approval-pending",
+  "base",
+  "co-owner",
+  "device-drained",
+  "device-revoked",
+  "device-unregistered",
+  "org-no-owner",
+  "otp-challenge-pending",
+  "owner-invited",
+  "owner-recovery-pending",
+  "pin-locked",
+  "pin-reset-authorised",
+  "session-open",
+  "support-session-active",
+  "vendor-approval-approved",
+  "vendor-approval-pending",
+  "vendor-session-active",
+  "vendor-setup-pending"
+ ],
  "operations": [
   {
    "id": "activateDevice",
    "method": "POST",
    "path": "/v1/device-activations",
    "permission": "public",
+   "world": "device-unregistered",
    "security": [],
    "responses": [
     {
@@ -26,7 +48,7 @@
        },
        "offline_pack": {
         "claims": {
-         "catalogue_version": 12,
+         "catalogue_version": 1,
          "device": {
           "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
           "kind": "pos",
@@ -57,7 +79,17 @@
            "display_name": "Asha",
            "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
            "permissions": [
-            "order.create"
+            "organisation.read",
+            "brand.read",
+            "outlet.read",
+            "tax_registration.read",
+            "settings.read",
+            "series.read",
+            "link.read",
+            "device.read",
+            "member.read",
+            "role.read",
+            "audit.read"
            ],
            "pin_salt": "c2FsdC1leGFtcGxl",
            "pin_v": 2,
@@ -81,7 +113,7 @@
          "revoked_device_ids": [],
          "series": [
           {
-           "code": "A7",
+           "code": "A7K",
            "doc_type": "tax_invoice",
            "state": "active",
            "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
@@ -142,6 +174,16 @@
    "method": "PUT",
    "path": "/internal/v1/vendor/approvals/{approval_id}/decision",
    "permission": "admin.approval.decide",
+   "permission_by_kind": {
+    "device_revoke_over_quota": "admin.device.revoke",
+    "org_close": "admin.org.lifecycle.approve",
+    "org_reinstate": "admin.org.lifecycle.approve",
+    "org_suspend": "admin.org.lifecycle.approve",
+    "owner_recovery": "admin.recovery.approve",
+    "sign_in_code": "admin.signin_code.approve",
+    "tax_rule_set_publish": "admin.taxrules.publish"
+   },
+   "world": "vendor-approval-pending",
    "service_callers": [
     "admin"
    ],
@@ -265,14 +307,18 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "display_name": "Asha",
-       "has_pin": true,
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
-       "mobile_masked": "+91*******210",
+       "display_name": "Ravi",
+       "has_pin": false,
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9e",
+       "mobile_masked": "+91*******211",
        "role_assignments": [
         {
-         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9f",
          "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+        },
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8d",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a"
         }
        ],
        "status": "active"
@@ -377,6 +423,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/setup-sessions",
    "permission": "public",
+   "world": "vendor-setup-pending",
    "service_callers": [
     "admin"
    ],
@@ -431,6 +478,7 @@
    "method": "PUT",
    "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations/{invitation_id}/cancellation",
    "permission": "admin.owner_invite.manage",
+   "world": "owner-invited",
    "service_callers": [
     "admin"
    ],
@@ -517,6 +565,7 @@
    "method": "PUT",
    "path": "/v1/owner-recoveries/{recovery_id}/cancellation",
    "permission": "authenticated",
+   "world": "owner-recovery-pending",
    "security": [],
    "responses": [
     {
@@ -524,7 +573,7 @@
      "content_type": "application/json",
      "examples": {
       "default": {
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8d",
        "state": "cancelled"
       }
      }
@@ -584,6 +633,7 @@
    "method": "PUT",
    "path": "/internal/v1/vendor/approvals/{approval_id}/cancellation",
    "permission": "admin.approval.decide",
+   "world": "vendor-approval-pending",
    "service_callers": [
     "admin"
    ],
@@ -602,7 +652,8 @@
        "created_at": "2026-11-24T13:05:11.120Z",
        "expires_at": "2026-11-24T13:10:11.120Z",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
-       "kind": "owner_recovery",
+       "kind": "sign_in_code",
+       "mobile_masked": "+91*******210",
        "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
        "requested_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
        "state": "cancelled",
@@ -742,6 +793,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/approvals/{approval_id}/code-half-claims",
    "permission": "admin.approval.create",
+   "world": "vendor-approval-approved",
    "service_callers": [
     "admin"
    ],
@@ -823,6 +875,7 @@
    "method": "DELETE",
    "path": "/v1/members/{member_id}/pin-lockout",
    "permission": "member.manage",
+   "world": "pin-locked",
    "security": [],
    "responses": [
     {
@@ -871,6 +924,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/setup-completions",
    "permission": "public",
+   "world": "vendor-setup-pending",
    "service_callers": [
     "admin"
    ],
@@ -1028,7 +1082,7 @@
      "content_type": "application/json",
      "examples": {
       "default": {
-       "body_hash": "sha256:3f2a",
+       "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
        "created_at": "2026-11-24T13:05:11.120Z",
        "expires_at": "2026-11-24T13:10:11.120Z",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
@@ -1124,6 +1178,7 @@
    "method": "POST",
    "path": "/v1/tokens/device",
    "permission": "public",
+   "world": "session-open",
    "security": [],
    "responses": [
     {
@@ -1258,13 +1313,13 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "display_name": "Asha",
+       "display_name": "Latha",
        "has_pin": false,
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
-       "mobile_masked": "+91*******210",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9d",
+       "mobile_masked": "+91*******212",
        "role_assignments": [
         {
-         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8e",
          "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
         }
        ],
@@ -1391,6 +1446,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations",
    "permission": "admin.owner_invite.manage",
+   "world": "org-no-owner",
    "service_callers": [
     "admin"
    ],
@@ -1505,11 +1561,10 @@
       "default": {
        "built_in": false,
        "created_at": "2026-11-24T13:05:11.120Z",
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65",
-       "name": "Cashier",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8f",
+       "name": "Kitchen",
        "permissions": [
-        "order.create",
-        "bill.create"
+        "outlet.read"
        ],
        "updated_at": "2026-11-24T13:05:11.120Z"
       }
@@ -1572,11 +1627,11 @@
      "content_type": "application/json",
      "examples": {
       "default": {
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8c",
        "outlet_ids": [
         "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
        ],
-       "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+       "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9b"
       }
      }
     },
@@ -1635,6 +1690,7 @@
    "method": "POST",
    "path": "/v1/sessions",
    "permission": "public",
+   "world": "otp-challenge-pending",
    "security": [],
    "responses": [
     {
@@ -1716,6 +1772,15 @@
    "method": "POST",
    "path": "/internal/v1/vendor/approvals",
    "permission": "admin.approval.create",
+   "permission_by_kind": {
+    "device_revoke_over_quota": "admin.device.revoke",
+    "org_close": "admin.org.lifecycle.request",
+    "org_reinstate": "admin.org.lifecycle.request",
+    "org_suspend": "admin.org.lifecycle.request",
+    "owner_recovery": "admin.recovery.create",
+    "sign_in_code": "admin.signin_code.create",
+    "tax_rule_set_publish": "admin.taxrules.publish"
+   },
    "service_callers": [
     "admin"
    ],
@@ -1850,7 +1915,10 @@
          "admin.device.read",
          "admin.device.revoke",
          "admin.support.session.start",
-         "admin.audit.read_own"
+         "admin.audit.read_own",
+         "admin.approval.create",
+         "admin.approval.read",
+         "admin.approval.decide"
         ],
         "role": "support"
        }
@@ -1868,6 +1936,21 @@
        "type": "urn:hostry:problem:vendor.sign_in_failed"
       }
      }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
     }
    ]
   },
@@ -1892,9 +1975,9 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "display_name": "Priya",
-       "email": "staff@example.invalid",
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "display_name": "Karthik",
+       "email": "new.staff@example.invalid",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a88",
        "role": "support",
        "status": "setup_pending",
        "totp_enrolled": false
@@ -1963,6 +2046,7 @@
    "method": "PUT",
    "path": "/v1/approval-requests/{request_id}/decision",
    "permission": "authenticated",
+   "world": "approval-pending",
    "security": [],
    "responses": [
     {
@@ -1970,7 +2054,7 @@
      "content_type": "application/json",
      "examples": {
       "default": {
-       "body_hash": "sha256:3f2a",
+       "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
        "created_at": "2026-11-24T13:05:11.120Z",
        "expires_at": "2026-11-24T13:10:11.120Z",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
@@ -2142,6 +2226,7 @@
    "method": "DELETE",
    "path": "/v1/sessions/{session_id}",
    "permission": "authenticated",
+   "world": "session-open",
    "security": [],
    "responses": [
     {
@@ -2178,6 +2263,7 @@
    "method": "PUT",
    "path": "/internal/v1/vendor/support-sessions/{support_session_id}/termination",
    "permission": "admin.support.session.start",
+   "world": "support-session-active",
    "service_callers": [
     "admin"
    ],
@@ -2248,6 +2334,7 @@
    "method": "DELETE",
    "path": "/internal/v1/vendor/sessions/current",
    "permission": "authenticated",
+   "world": "vendor-session-active",
    "service_callers": [
     "admin"
    ],
@@ -2280,6 +2367,7 @@
    "method": "GET",
    "path": "/v1/approval-requests/{request_id}",
    "permission": "authenticated",
+   "world": "approval-approved",
    "security": [],
    "responses": [
     {
@@ -2288,7 +2376,7 @@
      "examples": {
       "default": {
        "approval_token": "tok_example_approval",
-       "body_hash": "sha256:3f2a",
+       "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
        "created_at": "2026-11-24T13:05:11.120Z",
        "expires_at": "2026-11-24T13:10:11.120Z",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
@@ -2398,7 +2486,7 @@
      "examples": {
       "default": {
        "claims": {
-        "catalogue_version": 12,
+        "catalogue_version": 1,
         "device": {
          "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
          "kind": "pos",
@@ -2429,7 +2517,17 @@
           "display_name": "Asha",
           "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
           "permissions": [
-           "order.create"
+           "organisation.read",
+           "brand.read",
+           "outlet.read",
+           "tax_registration.read",
+           "settings.read",
+           "series.read",
+           "link.read",
+           "device.read",
+           "member.read",
+           "role.read",
+           "audit.read"
           ],
           "pin_salt": "c2FsdC1leGFtcGxl",
           "pin_v": 2,
@@ -2453,7 +2551,7 @@
         "revoked_device_ids": [],
         "series": [
          {
-          "code": "A7",
+          "code": "A7K",
           "doc_type": "tax_invoice",
           "state": "active",
           "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
@@ -2553,6 +2651,10 @@
        "role_assignments": [
         {
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+         "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a"
+        },
+        {
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8b",
          "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
         }
        ],
@@ -2672,6 +2774,7 @@
    "method": "GET",
    "path": "/internal/v1/vendor/owner-statuses",
    "permission": "admin.org.read",
+   "world": "owner-invited",
    "service_callers": [
     "admin"
    ],
@@ -2758,8 +2861,8 @@
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65",
        "name": "Cashier",
        "permissions": [
-        "order.create",
-        "bill.create"
+        "outlet.read",
+        "device.read"
        ],
        "updated_at": "2026-11-24T13:05:11.120Z"
       }
@@ -2808,6 +2911,7 @@
    "method": "GET",
    "path": "/internal/v1/vendor/support-sessions/{support_session_id}",
    "permission": "admin.support.session.start",
+   "world": "support-session-active",
    "service_callers": [
     "admin"
    ],
@@ -2831,6 +2935,78 @@
        "status": "active",
        "ticket_reference": "SUP-2041",
        "vendor_user_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getVendorApproval",
+   "method": "GET",
+   "path": "/internal/v1/vendor/approvals/{approval_id}",
+   "permission": "admin.approval.read",
+   "world": "vendor-approval-pending",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "expires_at": "2026-11-24T13:10:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d",
+       "kind": "sign_in_code",
+       "mobile_masked": "+91*******210",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "requested_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
+       "state": "pending",
+       "ticket_reference": "SUP-2041",
+       "verification_method": "callback_to_registered_number"
       }
      }
     },
@@ -2905,6 +3081,7 @@
    "method": "GET",
    "path": "/v1/devices/{device_id}/wipe-order",
    "permission": "authenticated",
+   "world": "device-drained",
    "security": [],
    "responses": [
     {
@@ -2919,7 +3096,7 @@
          "stream": "device-ops"
         }
        ],
-       "issued_at": "2026-11-24T13:10:11.120Z",
+       "issued_at": "2026-11-24T13:20:11.120Z",
        "jws": "wipe.jws.example"
       }
      }
@@ -2967,6 +3144,7 @@
    "method": "GET",
    "path": "/v1/approval-requests",
    "permission": "authenticated",
+   "world": "approval-pending",
    "security": [],
    "responses": [
     {
@@ -2976,7 +3154,7 @@
       "default": {
        "items": [
         {
-         "body_hash": "sha256:3f2a",
+         "body_hash": "sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8",
          "created_at": "2026-11-24T13:05:11.120Z",
          "expires_at": "2026-11-24T13:10:11.120Z",
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a70",
@@ -3006,6 +3184,7 @@
    "method": "GET",
    "path": "/v1/audit-entries",
    "permission": "audit.read",
+   "world": "support-session-active",
    "security": [],
    "responses": [
     {
@@ -3171,6 +3350,24 @@
          "role_assignments": [
           {
            "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+           "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a"
+          },
+          {
+           "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8b",
+           "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
+          }
+         ],
+         "status": "active"
+        },
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "display_name": "Ravi",
+         "has_pin": false,
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9e",
+         "mobile_masked": "+91*******211",
+         "role_assignments": [
+          {
+           "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9f",
            "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
           }
          ],
@@ -3284,6 +3481,7 @@
    "method": "GET",
    "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations",
    "permission": "admin.org.read",
+   "world": "owner-invited",
    "service_callers": [
     "admin"
    ],
@@ -3363,15 +3561,295 @@
      "content_type": "application/json",
      "examples": {
       "default": {
-       "catalogue_version": 12,
+       "catalogue_version": 1,
        "items": [
         {
-         "description_key": "perm.order.create",
-         "key": "order.create",
+         "description_key": "perm.organisation.read",
+         "key": "organisation.read",
          "owner_grant": false,
          "sensitive": false,
-         "service": "restaurant",
+         "service": "tenancy",
          "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.organisation.manage",
+         "key": "organisation.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.brand.read",
+         "key": "brand.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.brand.manage",
+         "key": "brand.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.outlet.read",
+         "key": "outlet.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.outlet.create",
+         "key": "outlet.create",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.outlet.manage",
+         "key": "outlet.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.tax_registration.read",
+         "key": "tax_registration.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.tax_registration.manage",
+         "key": "tax_registration.manage",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.settings.read",
+         "key": "settings.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.settings.manage",
+         "key": "settings.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.series.read",
+         "key": "series.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.series.close_unreconciled",
+         "key": "series.close_unreconciled",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.link.read",
+         "key": "link.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "tenancy",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.link.manage",
+         "key": "link.manage",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.link.revoke",
+         "key": "link.revoke",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "tenancy",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.device.read",
+         "key": "device.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.device.register",
+         "key": "device.register",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.device.activation_code.create",
+         "key": "device.activation_code.create",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.device.revoke",
+         "key": "device.revoke",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.read",
+         "key": "member.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.member.manage",
+         "key": "member.manage",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.pin.authorise",
+         "key": "member.pin.authorise",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.role.assign",
+         "key": "member.role.assign",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.member.owner.assign",
+         "key": "member.owner.assign",
+         "owner_grant": true,
+         "sensitive": true,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.role.read",
+         "key": "role.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": true
+        },
+        {
+         "description_key": "perm.role.manage",
+         "key": "role.manage",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.audit.read",
+         "key": "audit.read",
+         "owner_grant": false,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": false,
+         "support_actable": false,
+         "support_viewable": false
+        },
+        {
+         "description_key": "perm.support.code.create",
+         "key": "support.code.create",
+         "owner_grant": true,
+         "sensitive": false,
+         "service": "identity",
+         "strong_only": true,
          "support_actable": false,
          "support_viewable": false
         }
@@ -3398,6 +3876,7 @@
    "method": "GET",
    "path": "/internal/v1/revocations",
    "permission": "revocation.read",
+   "world": "device-revoked",
    "service_callers": [
     "sync"
    ],
@@ -3416,7 +3895,7 @@
         {
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a77",
          "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
-         "revoked_at": "2026-11-24T13:05:11.120Z",
+         "revoked_at": "2026-11-24T13:15:11.120Z",
          "subject_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
          "subject_type": "device"
         }
@@ -3464,13 +3943,61 @@
       "default": {
        "items": [
         {
+         "built_in": true,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9a",
+         "name": "Owner",
+         "permissions": [
+          "organisation.read",
+          "organisation.manage",
+          "brand.read",
+          "brand.manage",
+          "outlet.read",
+          "outlet.create",
+          "outlet.manage",
+          "tax_registration.read",
+          "tax_registration.manage",
+          "settings.read",
+          "settings.manage",
+          "series.read",
+          "series.close_unreconciled",
+          "link.read",
+          "link.manage",
+          "link.revoke",
+          "device.read",
+          "device.register",
+          "device.activation_code.create",
+          "device.revoke",
+          "member.read",
+          "member.manage",
+          "member.pin.authorise",
+          "member.role.assign",
+          "member.owner.assign",
+          "role.read",
+          "role.manage",
+          "audit.read",
+          "support.code.create"
+         ],
+         "updated_at": "2026-11-24T13:05:11.120Z"
+        },
+        {
          "built_in": false,
          "created_at": "2026-11-24T13:05:11.120Z",
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65",
          "name": "Cashier",
          "permissions": [
-          "order.create",
-          "bill.create"
+          "outlet.read",
+          "device.read"
+         ],
+         "updated_at": "2026-11-24T13:05:11.120Z"
+        },
+        {
+         "built_in": false,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9b",
+         "name": "Waiter",
+         "permissions": [
+          "outlet.read"
          ],
          "updated_at": "2026-11-24T13:05:11.120Z"
         }
@@ -3509,6 +4036,7 @@
    "method": "GET",
    "path": "/internal/v1/vendor/approvals",
    "permission": "admin.approval.read",
+   "world": "vendor-approval-pending",
    "service_callers": [
     "admin"
    ],
@@ -3572,6 +4100,7 @@
    "method": "GET",
    "path": "/internal/v1/vendor/audit-entries",
    "permission": "admin.audit.read_own",
+   "world": "device-revoked",
    "service_callers": [
     "admin"
    ],
@@ -3591,8 +4120,8 @@
         {
          "action": "vendor.device.revoked",
          "actor_vendor_user_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
-         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a69",
-         "occurred_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a8a",
+         "occurred_at": "2026-11-24T13:15:11.120Z",
          "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
          "request_id": "req_0190a1b2c3d4",
          "result": "succeeded",
@@ -3659,6 +4188,15 @@
          "role": "support",
          "status": "active",
          "totp_enrolled": true
+        },
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "display_name": "Arun",
+         "email": "admin@example.invalid",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+         "role": "platform_admin",
+         "status": "active",
+         "totp_enrolled": true
         }
        ]
       }
@@ -3695,6 +4233,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/owner-lookups",
    "permission": "admin.org.read",
+   "world": "owner-invited",
    "service_callers": [
     "admin"
    ],
@@ -3781,6 +4320,7 @@
    "method": "PUT",
    "path": "/internal/v1/devices/{device_id}/drain",
    "permission": "device.drain.record",
+   "world": "device-revoked",
    "service_callers": [
     "sync"
    ],
@@ -3862,6 +4402,7 @@
    "method": "POST",
    "path": "/v1/tokens/refresh",
    "permission": "public",
+   "world": "session-open",
    "security": [],
    "responses": [
     {
@@ -3930,6 +4471,7 @@
    "method": "POST",
    "path": "/v1/devices",
    "permission": "device.register",
+   "world": "device-unregistered",
    "security": [],
    "responses": [
     {
@@ -4095,6 +4637,7 @@
    "method": "DELETE",
    "path": "/v1/members/{member_id}/owner-role",
    "permission": "member.owner.assign",
+   "world": "co-owner",
    "security": [],
    "responses": [
     {
@@ -4155,6 +4698,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/organisations/{organisation_id}/owner-invitations/{invitation_id}/renewals",
    "permission": "admin.owner_invite.manage",
+   "world": "owner-invited",
    "service_callers": [
     "admin"
    ],
@@ -4171,7 +4715,7 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "expires_at": "2026-12-08T13:05:11.120Z",
+       "expires_at": "2026-12-08T13:10:11.120Z",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a67",
        "mobile_masked": "+91*******210",
        "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
@@ -4241,6 +4785,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/support-sessions/{support_session_id}/tokens",
    "permission": "admin.support.session.start",
+   "world": "support-session-active",
    "service_callers": [
     "admin"
    ],
@@ -4322,6 +4867,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/session-renewals",
    "permission": "public",
+   "world": "vendor-session-active",
    "service_callers": [
     "admin"
    ],
@@ -4344,7 +4890,14 @@
         "display_name": "Priya",
         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66",
         "permissions": [
-         "admin.org.read"
+         "admin.org.read",
+         "admin.device.read",
+         "admin.device.revoke",
+         "admin.support.session.start",
+         "admin.audit.read_own",
+         "admin.approval.create",
+         "admin.approval.read",
+         "admin.approval.decide"
         ],
         "role": "support"
        }
@@ -4362,6 +4915,21 @@
        "type": "urn:hostry:problem:vendor.sign_in_failed"
       }
      }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
     }
    ]
   },
@@ -4604,6 +5172,7 @@
    "method": "PUT",
    "path": "/v1/members/{member_id}/pin",
    "permission": "authenticated",
+   "world": "pin-reset-authorised",
    "security": [],
    "responses": [
     {
@@ -4804,6 +5373,7 @@
    "method": "POST",
    "path": "/v1/tokens/switch",
    "permission": "authenticated",
+   "world": "session-open",
    "security": [],
    "responses": [
     {
@@ -4858,13 +5428,13 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "display_name": "Asha",
-       "has_pin": true,
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
-       "mobile_masked": "+91*******210",
+       "display_name": "Ravi",
+       "has_pin": false,
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9e",
+       "mobile_masked": "+91*******211",
        "role_assignments": [
         {
-         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6f",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a9f",
          "role_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65"
         }
        ],
@@ -4946,8 +5516,8 @@
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a65",
        "name": "Cashier",
        "permissions": [
-        "order.create",
-        "bill.create"
+        "outlet.read",
+        "device.read"
        ],
        "updated_at": "2026-11-24T13:05:11.120Z"
       }
@@ -5120,6 +5690,7 @@
    "method": "POST",
    "path": "/internal/v1/proof-verifications",
    "permission": "proof.verify",
+   "world": "session-open",
    "service_callers": [
     "sync"
    ],

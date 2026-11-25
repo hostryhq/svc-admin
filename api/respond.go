@@ -134,7 +134,7 @@ var (
 		"public_key": true, "proof_key": true, "private_key": true, "key_material": true, "jwk": true, "jwks": true,
 		"pin": true, "pin_verifier": true, "pin_hash": true, "pin_salt": true,
 		"access_token": true, "refresh_token": true, "renewal_handle": true, "support_token": true, "id_token": true,
-		"totp_secret": true, "password": true, "password_hash": true, "secret": true,
+		"totp_secret": true, "grant": true, "password": true, "password_hash": true, "secret": true,
 	}
 )
 

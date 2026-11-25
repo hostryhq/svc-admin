@@ -105,6 +105,11 @@ func AllAdminPermissions() []string {
 			if strings.HasPrefix(op.Permission, "admin.") {
 				set[op.Permission] = true
 			}
+			for _, p := range op.PermissionByKind {
+				if strings.HasPrefix(p, "admin.") {
+					set[p] = true
+				}
+			}
 		}
 	}
 	out := make([]string, 0, len(set))

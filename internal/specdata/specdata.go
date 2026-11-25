@@ -26,10 +26,14 @@ type Response struct {
 
 // Operation is one operation of a document.
 type Operation struct {
-	ID             string     `json:"id"`
-	Method         string     `json:"method"`
-	Path           string     `json:"path"`
-	Permission     string     `json:"permission"`
+	ID         string `json:"id"`
+	Method     string `json:"method"`
+	Path       string `json:"path"`
+	Permission string `json:"permission"`
+	// PermissionByKind is x-permission-by-kind (approval operations).
+	PermissionByKind map[string]string `json:"permission_by_kind"`
+	// World is the operation's x-example-world; empty means the default world "base".
+	World          string     `json:"world"`
 	ServiceCallers []string   `json:"service_callers"`
 	Security       [][]string `json:"security"`
 	Responses      []Response `json:"responses"`
@@ -39,7 +43,9 @@ type Operation struct {
 
 // Doc is one service's operations.
 type Doc struct {
-	Service    string      `json:"service"`
+	Service string `json:"service"`
+	// Worlds are the example worlds the spec declares (info.x-example-worlds).
+	Worlds     []string    `json:"worlds"`
 	Operations []Operation `json:"operations"`
 }
 

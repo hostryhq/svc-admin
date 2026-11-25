@@ -381,6 +381,87 @@ func (h *Handler) ListAuditEntries(w http.ResponseWriter, r *http.Request, p adm
 	})
 }
 
+// ---- approvals -----------------------------------------------------------------------------
+
+// FileVendorApproval implements POST /v1/approvals.
+func (h *Handler) FileVendorApproval(w http.ResponseWriter, r *http.Request, _ admin.FileVendorApprovalParams) {
+	h.mutate(w, r, permMut(service.PermApprovalCreate), func(q *req) (outcome, error) {
+		in, err := decode[admin.CreateVendorApproval](q.body)
+		if err != nil {
+			return outcome{}, err
+		}
+		out, err := h.svc.FileVendorApproval(q.r.Context(), q.sess, in, q.key)
+		return created(out), err
+	})
+}
+
+// ListVendorApprovals implements GET /v1/approvals.
+func (h *Handler) ListVendorApprovals(w http.ResponseWriter, r *http.Request, p admin.ListVendorApprovalsParams) {
+	h.read(w, r, perm(service.PermApprovalRead), func(q *req) (outcome, error) {
+		out, err := h.svc.ListVendorApprovals(q.r.Context(), q.sess, p)
+		return ok(out), err
+	})
+}
+
+// GetVendorApproval implements GET /v1/approvals/{approval_id}.
+func (h *Handler) GetVendorApproval(w http.ResponseWriter, r *http.Request, id admin.Id) {
+	h.read(w, r, perm(service.PermApprovalRead), func(q *req) (outcome, error) {
+		if err := pathID(id); err != nil {
+			return outcome{}, err
+		}
+		out, err := h.svc.GetVendorApproval(q.r.Context(), q.sess, id)
+		return ok(out), err
+	})
+}
+
+// ApproveVendorApproval implements PUT /v1/approvals/{approval_id}/decision. The answer may hold
+// a code half, shown once, so it is not kept for an idempotent replay: a replay reaches identity
+// under the same key, which answers it.
+func (h *Handler) ApproveVendorApproval(w http.ResponseWriter, r *http.Request, id admin.Id, _ admin.ApproveVendorApprovalParams) {
+	h.mutate(w, r, permMut(service.PermApprovalDecide), func(q *req) (outcome, error) {
+		if err := pathID(id); err != nil {
+			return outcome{}, err
+		}
+		in, err := decode[admin.ApproveVendorApproval](q.body)
+		if err != nil {
+			return outcome{}, err
+		}
+		out, err := h.svc.ApproveVendorApproval(q.r.Context(), q.sess, id, q.key, in)
+		o := ok(out)
+		o.noStore = true
+		return o, err
+	})
+}
+
+// ClaimCodeHalf implements POST /v1/approvals/{approval_id}/code-half-claims (shown once: not
+// kept for a replay).
+func (h *Handler) ClaimCodeHalf(w http.ResponseWriter, r *http.Request, id admin.Id, _ admin.ClaimCodeHalfParams) {
+	h.mutate(w, r, permMut(service.PermApprovalCreate), func(q *req) (outcome, error) {
+		if err := pathID(id); err != nil {
+			return outcome{}, err
+		}
+		out, err := h.svc.ClaimCodeHalf(q.r.Context(), q.sess, id, q.key)
+		o := created(out)
+		o.noStore = true
+		return o, err
+	})
+}
+
+// CancelVendorApproval implements PUT /v1/approvals/{approval_id}/cancellation.
+func (h *Handler) CancelVendorApproval(w http.ResponseWriter, r *http.Request, id admin.Id, _ admin.CancelVendorApprovalParams) {
+	h.mutate(w, r, permMut(service.PermApprovalDecide), func(q *req) (outcome, error) {
+		if err := pathID(id); err != nil {
+			return outcome{}, err
+		}
+		in, err := decode[admin.RejectVendorApproval](q.body)
+		if err != nil {
+			return outcome{}, err
+		}
+		out, err := h.svc.CancelVendorApproval(q.r.Context(), q.sess, id, q.key, in)
+		return ok(out), err
+	})
+}
+
 // ---- support -------------------------------------------------------------------------------
 
 // StartSupportSession implements POST /v1/support-sessions.

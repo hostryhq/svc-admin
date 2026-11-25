@@ -11,7 +11,9 @@
 package double
 
 import (
+	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -96,9 +98,15 @@ func allPerms(doc *specdata.Doc) []string {
 	seen := map[string]bool{}
 	var out []string
 	for _, op := range doc.Operations {
-		if strings.HasPrefix(op.Permission, "admin.") && !seen[op.Permission] {
-			seen[op.Permission] = true
-			out = append(out, op.Permission)
+		perms := []string{op.Permission}
+		for _, p := range op.PermissionByKind {
+			perms = append(perms, p)
+		}
+		for _, p := range perms {
+			if strings.HasPrefix(p, "admin.") && !seen[p] {
+				seen[p] = true
+				out = append(out, p)
+			}
 		}
 	}
 	return out
@@ -190,7 +198,7 @@ func (d *Double) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			d.respond(w, r, op, http.StatusForbidden, "csrf")
 			return
 		}
-		if !allowed(op, sess) {
+		if !allowed(op, sess) || !kindAllowed(op, sess, body) {
 			d.respond(w, r, op, http.StatusForbidden, "forbidden")
 			return
 		}
@@ -230,6 +238,50 @@ func allowed(op *specdata.Operation, s *session) bool {
 		return has(s, "admin.audit.read_own") || has(s, "admin.audit.read")
 	}
 	return has(s, op.Permission)
+}
+
+// kindAllowed applies x-permission-by-kind: the approval kind named in the request body (filing),
+// or the kind of the operation's own example approval (the double is not stateful), needs its own
+// permission on top of the gate permission.
+func kindAllowed(op *specdata.Operation, s *session, body []byte) bool {
+	if len(op.PermissionByKind) == 0 {
+		return true
+	}
+	var in struct {
+		Kind string `json:"kind"`
+	}
+	_ = json.Unmarshal(body, &in)
+	kind := in.Kind
+	if kind == "" {
+		if ex, ok := op.Success().Example(""); ok {
+			m, _ := ex.(map[string]any)
+			ap, _ := m["approval"].(map[string]any)
+			kind, _ = ap["kind"].(string)
+		}
+	}
+	perm, ok := op.PermissionByKind[kind]
+	if !ok {
+		return true // an unknown kind is a validation answer, not a permission one
+	}
+	return has(s, perm)
+}
+
+// SeedWorld puts the double into an example world of the contract (info.x-example-worlds). The
+// double answers the spec's examples whatever the world, so seeding only checks that the world is
+// declared and forgets earlier idempotent replays and scripted failures, like a fresh fixture.
+func (d *Double) SeedWorld(_ context.Context, world string) error {
+	known := false
+	for _, w := range d.doc.Worlds {
+		known = known || w == world
+	}
+	if !known {
+		return fmt.Errorf("double: unknown example world %q", world)
+	}
+	d.mu.Lock()
+	d.replays = map[string]stored{}
+	d.failures = map[string][]failure{}
+	d.mu.Unlock()
+	return nil
 }
 
 func has(s *session, p string) bool {

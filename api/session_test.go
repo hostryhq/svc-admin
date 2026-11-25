@@ -260,7 +260,7 @@ func TestSignInFailuresAreIndistinguishable(t *testing.T) {
 
 func TestSignInRateLimitPassesThroughWithRetryAfter(t *testing.T) {
 	e := testenv.New(t)
-	// identity's spec declares no 429 for sign-in (reported); script the answer a limiter would give
+	// identity's vendor session operations declare 429; script the answer with the Retry-After a limiter gives
 	e.Identity.On("createVendorSession", func(_ fakeup.Call, w http.ResponseWriter) bool {
 		w.Header().Set("Retry-After", "30")
 		fakeup.Problem(w, http.StatusTooManyRequests, "rate_limited")

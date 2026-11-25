@@ -26,17 +26,24 @@ type response struct {
 }
 
 type operation struct {
-	ID             string     `json:"id"`
-	Method         string     `json:"method"`
-	Path           string     `json:"path"`
-	Permission     string     `json:"permission,omitempty"`
+	ID         string `json:"id"`
+	Method     string `json:"method"`
+	Path       string `json:"path"`
+	Permission string `json:"permission,omitempty"`
+	// PermissionByKind is x-permission-by-kind: the permission each kind of an approval needs on
+	// top of the gate permission.
+	PermissionByKind map[string]string `json:"permission_by_kind,omitempty"`
+	// World is x-example-world: the named fixture the operation's examples assume.
+	World          string     `json:"world,omitempty"`
 	ServiceCallers []string   `json:"service_callers,omitempty"`
 	Security       [][]string `json:"security"`
 	Responses      []response `json:"responses"`
 }
 
 type document struct {
-	Service    string      `json:"service"`
+	Service string `json:"service"`
+	// Worlds are the names declared in info.x-example-worlds.
+	Worlds     []string    `json:"worlds,omitempty"`
 	Operations []operation `json:"operations"`
 }
 
@@ -64,6 +71,14 @@ func run(in, out string) error {
 	}
 	name := strings.TrimSuffix(filepath.Base(in), filepath.Ext(in))
 	doc := document{Service: name}
+	if info, ok := raw["info"].(map[string]any); ok {
+		if ws, ok := info["x-example-worlds"].(map[string]any); ok {
+			for w := range ws {
+				doc.Worlds = append(doc.Worlds, w)
+			}
+			sort.Strings(doc.Worlds)
+		}
+	}
 	paths, _ := raw["paths"].(map[string]any)
 	for path, item := range paths {
 		im, _ := item.(map[string]any)
@@ -86,6 +101,13 @@ func run(in, out string) error {
 func buildOp(method, path string, om map[string]any, comps map[string]any) operation {
 	op := operation{ID: str(om["operationId"]), Method: strings.ToUpper(method), Path: path,
 		Permission: str(om["x-permission"]), Security: [][]string{}}
+	op.World = str(om["x-example-world"])
+	if pk, ok := om["x-permission-by-kind"].(map[string]any); ok {
+		op.PermissionByKind = map[string]string{}
+		for k, v := range pk {
+			op.PermissionByKind[k] = str(v)
+		}
+	}
 	if cs, ok := om["x-service-callers"].([]any); ok {
 		for _, c := range cs {
 			op.ServiceCallers = append(op.ServiceCallers, str(c))

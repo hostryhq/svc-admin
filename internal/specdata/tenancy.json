@@ -1,11 +1,25 @@
 {
  "service": "tenancy",
+ "worlds": [
+  "base",
+  "empty",
+  "link-accepted",
+  "link-active",
+  "link-amendment-pending",
+  "link-none",
+  "link-proposed-to-caller",
+  "link-suspended",
+  "registration-spare-verified",
+  "registration-verified",
+  "series-issued"
+ ],
  "operations": [
   {
    "id": "acceptLink",
    "method": "POST",
    "path": "/v1/link-acceptances",
    "permission": "link.manage",
+   "world": "link-proposed-to-caller",
    "security": [],
    "responses": [
     {
@@ -15,27 +29,27 @@
       "default": {
        "accepted_at": "2026-11-24T13:10:11.120Z",
        "counterparty": {
-        "display_name": "Example Restaurants",
+        "display_name": "Example Hospitality",
         "registrations": [
          {
-          "gstin": "33AAAAA0000A1Z5",
+          "gstin": "33ABCDE1234F1Z7",
           "gstin_verified": true,
-          "legal_name": "Example Restaurants LLP",
+          "legal_name": "Example Hospitality Pvt Ltd",
           "state_code": "33"
          }
         ]
        },
-       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
        "expires_at": "2026-12-08T13:05:11.120Z",
        "grants": [
         {
-         "direction": "outbound",
+         "direction": "inbound",
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
          "outlet_ids": [
           "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
          ],
          "scope": "test.echo.read",
-         "status": "active"
+         "status": "pending"
         }
        ],
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
@@ -110,6 +124,7 @@
    "method": "PUT",
    "path": "/internal/v1/devices/{device_id}/series-closure",
    "permission": "series.issue",
+   "world": "series-issued",
    "service_callers": [
     "identity"
    ],
@@ -171,6 +186,7 @@
    "method": "PUT",
    "path": "/v1/document-series/{series_id}/closure",
    "permission": "series.close_unreconciled",
+   "world": "series-issued",
    "security": [],
    "responses": [
     {
@@ -178,12 +194,12 @@
      "content_type": "application/json",
      "examples": {
       "default": {
-       "closed_at": "2026-11-24T13:10:11.120Z",
-       "code": "A7",
+       "closed_at": "2026-11-24T13:25:11.120Z",
+       "code": "A7K",
        "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
        "doc_type": "tax_invoice",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6c",
-       "issued_at": "2026-11-24T13:05:11.120Z",
+       "issued_at": "2026-11-24T13:15:11.120Z",
        "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
        "status": "closed_unreconciled",
        "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
@@ -241,10 +257,108 @@
    ]
   },
   {
+   "id": "closeTaxRegistration",
+   "method": "PUT",
+   "path": "/v1/tax-registrations/{registration_id}/closure",
+   "permission": "tax_registration.manage",
+   "world": "registration-spare-verified",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "gstin": "29ABCDE1234F1ZW",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a93",
+       "legal_name": "Example Hospitality Karnataka Pvt Ltd",
+       "regime": "regular",
+       "state_code": "29",
+       "status": "closed",
+       "verification": {
+        "method": "certificate_seen",
+        "state": "verified",
+        "verified_at": "2026-11-24T13:10:11.120Z"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "confirmLink",
    "method": "PUT",
    "path": "/v1/links/{link_id}/confirmation",
    "permission": "link.manage",
+   "world": "link-accepted",
    "security": [],
    "responses": [
     {
@@ -258,7 +372,7 @@
         "display_name": "Example Restaurants",
         "registrations": [
          {
-          "gstin": "33AAAAA0000A1Z5",
+          "gstin": "33AAAAA0000A1Z9",
           "gstin_verified": true,
           "legal_name": "Example Restaurants LLP",
           "state_code": "33"
@@ -374,7 +488,7 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a91",
        "is_default": false,
        "name": "Example Bakery"
       }
@@ -430,6 +544,7 @@
    "method": "POST",
    "path": "/internal/v1/vendor/organisations",
    "permission": "admin.org.create",
+   "world": "empty",
    "service_callers": [
     "admin"
    ],
@@ -471,7 +586,7 @@
        },
        "tax_registration": {
         "created_at": "2026-11-24T13:05:11.120Z",
-        "gstin": "33ABCDE1234F1Z5",
+        "gstin": "33ABCDE1234F1Z7",
         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
         "legal_name": "Example Hospitality Pvt Ltd",
         "regime": "regular",
@@ -555,9 +670,9 @@
       "default": {
        "brand_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
        "created_at": "2026-11-24T13:05:11.120Z",
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a92",
        "kind": "restaurant",
-       "name": "Main Restaurant",
+       "name": "Garden Restaurant",
        "state_code": "33",
        "status": "active",
        "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
@@ -635,11 +750,11 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "gstin": "33ABCDE1234F1Z5",
-       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
-       "legal_name": "Example Hospitality Pvt Ltd",
+       "gstin": "29ABCDE1234F1ZW",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a93",
+       "legal_name": "Example Hospitality Karnataka Pvt Ltd",
        "regime": "regular",
-       "state_code": "33",
+       "state_code": "29",
        "status": "open",
        "verification": {
         "state": "unverified"
@@ -697,6 +812,7 @@
    "method": "PUT",
    "path": "/v1/links/{link_id}/amendments/{amendment_id}/decision",
    "permission": "link.manage",
+   "world": "link-amendment-pending",
    "security": [],
    "responses": [
     {
@@ -706,7 +822,7 @@
       "default": {
        "add_grants": [
         {
-         "direction": "inbound",
+         "direction": "outbound",
          "scope": "test.echo.post"
         }
        ],
@@ -778,6 +894,7 @@
    "method": "PUT",
    "path": "/v1/links/{link_id}/declination",
    "permission": "link.manage",
+   "world": "link-accepted",
    "security": [],
    "responses": [
     {
@@ -786,12 +903,11 @@
      "examples": {
       "default": {
        "accepted_at": "2026-11-24T13:10:11.120Z",
-       "confirmed_at": "2026-11-24T13:20:11.120Z",
        "counterparty": {
         "display_name": "Example Restaurants",
         "registrations": [
          {
-          "gstin": "33AAAAA0000A1Z5",
+          "gstin": "33AAAAA0000A1Z9",
           "gstin_verified": true,
           "legal_name": "Example Restaurants LLP",
           "state_code": "33"
@@ -808,7 +924,7 @@
           "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
          ],
          "scope": "test.echo.read",
-         "status": "active"
+         "status": "removed"
         }
        ],
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
@@ -983,6 +1099,7 @@
    "method": "GET",
    "path": "/v1/links/{link_id}",
    "permission": "link.read",
+   "world": "link-active",
    "security": [],
    "responses": [
     {
@@ -996,7 +1113,7 @@
         "display_name": "Example Restaurants",
         "registrations": [
          {
-          "gstin": "33AAAAA0000A1Z5",
+          "gstin": "33AAAAA0000A1Z9",
           "gstin_verified": true,
           "legal_name": "Example Restaurants LLP",
           "state_code": "33"
@@ -1067,6 +1184,7 @@
    "method": "GET",
    "path": "/internal/v1/link-decisions",
    "permission": "link.decide",
+   "world": "link-active",
    "service_callers": [
     "*"
    ],
@@ -1083,7 +1201,7 @@
       "default": {
        "allowed": true,
        "cache_seconds": 30,
-       "data_owner_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a63",
+       "data_owner_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
        "outlet_ids": [
         "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
        ]
@@ -1173,7 +1291,7 @@
        ],
        "registrations": [
         {
-         "gstin": "33ABCDE1234F1Z5",
+         "gstin": "33ABCDE1234F1Z7",
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
          "legal_name": "Example Hospitality Pvt Ltd",
          "regime": "regular",
@@ -1342,7 +1460,7 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "gstin": "33ABCDE1234F1Z5",
+       "gstin": "33ABCDE1234F1Z7",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
        "legal_name": "Example Hospitality Pvt Ltd",
        "regime": "regular",
@@ -1397,6 +1515,7 @@
    "method": "POST",
    "path": "/internal/v1/document-series-issuances",
    "permission": "series.issue",
+   "world": "registration-verified",
    "service_callers": [
     "identity"
    ],
@@ -1413,11 +1532,21 @@
       "default": {
        "items": [
         {
-         "code": "A7",
+         "code": "A7K",
          "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
          "doc_type": "tax_invoice",
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6c",
-         "issued_at": "2026-11-24T13:05:11.120Z",
+         "issued_at": "2026-11-24T13:15:11.120Z",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "status": "active",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+        },
+        {
+         "code": "A7M",
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "doc_type": "credit_note",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a95",
+         "issued_at": "2026-11-24T13:15:11.120Z",
          "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
          "status": "active",
          "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
@@ -1561,6 +1690,7 @@
    "method": "GET",
    "path": "/v1/document-series",
    "permission": "series.read",
+   "world": "series-issued",
    "security": [],
    "responses": [
     {
@@ -1570,11 +1700,21 @@
       "default": {
        "items": [
         {
-         "code": "A7",
+         "code": "A7K",
          "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
          "doc_type": "tax_invoice",
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6c",
-         "issued_at": "2026-11-24T13:05:11.120Z",
+         "issued_at": "2026-11-24T13:15:11.120Z",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "status": "active",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+        },
+        {
+         "code": "A7M",
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "doc_type": "credit_note",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a95",
+         "issued_at": "2026-11-24T13:15:11.120Z",
          "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
          "status": "active",
          "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
@@ -1614,6 +1754,7 @@
    "method": "GET",
    "path": "/v1/links/{link_id}/activity",
    "permission": "link.read",
+   "world": "link-active",
    "security": [],
    "responses": [
     {
@@ -1623,8 +1764,24 @@
       "default": {
        "items": [
         {
+         "action": "link.proposed",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a96",
+         "link_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+         "occurred_at": "2026-11-24T13:05:11.120Z",
+         "outcome": "succeeded",
+         "side": "proposer"
+        },
+        {
+         "action": "link.accepted",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a97",
+         "link_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+         "occurred_at": "2026-11-24T13:10:11.120Z",
+         "outcome": "succeeded",
+         "side": "acceptor"
+        },
+        {
          "action": "link.confirmed",
-         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a79",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a98",
          "link_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
          "occurred_at": "2026-11-24T13:20:11.120Z",
          "outcome": "succeeded",
@@ -1677,6 +1834,7 @@
    "method": "GET",
    "path": "/v1/links",
    "permission": "link.read",
+   "world": "link-active",
    "security": [],
    "responses": [
     {
@@ -1692,7 +1850,7 @@
           "display_name": "Example Restaurants",
           "registrations": [
            {
-            "gstin": "33AAAAA0000A1Z5",
+            "gstin": "33AAAAA0000A1Z9",
             "gstin_verified": true,
             "legal_name": "Example Restaurants LLP",
             "state_code": "33"
@@ -1893,6 +2051,10 @@
       "default": {
        "items": [
         {
+         "code": "29",
+         "name": "Karnataka"
+        },
+        {
          "code": "33",
          "name": "Tamil Nadu"
         }
@@ -1929,7 +2091,7 @@
        "items": [
         {
          "created_at": "2026-11-24T13:05:11.120Z",
-         "gstin": "33ABCDE1234F1Z5",
+         "gstin": "33ABCDE1234F1Z7",
          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
          "legal_name": "Example Hospitality Pvt Ltd",
          "regime": "regular",
@@ -1974,6 +2136,7 @@
    "method": "POST",
    "path": "/v1/links",
    "permission": "link.manage",
+   "world": "link-none",
    "security": [],
    "responses": [
     {
@@ -2069,6 +2232,7 @@
    "method": "POST",
    "path": "/v1/links/{link_id}/amendments",
    "permission": "link.manage",
+   "world": "link-active",
    "security": [],
    "responses": [
     {
@@ -2078,7 +2242,7 @@
       "default": {
        "add_grants": [
         {
-         "direction": "inbound",
+         "direction": "outbound",
          "scope": "test.echo.post"
         }
        ],
@@ -2165,10 +2329,114 @@
    ]
   },
   {
+   "id": "rejectTaxRegistration",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/tax-registrations/{registration_id}/rejection",
+   "permission": "admin.registration.verify",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "gstin": "33ABCDE1234F1Z7",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "legal_name": "Example Hospitality Pvt Ltd",
+       "regime": "regular",
+       "state_code": "33",
+       "status": "open",
+       "verification": {
+        "rejected_at": "2026-11-24T13:10:11.120Z",
+        "state": "rejected"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "removeLinkGrant",
    "method": "DELETE",
    "path": "/v1/links/{link_id}/grants/{grant_id}",
    "permission": "link.manage",
+   "world": "link-active",
    "security": [],
    "responses": [
     {
@@ -2217,6 +2485,7 @@
    "method": "DELETE",
    "path": "/v1/links/{link_id}/suspension",
    "permission": "link.manage",
+   "world": "link-suspended",
    "security": [],
    "responses": [
     {
@@ -2230,7 +2499,7 @@
         "display_name": "Example Restaurants",
         "registrations": [
          {
-          "gstin": "33AAAAA0000A1Z5",
+          "gstin": "33AAAAA0000A1Z9",
           "gstin_verified": true,
           "legal_name": "Example Restaurants LLP",
           "state_code": "33"
@@ -2319,6 +2588,7 @@
    "method": "PUT",
    "path": "/v1/links/{link_id}/revocation",
    "permission": "link.revoke",
+   "world": "link-active",
    "security": [],
    "responses": [
     {
@@ -2332,7 +2602,7 @@
         "display_name": "Example Restaurants",
         "registrations": [
          {
-          "gstin": "33AAAAA0000A1Z5",
+          "gstin": "33AAAAA0000A1Z9",
           "gstin_verified": true,
           "legal_name": "Example Restaurants LLP",
           "state_code": "33"
@@ -2349,7 +2619,7 @@
           "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
          ],
          "scope": "test.echo.read",
-         "status": "active"
+         "status": "removed"
         }
        ],
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
@@ -2403,6 +2673,7 @@
    "method": "PUT",
    "path": "/v1/links/{link_id}/suspension",
    "permission": "link.manage",
+   "world": "link-active",
    "security": [],
    "responses": [
     {
@@ -2416,7 +2687,7 @@
         "display_name": "Example Restaurants",
         "registrations": [
          {
-          "gstin": "33AAAAA0000A1Z5",
+          "gstin": "33AAAAA0000A1Z9",
           "gstin_verified": true,
           "legal_name": "Example Restaurants LLP",
           "state_code": "33"
@@ -2722,7 +2993,7 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "gstin": "33ABCDE1234F1Z5",
+       "gstin": "33ABCDE1234F1Z7",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
        "legal_name": "Example Hospitality Pvt Ltd",
        "regime": "regular",
@@ -2824,7 +3095,7 @@
      "examples": {
       "default": {
        "created_at": "2026-11-24T13:05:11.120Z",
-       "gstin": "33ABCDE1234F1Z5",
+       "gstin": "33ABCDE1234F1Z7",
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
        "legal_name": "Example Hospitality Pvt Ltd",
        "regime": "regular",

@@ -15,6 +15,39 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for ApprovalKind.
+const (
+	DeviceRevokeOverQuota ApprovalKind = "device_revoke_over_quota"
+	OrgClose              ApprovalKind = "org_close"
+	OrgReinstate          ApprovalKind = "org_reinstate"
+	OrgSuspend            ApprovalKind = "org_suspend"
+	OwnerRecovery         ApprovalKind = "owner_recovery"
+	SignInCode            ApprovalKind = "sign_in_code"
+	TaxRuleSetPublish     ApprovalKind = "tax_rule_set_publish"
+)
+
+// Valid indicates whether the value is a known member of the ApprovalKind enum.
+func (e ApprovalKind) Valid() bool {
+	switch e {
+	case DeviceRevokeOverQuota:
+		return true
+	case OrgClose:
+		return true
+	case OrgReinstate:
+		return true
+	case OrgSuspend:
+		return true
+	case OwnerRecovery:
+		return true
+	case SignInCode:
+		return true
+	case TaxRuleSetPublish:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for BillingCapability.
 const (
 	BillingCapabilityActive  BillingCapability = "active"
@@ -30,6 +63,24 @@ func (e BillingCapability) Valid() bool {
 	case BillingCapabilityDormant:
 		return true
 	case BillingCapabilityNone:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CodeHalfPosition.
+const (
+	First  CodeHalfPosition = "first"
+	Second CodeHalfPosition = "second"
+)
+
+// Valid indicates whether the value is a known member of the CodeHalfPosition enum.
+func (e CodeHalfPosition) Valid() bool {
+	switch e {
+	case First:
+		return true
+	case Second:
 		return true
 	default:
 		return false
@@ -546,6 +597,36 @@ func (e UpdateVendorUserStatus) Valid() bool {
 	}
 }
 
+// Defines values for VendorApprovalState.
+const (
+	VendorApprovalStateApproved  VendorApprovalState = "approved"
+	VendorApprovalStateCancelled VendorApprovalState = "cancelled"
+	VendorApprovalStateCompleted VendorApprovalState = "completed"
+	VendorApprovalStateExpired   VendorApprovalState = "expired"
+	VendorApprovalStatePending   VendorApprovalState = "pending"
+	VendorApprovalStateRejected  VendorApprovalState = "rejected"
+)
+
+// Valid indicates whether the value is a known member of the VendorApprovalState enum.
+func (e VendorApprovalState) Valid() bool {
+	switch e {
+	case VendorApprovalStateApproved:
+		return true
+	case VendorApprovalStateCancelled:
+		return true
+	case VendorApprovalStateCompleted:
+		return true
+	case VendorApprovalStateExpired:
+		return true
+	case VendorApprovalStatePending:
+		return true
+	case VendorApprovalStateRejected:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for VendorAuditEntryResult.
 const (
 	Failed    VendorAuditEntryResult = "failed"
@@ -687,6 +768,36 @@ func (e VerificationMethod) Valid() bool {
 	}
 }
 
+// Defines values for ListVendorApprovalsParamsState.
+const (
+	ListVendorApprovalsParamsStateApproved  ListVendorApprovalsParamsState = "approved"
+	ListVendorApprovalsParamsStateCancelled ListVendorApprovalsParamsState = "cancelled"
+	ListVendorApprovalsParamsStateCompleted ListVendorApprovalsParamsState = "completed"
+	ListVendorApprovalsParamsStateExpired   ListVendorApprovalsParamsState = "expired"
+	ListVendorApprovalsParamsStatePending   ListVendorApprovalsParamsState = "pending"
+	ListVendorApprovalsParamsStateRejected  ListVendorApprovalsParamsState = "rejected"
+)
+
+// Valid indicates whether the value is a known member of the ListVendorApprovalsParamsState enum.
+func (e ListVendorApprovalsParamsState) Valid() bool {
+	switch e {
+	case ListVendorApprovalsParamsStateApproved:
+		return true
+	case ListVendorApprovalsParamsStateCancelled:
+		return true
+	case ListVendorApprovalsParamsStateCompleted:
+		return true
+	case ListVendorApprovalsParamsStateExpired:
+		return true
+	case ListVendorApprovalsParamsStatePending:
+		return true
+	case ListVendorApprovalsParamsStateRejected:
+		return true
+	default:
+		return false
+	}
+}
+
 // AdminSession The signed-in vendor user and the session clocks. The CSRF token is for the X-CSRF-Token header; it is not a credential. No access token is ever included.
 type AdminSession struct {
 	// AbsoluteExpiresAt RFC 3339 instant in UTC.
@@ -716,6 +827,28 @@ type AdminSession struct {
 	User VendorPrincipal `json:"user"`
 }
 
+// ApprovalDecisionView Result of an approval decision as the browser sees it. The vendor approval grant of the executing kinds stays in the admin service and is never included.
+type ApprovalDecisionView struct {
+	// Approval A two-person approval record. Phone numbers appear only masked.
+	Approval VendorApproval `json:"approval"`
+
+	// CodeHalf Half of a vendor-assisted sign-in code, shown once. The requester gets characters 1 to 4, the approver 5 to 8.
+	CodeHalf *CodeHalf `json:"code_half,omitempty"`
+}
+
+// ApprovalKind What the two-person approval authorises. org_suspend, org_reinstate and org_close are executed by tenancy and tax_rule_set_publish by billing, with a vendor approval grant from the approval decision (ADR-0014 A1.3); they lapse after 24 hours, and tax_rule_set_publish concerns no organisation.
+//
+// Example: sign_in_code
+type ApprovalKind string
+
+// ApproveVendorApproval Approve with a fresh TOTP. The approver must be a different vendor user holding the kind's approve permission, on an account at least 7 days old.
+type ApproveVendorApproval struct {
+	// TotpCode Fresh TOTP code, accepted once.
+	//
+	// Example: 123456
+	TotpCode string `json:"totp_code"`
+}
+
 // BeginVendorSetup Start account setup from a one-time link (24 hours, single use).
 type BeginVendorSetup struct {
 	// SetupToken Token from the setup link.
@@ -736,7 +869,7 @@ type Brand struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -760,6 +893,24 @@ type BrandPage struct {
 	// NextCursor Opaque cursor for the next page; absent when there are no more results.
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
+
+// CodeHalf Half of a vendor-assisted sign-in code, shown once. The requester gets characters 1 to 4, the approver 5 to 8.
+type CodeHalf struct {
+	// Half Four characters.
+	//
+	// Example: 7QK3
+	Half string `json:"half"`
+
+	// Position Which half.
+	//
+	// Example: first
+	Position CodeHalfPosition `json:"position"`
+}
+
+// CodeHalfPosition Which half.
+//
+// Example: first
+type CodeHalfPosition string
 
 // CompleteVendorSetup Finish setup: choose a password (at least 12 characters, no composition rules, not the account email) and confirm TOTP with one code.
 type CompleteVendorSetup struct {
@@ -799,6 +950,64 @@ type CreateOrganisationForm struct {
 	Verification *VerificationInput `json:"verification,omitempty"`
 }
 
+// CreateVendorApproval File a request that needs a second vendor user (ADR-0005 A2.3). With fewer than two eligible users it is refused (second_approver_unavailable); no single-person override exists.
+type CreateVendorApproval struct {
+	// EffectiveDate Business date the rule set takes effect (tax_rule_set_publish only), part of the subject hash.
+	//
+	// Example: 2026-12-01
+	EffectiveDate *openapi_types.Date `json:"effective_date,omitempty"`
+
+	// Kind What the two-person approval authorises. org_suspend, org_reinstate and org_close are executed by tenancy and tax_rule_set_publish by billing, with a vendor approval grant from the approval decision (ADR-0014 A1.3); they lapse after 24 hours, and tax_rule_set_publish concerns no organisation.
+	//
+	// Example: sign_in_code
+	Kind ApprovalKind `json:"kind"`
+
+	// MobileE164 Indian mobile number in E.164 form (+91 then ten digits starting 6 to 9). Accepted on input only where a request must carry a number; never returned in full by any vendor or support operation.
+	//
+	// Example: +919876543210
+	MobileE164 *MobileE164 `json:"mobile_e164,omitempty"`
+
+	// NewMobileE164 Indian mobile number in E.164 form (+91 then ten digits starting 6 to 9). Accepted on input only where a request must carry a number; never returned in full by any vendor or support operation.
+	//
+	// Example: +919876543210
+	NewMobileE164 *MobileE164 `json:"new_mobile_e164,omitempty"`
+
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	OrganisationId *Id `json:"organisation_id,omitempty"`
+
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason Reason `json:"reason"`
+
+	// RuleSetContentHash Content hash of the signed tax rule set (tax_rule_set_publish only), part of the subject hash the grant binds.
+	//
+	// Example: sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8
+	RuleSetContentHash *string `json:"rule_set_content_hash,omitempty"`
+
+	// RuleSetId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	RuleSetId *Id `json:"rule_set_id,omitempty"`
+
+	// SubjectId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	SubjectId *Id `json:"subject_id,omitempty"`
+
+	// TicketReference Support ticket reference. Fixed pattern so it can travel in events without free text.
+	//
+	// Example: SUP-2041
+	TicketReference TicketReference `json:"ticket_reference"`
+
+	// VerificationMethod How the requester was verified.
+	//
+	// Example: callback_to_registered_number
+	VerificationMethod RequesterVerification `json:"verification_method"`
+}
+
 // CreateVendorUser Create a vendor user. A one-time setup link goes out through the email sender interface; it is never returned.
 type CreateVendorUser struct {
 	// DisplayName Display name.
@@ -811,7 +1020,7 @@ type CreateVendorUser struct {
 	// Example: staff@example.invalid
 	Email openapi_types.Email `json:"email"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -829,7 +1038,7 @@ type Device struct {
 	// Example: active
 	BillingCapability BillingCapability `json:"billing_capability"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -854,7 +1063,7 @@ type Device struct {
 	// Example: Counter 1
 	Name string `json:"name"`
 
-	// OutletId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OutletId Id `json:"outlet_id"`
@@ -891,7 +1100,7 @@ type DeviceState string
 
 // DirectoryBrand Brand in the directory.
 type DirectoryBrand struct {
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -914,7 +1123,7 @@ type DirectoryOrganisation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -937,7 +1146,7 @@ type DirectoryOrganisation struct {
 
 // DirectoryOutlet Outlet in the directory: name, kind, state only.
 type DirectoryOutlet struct {
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -967,10 +1176,10 @@ type DirectoryOutlet struct {
 type DirectoryRegistration struct {
 	// Gstin GSTIN, 15 characters, upper case, no spaces. Format only here; the check character and the state-code match are validated by the service (rule from gst-invoicing-india).
 	//
-	// Example: 33ABCDE1234F1Z5
+	// Example: 33ABCDE1234F1Z7
 	Gstin *Gstin `json:"gstin,omitempty"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1023,12 +1232,12 @@ type DocumentSeries struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	ClosedAt *Timestamp `json:"closed_at,omitempty"`
 
-	// Code Series code.
+	// Code Series code, 3 characters from capitals and digits without I, O, 0 and 1 (ADR-0002 S7). Printed as <code>/<FY>/<running>.
 	//
-	// Example: A7
+	// Example: A7K
 	Code string `json:"code"`
 
-	// DeviceId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// DeviceId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	DeviceId Id `json:"device_id"`
@@ -1038,7 +1247,7 @@ type DocumentSeries struct {
 	// Example: tax_invoice
 	DocType DocType `json:"doc_type"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1048,7 +1257,7 @@ type DocumentSeries struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	IssuedAt Timestamp `json:"issued_at"`
 
-	// OutletId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OutletId Id `json:"outlet_id"`
@@ -1058,7 +1267,7 @@ type DocumentSeries struct {
 	// Example: active
 	Status DocumentSeriesStatus `json:"status"`
 
-	// TaxRegistrationId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// TaxRegistrationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	TaxRegistrationId Id `json:"tax_registration_id"`
@@ -1080,10 +1289,10 @@ type DocumentSeriesPage struct {
 
 // Gstin GSTIN, 15 characters, upper case, no spaces. Format only here; the check character and the state-code match are validated by the service (rule from gst-invoicing-india).
 //
-// Example: 33ABCDE1234F1Z5
+// Example: 33ABCDE1234F1Z7
 type Gstin = string
 
-// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 //
 // Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 type Id = string
@@ -1115,7 +1324,7 @@ type Member struct {
 	// Example: true
 	HasPin bool `json:"has_pin"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1206,7 +1415,7 @@ type NewOwnerInvitation struct {
 type NewRegistration struct {
 	// Gstin GSTIN, 15 characters, upper case, no spaces. Format only here; the check character and the state-code match are validated by the service (rule from gst-invoicing-india).
 	//
-	// Example: 33ABCDE1234F1Z5
+	// Example: 33ABCDE1234F1Z7
 	Gstin *Gstin `json:"gstin,omitempty"`
 
 	// LegalName Legal name.
@@ -1261,7 +1470,7 @@ type Organisation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1369,7 +1578,7 @@ type OrganisationSummary struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1397,7 +1606,7 @@ type OrganisationSummary struct {
 
 // Outlet An outlet or property: one physical place with its own business date, devices, staff assignments and tax registration.
 type Outlet struct {
-	// BrandId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// BrandId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	BrandId Id `json:"brand_id"`
@@ -1407,7 +1616,7 @@ type Outlet struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1417,7 +1626,7 @@ type Outlet struct {
 	// Example: restaurant
 	Kind OutletKind `json:"kind"`
 
-	// LocatedInOutletId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// LocatedInOutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	LocatedInOutletId *Id `json:"located_in_outlet_id,omitempty"`
@@ -1437,7 +1646,7 @@ type Outlet struct {
 	// Example: active
 	Status OutletStatus `json:"status"`
 
-	// TaxRegistrationId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// TaxRegistrationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	TaxRegistrationId Id `json:"tax_registration_id"`
@@ -1489,7 +1698,7 @@ type OwnerInvitation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	ExpiresAt Timestamp `json:"expires_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1499,7 +1708,7 @@ type OwnerInvitation struct {
 	// Example: +91*******210
 	MobileMasked MobileMasked `json:"mobile_masked"`
 
-	// OrganisationId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId Id `json:"organisation_id"`
@@ -1592,6 +1801,14 @@ type Problem struct {
 // Example: Owner phoned to report a lost tablet.
 type Reason = string
 
+// RejectVendorApproval Reject or cancel an approval.
+type RejectVendorApproval struct {
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason Reason `json:"reason"`
+}
+
 // RequesterVerification How the requester was verified.
 //
 // Example: callback_to_registered_number
@@ -1609,7 +1826,7 @@ type Role struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1630,7 +1847,7 @@ type Role struct {
 
 // RoleAssignment A member-role-scope assignment.
 type RoleAssignment struct {
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1638,7 +1855,7 @@ type RoleAssignment struct {
 	// OutletIds Outlets the assignment covers; absent means the whole organisation.
 	OutletIds *[]Id `json:"outlet_ids,omitempty"`
 
-	// RoleId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// RoleId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	RoleId Id `json:"role_id"`
@@ -1665,7 +1882,7 @@ type StartSupport struct {
 	// Example: view
 	Mode *StartSupportMode `json:"mode,omitempty"`
 
-	// OrganisationId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId Id `json:"organisation_id"`
@@ -1698,7 +1915,7 @@ type SupportOrganisation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1726,7 +1943,7 @@ type SupportSession struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	EndsAt Timestamp `json:"ends_at"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1736,7 +1953,7 @@ type SupportSession struct {
 	// Example: view
 	Mode SupportSessionMode `json:"mode"`
 
-	// OrganisationId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId Id `json:"organisation_id"`
@@ -1756,7 +1973,7 @@ type SupportSession struct {
 	// Example: SUP-2041
 	TicketReference TicketReference `json:"ticket_reference"`
 
-	// VendorUserId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// VendorUserId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	VendorUserId Id `json:"vendor_user_id"`
@@ -1797,10 +2014,10 @@ type TaxRegistration struct {
 
 	// Gstin GSTIN, 15 characters, upper case, no spaces. Format only here; the check character and the state-code match are validated by the service (rule from gst-invoicing-india).
 	//
-	// Example: 33ABCDE1234F1Z5
+	// Example: 33ABCDE1234F1Z7
 	Gstin *Gstin `json:"gstin,omitempty"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1871,6 +2088,88 @@ type UpdateVendorUser struct {
 // Example: deactivated
 type UpdateVendorUserStatus string
 
+// VendorApproval A two-person approval record. Phone numbers appear only masked.
+type VendorApproval struct {
+	// ApprovedBy Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	ApprovedBy *Id `json:"approved_by,omitempty"`
+
+	// CompletesAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CompletesAt *Timestamp `json:"completes_at,omitempty"`
+
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// ExpiresAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	ExpiresAt Timestamp `json:"expires_at"`
+
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	Id Id `json:"id"`
+
+	// Kind What the two-person approval authorises. org_suspend, org_reinstate and org_close are executed by tenancy and tax_rule_set_publish by billing, with a vendor approval grant from the approval decision (ADR-0014 A1.3); they lapse after 24 hours, and tax_rule_set_publish concerns no organisation.
+	//
+	// Example: sign_in_code
+	Kind ApprovalKind `json:"kind"`
+
+	// MobileMasked Mobile number masked to its last 3 digits. The only form vendor and support responses may carry.
+	//
+	// Example: +91*******210
+	MobileMasked *MobileMasked `json:"mobile_masked,omitempty"`
+
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	OrganisationId *Id `json:"organisation_id,omitempty"`
+
+	// RequestedBy Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	RequestedBy Id `json:"requested_by"`
+
+	// State Approval state.
+	//
+	// Example: pending
+	State VendorApprovalState `json:"state"`
+
+	// SubjectId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	SubjectId *Id `json:"subject_id,omitempty"`
+
+	// TicketReference Support ticket reference. Fixed pattern so it can travel in events without free text.
+	//
+	// Example: SUP-2041
+	TicketReference TicketReference `json:"ticket_reference"`
+
+	// VerificationMethod How the requester was verified.
+	//
+	// Example: callback_to_registered_number
+	VerificationMethod RequesterVerification `json:"verification_method"`
+}
+
+// VendorApprovalState Approval state.
+//
+// Example: pending
+type VendorApprovalState string
+
+// VendorApprovalPage A page of approvals.
+type VendorApprovalPage struct {
+	// Items Approvals on this page.
+	Items []VendorApproval `json:"items"`
+
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
 // VendorAuditEntry Append-only vendor audit entry. Holds no password, TOTP, OTP, token or full phone number.
 type VendorAuditEntry struct {
 	// Action Stable action key.
@@ -1878,12 +2177,12 @@ type VendorAuditEntry struct {
 	// Example: vendor.device.revoked
 	Action string `json:"action"`
 
-	// ActorVendorUserId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// ActorVendorUserId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	ActorVendorUserId Id `json:"actor_vendor_user_id"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1893,7 +2192,7 @@ type VendorAuditEntry struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	OccurredAt Timestamp `json:"occurred_at"`
 
-	// OrganisationId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId *Id `json:"organisation_id,omitempty"`
@@ -1918,12 +2217,12 @@ type VendorAuditEntry struct {
 	// Example: 203.0.113.7
 	SourceAddress *string `json:"source_address,omitempty"`
 
-	// SupportSessionId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// SupportSessionId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	SupportSessionId *Id `json:"support_session_id,omitempty"`
 
-	// TargetId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// TargetId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	TargetId *Id `json:"target_id,omitempty"`
@@ -1955,7 +2254,7 @@ type VendorDevice struct {
 	// Example: true
 	BillingCapable bool `json:"billing_capable"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1975,7 +2274,7 @@ type VendorDevice struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	LastContactAt *Timestamp `json:"last_contact_at,omitempty"`
 
-	// OutletId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OutletId Id `json:"outlet_id"`
@@ -2007,7 +2306,7 @@ type VendorPrincipal struct {
 	// Example: Priya
 	DisplayName string `json:"display_name"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -2023,7 +2322,7 @@ type VendorPrincipal struct {
 
 // VendorRevoke Revoke one active device on a verified request. Terminal; no un-revoke and no wipe.
 type VendorRevoke struct {
-	// ApprovalId Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// ApprovalId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	ApprovalId *Id `json:"approval_id,omitempty"`
@@ -2134,7 +2433,7 @@ type VendorUser struct {
 	// Example: staff@example.invalid
 	Email openapi_types.Email `json:"email"`
 
-	// Id Client-generated, time-sortable identifier (UUIDv7 or ULID).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -2175,6 +2474,11 @@ type Verification struct {
 	//
 	// Example: certificate_seen
 	Method *VerificationMethod `json:"method,omitempty"`
+
+	// RejectedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	RejectedAt *Timestamp `json:"rejected_at,omitempty"`
 
 	// State unverified until vendor staff verify; verified registrations are the only ones that can get series.
 	//
@@ -2232,6 +2536,9 @@ type IdempotencyKey = string
 // VendorLimit defines model for VendorLimit.
 type VendorLimit = int
 
+// ApprovalConflict RFC 9457 problem details. `type` is a stable URI per error kind.
+type ApprovalConflict = Problem
+
 // Conflict RFC 9457 problem details. `type` is a stable URI per error kind.
 type Conflict = Problem
 
@@ -2288,13 +2595,64 @@ type VendorUserConflict = Problem
 
 // CompleteAccountSetupParams defines parameters for CompleteAccountSetup.
 type CompleteAccountSetupParams struct {
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
 // BeginAccountSetupParams defines parameters for BeginAccountSetup.
 type BeginAccountSetupParams struct {
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ListVendorApprovalsParams defines parameters for ListVendorApprovals.
+type ListVendorApprovalsParams struct {
+	// State Filter by state.
+	State *ListVendorApprovalsParamsState `form:"state,omitempty" json:"state,omitempty"`
+
+	// Cursor Opaque cursor from a previous response's next_cursor.
+	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Page size for vendor lists (default 25, maximum 100).
+	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// ListVendorApprovalsParamsState defines parameters for ListVendorApprovals.
+type ListVendorApprovalsParamsState string
+
+// FileVendorApprovalParams defines parameters for FileVendorApproval.
+type FileVendorApprovalParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// CancelVendorApprovalParams defines parameters for CancelVendorApproval.
+type CancelVendorApprovalParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ClaimCodeHalfParams defines parameters for ClaimCodeHalf.
+type ClaimCodeHalfParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ApproveVendorApprovalParams defines parameters for ApproveVendorApproval.
+type ApproveVendorApprovalParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2345,7 +2703,7 @@ type CreateOrganisationParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2363,7 +2721,7 @@ type RevokeOrganisationDeviceParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2372,7 +2730,7 @@ type CreateOwnerInvitationParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2381,7 +2739,7 @@ type CancelOwnerInvitationParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2390,7 +2748,7 @@ type RenewOwnerInvitationParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2462,13 +2820,13 @@ type VerifyTaxRegistrationParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
 // SignInParams defines parameters for SignIn.
 type SignInParams struct {
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2477,7 +2835,7 @@ type SignOutParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2486,7 +2844,7 @@ type StartSupportSessionParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2495,7 +2853,7 @@ type EndSupportSessionParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2513,7 +2871,7 @@ type CreateVendorUserParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2522,7 +2880,7 @@ type UpdateVendorUserParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2531,7 +2889,7 @@ type ResetVendorUserTotpParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
-	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 or ULID is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
 	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
 }
 
@@ -2540,6 +2898,15 @@ type CompleteAccountSetupJSONRequestBody = CompleteVendorSetup
 
 // BeginAccountSetupJSONRequestBody defines body for BeginAccountSetup for application/json ContentType.
 type BeginAccountSetupJSONRequestBody = BeginVendorSetup
+
+// FileVendorApprovalJSONRequestBody defines body for FileVendorApproval for application/json ContentType.
+type FileVendorApprovalJSONRequestBody = CreateVendorApproval
+
+// CancelVendorApprovalJSONRequestBody defines body for CancelVendorApproval for application/json ContentType.
+type CancelVendorApprovalJSONRequestBody = RejectVendorApproval
+
+// ApproveVendorApprovalJSONRequestBody defines body for ApproveVendorApproval for application/json ContentType.
+type ApproveVendorApprovalJSONRequestBody = ApproveVendorApproval
 
 // CreateOrganisationJSONRequestBody defines body for CreateOrganisation for application/json ContentType.
 type CreateOrganisationJSONRequestBody = CreateOrganisationForm
@@ -2573,6 +2940,24 @@ type ServerInterface interface {
 	// BeginAccountSetup Begin account setup from a one-time link
 	// (POST /v1/account-setups)
 	BeginAccountSetup(w http.ResponseWriter, r *http.Request, params BeginAccountSetupParams)
+	// ListVendorApprovals List approvals
+	// (GET /v1/approvals)
+	ListVendorApprovals(w http.ResponseWriter, r *http.Request, params ListVendorApprovalsParams)
+	// FileVendorApproval File a two-person approval
+	// (POST /v1/approvals)
+	FileVendorApproval(w http.ResponseWriter, r *http.Request, params FileVendorApprovalParams)
+	// GetVendorApproval Get an approval
+	// (GET /v1/approvals/{approval_id})
+	GetVendorApproval(w http.ResponseWriter, r *http.Request, approvalId Id)
+	// CancelVendorApproval Reject or cancel an approval
+	// (PUT /v1/approvals/{approval_id}/cancellation)
+	CancelVendorApproval(w http.ResponseWriter, r *http.Request, approvalId Id, params CancelVendorApprovalParams)
+	// ClaimCodeHalf Claim the requester's half of a sign-in code (once)
+	// (POST /v1/approvals/{approval_id}/code-half-claims)
+	ClaimCodeHalf(w http.ResponseWriter, r *http.Request, approvalId Id, params ClaimCodeHalfParams)
+	// ApproveVendorApproval Approve with a fresh TOTP
+	// (PUT /v1/approvals/{approval_id}/decision)
+	ApproveVendorApproval(w http.ResponseWriter, r *http.Request, approvalId Id, params ApproveVendorApprovalParams)
 	// ListAuditEntries Read the vendor audit log
 	// (GET /v1/audit-entries)
 	ListAuditEntries(w http.ResponseWriter, r *http.Request, params ListAuditEntriesParams)
@@ -2758,6 +3143,390 @@ func (siw *ServerInterfaceWrapper) BeginAccountSetup(w http.ResponseWriter, r *h
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.BeginAccountSetup(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListVendorApprovals operation middleware
+func (siw *ServerInterfaceWrapper) ListVendorApprovals(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListVendorApprovalsParams
+
+	// ------------- Optional query parameter "state" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "state", r.URL.Query(), &params.State, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "state"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "state", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", r.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "cursor"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "cursor", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListVendorApprovals(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// FileVendorApproval operation middleware
+func (siw *ServerInterfaceWrapper) FileVendorApproval(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params FileVendorApprovalParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.FileVendorApproval(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetVendorApproval operation middleware
+func (siw *ServerInterfaceWrapper) GetVendorApproval(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "approval_id" -------------
+	var approvalId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "approval_id", r.PathValue("approval_id"), &approvalId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "approval_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetVendorApproval(w, r, approvalId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CancelVendorApproval operation middleware
+func (siw *ServerInterfaceWrapper) CancelVendorApproval(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "approval_id" -------------
+	var approvalId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "approval_id", r.PathValue("approval_id"), &approvalId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "approval_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CancelVendorApprovalParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CancelVendorApproval(w, r, approvalId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ClaimCodeHalf operation middleware
+func (siw *ServerInterfaceWrapper) ClaimCodeHalf(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "approval_id" -------------
+	var approvalId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "approval_id", r.PathValue("approval_id"), &approvalId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "approval_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ClaimCodeHalfParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ClaimCodeHalf(w, r, approvalId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ApproveVendorApproval operation middleware
+func (siw *ServerInterfaceWrapper) ApproveVendorApproval(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "approval_id" -------------
+	var approvalId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "approval_id", r.PathValue("approval_id"), &approvalId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "approval_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ApproveVendorApprovalParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ApproveVendorApproval(w, r, approvalId, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -4716,6 +5485,12 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/devices", wrapper.ListOrganisationDevices)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/devices/{device_id}", wrapper.GetOrganisationDevice)
 	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/organisations/{organisation_id}/devices/{device_id}/revocation", wrapper.RevokeOrganisationDevice)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/approvals", wrapper.ListVendorApprovals)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/approvals", wrapper.FileVendorApproval)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/approvals/{approval_id}", wrapper.GetVendorApproval)
+	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/approvals/{approval_id}/decision", wrapper.ApproveVendorApproval)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/approvals/{approval_id}/code-half-claims", wrapper.ClaimCodeHalf)
+	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/approvals/{approval_id}/cancellation", wrapper.CancelVendorApproval)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/audit-entries", wrapper.ListAuditEntries)
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/support-sessions", wrapper.StartSupportSession)
 	m.HandleFunc(http.MethodDelete+" "+options.BaseURL+"/v1/support-sessions/current", wrapper.EndSupportSession)

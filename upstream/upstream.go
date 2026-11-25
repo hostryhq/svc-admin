@@ -364,6 +364,55 @@ func (u *Upstream) RevokeOrganisationDevice(ctx context.Context, org, device, ke
 	})
 }
 
+// ---- identity: two-person approvals (ADR-0005 A2.3) ------------------------------------
+
+// CreateVendorApproval files an approval request. The body may carry a mobile number and goes
+// straight through; it is never logged.
+func (u *Upstream) CreateVendorApproval(ctx context.Context, key string, body []byte) ([]byte, error) {
+	return u.do(ctx, func() (*http.Response, error) {
+		return u.ident.CreateVendorApprovalWithBody(ctx, &identity.CreateVendorApprovalParams{IdempotencyKey: key}, jsonCT, jsonReader(body))
+	})
+}
+
+// ListVendorApprovals lists the approvals the vendor user requested or may approve.
+func (u *Upstream) ListVendorApprovals(ctx context.Context, state, cursor *string, limit *int) ([]byte, error) {
+	p := &identity.ListVendorApprovalsParams{Cursor: cursor, Limit: limit}
+	if state != nil {
+		st := identity.ListVendorApprovalsParamsState(*state)
+		p.State = &st
+	}
+	return u.do(ctx, func() (*http.Response, error) { return u.ident.ListVendorApprovals(ctx, p) })
+}
+
+// GetVendorApproval reads one approval.
+func (u *Upstream) GetVendorApproval(ctx context.Context, id string) ([]byte, error) {
+	return u.do(ctx, func() (*http.Response, error) {
+		return u.ident.GetVendorApproval(ctx, id, &identity.GetVendorApprovalParams{})
+	})
+}
+
+// ApproveVendorApproval approves with a fresh TOTP. For the executing kinds the answer carries a
+// vendor approval grant, which the caller must keep server-side.
+func (u *Upstream) ApproveVendorApproval(ctx context.Context, id, key string, body []byte) ([]byte, error) {
+	return u.do(ctx, func() (*http.Response, error) {
+		return u.ident.ApproveVendorApprovalWithBody(ctx, id, &identity.ApproveVendorApprovalParams{IdempotencyKey: key}, jsonCT, jsonReader(body))
+	})
+}
+
+// ClaimCodeHalf claims the requester's half of a sign-in code (shown once).
+func (u *Upstream) ClaimCodeHalf(ctx context.Context, id, key string) ([]byte, error) {
+	return u.do(ctx, func() (*http.Response, error) {
+		return u.ident.ClaimCodeHalf(ctx, id, &identity.ClaimCodeHalfParams{IdempotencyKey: key})
+	})
+}
+
+// CancelVendorApproval rejects or cancels an approval.
+func (u *Upstream) CancelVendorApproval(ctx context.Context, id, key string, body []byte) ([]byte, error) {
+	return u.do(ctx, func() (*http.Response, error) {
+		return u.ident.CancelVendorApprovalWithBody(ctx, id, &identity.CancelVendorApprovalParams{IdempotencyKey: key}, jsonCT, jsonReader(body))
+	})
+}
+
 // StartSupportSession starts a read-only support session and returns its first support token.
 func (u *Upstream) StartSupportSession(ctx context.Context, key string, in identity.StartSupportSession) (identity.SupportSessionStarted, error) {
 	b, _ := json.Marshal(in)
