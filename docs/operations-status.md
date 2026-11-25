@@ -3,7 +3,7 @@
 Every operationId of `api-specs/openapi/admin/v1` (the contract admin-web calls) and what `svc-admin` calls on identity and tenancy.
 Contract commit: see `internal/gen/API_SPECS_COMMIT`. Updated whenever an operation changes.
 
-## Admin API (served): 33 of 33 implemented
+## Admin API (served): 39 of 39 implemented
 
 "Upstream" is the generated-client call the operation is built on; every upstream call carries the `admin` service token plus the vendor user's token (or the support token for support-view reads).
 
@@ -29,6 +29,12 @@ Contract commit: see `internal/gen/API_SPECS_COMMIT`. Updated whenever an operat
 | listOrganisationDevices | GET .../devices | admin.device.read | identity `listOrganisationDevices` | implemented |
 | getOrganisationDevice | GET .../devices/{id} | admin.device.read | identity `getOrganisationDevice` | implemented |
 | revokeOrganisationDevice | PUT .../devices/{id}/revocation | admin.device.revoke | identity `revokeOrganisationDevice` (409 `vendor_approval_required` passes through; `approval_id` in the body) | implemented |
+| fileVendorApproval | POST /v1/approvals | admin.approval.create, then the kind's permission (x-permission-by-kind) | identity `createVendorApproval` (kinds: sign_in_code, owner_recovery, device_revoke_over_quota, org_suspend, org_reinstate, org_close, tax_rule_set_publish) | implemented |
+| listVendorApprovals | GET /v1/approvals | admin.approval.read | identity `listVendorApprovals` | implemented |
+| getVendorApproval | GET /v1/approvals/{id} | admin.approval.read | identity `getVendorApproval` | implemented |
+| approveVendorApproval | PUT /v1/approvals/{id}/decision | admin.approval.decide, then the kind's approve permission | identity `getVendorApproval` (kind and requester), `approveVendorApproval`; refuses the requester as approver (409 `second_approver_unavailable`); the grant of org_suspend, org_reinstate, org_close and tax_rule_set_publish is kept in the session, never returned | implemented |
+| claimCodeHalf | POST /v1/approvals/{id}/code-half-claims | admin.approval.create | identity `claimCodeHalf` (answer not kept for replays) | implemented |
+| cancelVendorApproval | PUT /v1/approvals/{id}/cancellation | admin.approval.decide | identity `cancelVendorApproval` | implemented |
 | listAuditEntries | GET /v1/audit-entries | admin.audit.read_own or admin.audit.read | identity `listVendorAuditEntries` | implemented |
 | startSupportSession | POST /v1/support-sessions | admin.support.session.start | identity `startSupportSession` (token kept in memory) | implemented |
 | getSupportSession | GET /v1/support-sessions/current | admin.support.session.start | none (session) | implemented |
@@ -49,5 +55,10 @@ Not operations of the contract, also served: `GET /healthz`, `GET /readyz`, and 
 
 | Service | operationId | Why not used |
 |---|---|---|
-| identity | createVendorApproval, listVendorApprovals, approveVendorApproval, claimCodeHalf, cancelVendorApproval | The admin contract has no approval operations (spec gap, reported). Revoke over quota answers 409 `vendor_approval_required`; an approval id can be passed in `approval_id`, but staff cannot file or approve one through admin-web yet |
 | identity | getSupportSession | The session is held locally; the contract's `getSupportSession` answers from it |
+
+## Approvals (ADR-0005 A2.3, ADR-0014 A1.3)
+
+- The second approver must be a different vendor user with an account older than 7 days; no single-person override exists. Identity enforces the age and the permission; admin refuses the requester early.
+- Revoke over quota: the revoke answers 409 `vendor_approval_required`; the staff member files `device_revoke_over_quota` with the device as subject, a second user approves, and the revoke is repeated with `approval_id`. Admin does not file on the staff member's behalf.
+- The vendor approval grant (single use, 5 minutes) is held in memory against the approver's session (`Service.TakeGrant`). No admin operation executes org_suspend, org_reinstate, org_close or tax_rule_set_publish yet because tenancy and billing publish no such operation at the pinned contract commit.
