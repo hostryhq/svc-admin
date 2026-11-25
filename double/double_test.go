@@ -235,3 +235,40 @@ func TestSeedWorldAcceptsDeclaredWorldsOnly(t *testing.T) {
 		t.Error("an undeclared world must be refused")
 	}
 }
+
+// An approval executes once (the grant behind it is single use); SeedWorld starts a fresh fixture.
+func TestAnApprovalExecutesOnceAndTheNextTryIsRefusedAsExecuted(t *testing.T) {
+	d := double.New(double.Options{})
+	c := newClient(t, d)
+	path := "/v1/organisations/0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60/closure"
+	body := `{"approval_id":"0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d","ticket":"SUP-2041","reason":"Owner asked to close the outlet group."}`
+	if r, b := c.do("POST", path, body, seed()); r.StatusCode != 200 {
+		t.Fatalf("first execution: %d %s", r.StatusCode, b)
+	}
+	r, b := c.do("POST", path, body, seed())
+	var p struct{ Code, Reason string }
+	_ = json.Unmarshal([]byte(b), &p)
+	if r.StatusCode != 409 || p.Code != "approval_not_executable" || p.Reason != "executed" {
+		t.Fatalf("second execution: %d %s", r.StatusCode, b)
+	}
+	if err := d.SeedWorld(context.Background(), "org-active-approved-close"); err != nil {
+		t.Fatal(err)
+	}
+	if r, b := c.do("POST", path, body, seed()); r.StatusCode != 200 {
+		t.Errorf("a fresh world executes again: %d %s", r.StatusCode, b)
+	}
+	// the other reasons are driven by scenario, with the spec's own example
+	r, b = c.do("POST", "/v1/tax-rule-sets/72bdd3f5-68b5-59b0-8e62-2075a1f43c47/publication", `{"approval_id":"0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d"}`,
+		merge(seed(), map[string]string{"X-Double-Scenario": "409:approval"}))
+	if r.StatusCode != 409 || !strings.Contains(b, `"reason":"not_approved"`) {
+		t.Errorf("scenario: %d %s", r.StatusCode, b)
+	}
+}
+
+func TestTheLedgerExportIsServedAsCSV(t *testing.T) {
+	c := newClient(t, double.New(double.Options{}))
+	r, b := c.do("GET", "/v1/ledger-exports", "", seed())
+	if r.StatusCode != 200 || !strings.HasPrefix(r.Header.Get("Content-Type"), "text/csv") || !strings.HasPrefix(b, "organisation_id,") {
+		t.Errorf("export: %d %q %q", r.StatusCode, r.Header.Get("Content-Type"), b)
+	}
+}

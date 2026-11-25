@@ -3,9 +3,9 @@ module github.com/hostryhq/svc-admin
 go 1.27.1
 
 require (
-	github.com/hostryhq/api-specs v0.0.0-20261125001959-c92ca77ecb4e
-	github.com/hostryhq/go-auth v0.0.0-20261125000521-b19b5407e3f2
-	github.com/hostryhq/go-common v0.0.0-20261124215603-ad5f1e546d2e
+	github.com/hostryhq/api-specs v0.0.0-20261125021339-1462fb8dbe93
+	github.com/hostryhq/go-auth v0.0.0-20261125030157-94f1970efd79
+	github.com/hostryhq/go-common v0.0.0-20261125023102-c6c0fc763c5e
 	github.com/oapi-codegen/runtime v1.9.1
 	gopkg.in/yaml.v3 v3.0.1
 )

@@ -1,4 +1,4 @@
-// Package specdata exposes the operations and response examples of the identity, tenancy and
+// Package specdata exposes the operations and response examples of the identity, tenancy, billing and
 // admin OpenAPI documents, extracted by cmd/genspec (make gen). The admin double and the
 // upstream fakes serve these examples, so they cannot drift from the contract.
 package specdata
@@ -13,7 +13,7 @@ import (
 	"sync"
 )
 
-//go:embed identity.json tenancy.json admin.json
+//go:embed identity.json tenancy.json billing.json admin.json
 var files embed.FS
 
 // Response is one declared response of an operation.
@@ -33,7 +33,9 @@ type Operation struct {
 	// PermissionByKind is x-permission-by-kind (approval operations).
 	PermissionByKind map[string]string `json:"permission_by_kind"`
 	// World is the operation's x-example-world; empty means the default world "base".
-	World          string     `json:"world"`
+	World string `json:"world"`
+	// RequiresGrant: the operation takes the Hostry-Vendor-Approval header.
+	RequiresGrant  bool       `json:"requires_grant"`
 	ServiceCallers []string   `json:"service_callers"`
 	Security       [][]string `json:"security"`
 	Responses      []Response `json:"responses"`
@@ -199,6 +201,10 @@ func (r *Response) Write(w http.ResponseWriter, example string) {
 	}
 	w.WriteHeader(r.Status)
 	if v, ok := r.Example(example); ok {
+		if s, isStr := v.(string); isStr && !strings.Contains(r.ContentType, "json") {
+			_, _ = w.Write([]byte(s)) // text/csv and the like are written as they are
+			return
+		}
 		_ = json.NewEncoder(w).Encode(v)
 	}
 }

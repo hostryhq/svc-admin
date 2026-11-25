@@ -184,6 +184,11 @@ func (f *Fake) serve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	f.record(call)
+	if op.RequiresGrant && r.Header.Get("Hostry-Vendor-Approval") == "" {
+		// An executing route refuses a call with no approval grant (ADR-0014 A2.6).
+		problem(w, http.StatusForbidden, "grant.required", "Approval grant required")
+		return
+	}
 
 	f.mu.Lock()
 	d := f.delay[op.ID]

@@ -56,6 +56,9 @@ type Session struct {
 
 	// Grants are the unused vendor approval grants by approval id.
 	Grants map[string]Grant
+	// Spent are the approvals this session executed, so a retry after success is told "executed"
+	// while identity has not yet recorded it.
+	Spent map[string]bool
 }
 
 // Lock takes the session lock.

@@ -34,11 +34,14 @@ import (
 
 // The example ids and credentials of the contract (never real ones).
 const (
-	UserID   = "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66"
-	OrgID    = "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60"
-	Email    = "staff@example.invalid"
-	Password = "correct-horse-battery-staple"
-	TOTP     = "123456"
+	UserID = "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a66"
+	OrgID  = "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60"
+	// ApprovalID is the example vendor approval; GrantToken is the opaque grant the fake issues for it.
+	ApprovalID = "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6d"
+	GrantToken = "grant.example.token"
+	Email      = "staff@example.invalid"
+	Password   = "correct-horse-battery-staple"
+	TOTP       = "123456"
 )
 
 // User is a vendor user known to the fake identity.
@@ -71,6 +74,7 @@ type Env struct {
 	TenantIs *authtest.Issuer
 	Identity *fakeup.Fake
 	Tenancy  *fakeup.Fake
+	Billing  *fakeup.Fake
 	Sessions *repository.MemorySessions
 	Svc      *service.Service
 	API      *api.Handler
@@ -88,6 +92,9 @@ type Env struct {
 	support  map[string]*supportSession
 	seq      int
 	keyCount int
+	// approvedKind, when set, makes the fake identity answer that approval ApprovalID of that kind
+	// was approved by whoever asks (see holdGrant).
+	approvedKind string
 }
 
 // Options tune the environment.
@@ -100,7 +107,7 @@ type Options struct {
 // AllAdminPermissions is every admin.* permission the contracts mention (a platform_admin).
 func AllAdminPermissions() []string {
 	set := map[string]bool{}
-	for _, s := range []string{"admin", "identity", "tenancy"} {
+	for _, s := range []string{"admin", "identity", "tenancy", "billing"} {
 		for _, op := range specdata.MustLoad(s).Operations {
 			if strings.HasPrefix(op.Permission, "admin.") {
 				set[op.Permission] = true
@@ -129,7 +136,7 @@ func New(t testing.TB, o ...Options) *Env {
 	}
 	clk := testkit.NewClock()
 	clk.Set(time.Date(2026, 11, 24, 13, 6, 0, 0, time.UTC)) // inside the spec examples' day
-	reg := authtest.NewServiceRegistry(clk, "admin", "identity", "tenancy")
+	reg := authtest.NewServiceRegistry(clk, "admin", "identity", "tenancy", "billing")
 	e := &Env{
 		T: t, Clock: clk, Registry: reg,
 		VendorIs: authtest.NewVendorIssuer(clk), TenantIs: authtest.NewTenantIssuer(clk),
@@ -141,13 +148,13 @@ func New(t testing.TB, o ...Options) *Env {
 	mk := func(svc string) *fakeup.Fake {
 		return fakeup.New(svc, fakeup.Verifiers{Service: reg.Verifier(svc), Vendor: e.VendorIs.Verifier(), Tenant: e.TenantIs.Verifier()})
 	}
-	e.Identity, e.Tenancy = mk("identity"), mk("tenancy")
+	e.Identity, e.Tenancy, e.Billing = mk("identity"), mk("tenancy"), mk("billing")
 	e.scriptIdentity()
 	e.scriptSupportGuards()
-	t.Cleanup(func() { e.Identity.Close(); e.Tenancy.Close() })
+	t.Cleanup(func() { e.Identity.Close(); e.Tenancy.Close(); e.Billing.Close() })
 
 	up, err := upstream.New(upstream.Config{
-		IdentityURL: e.Identity.URL(), TenancyURL: e.Tenancy.URL(), Signer: reg.Signer("admin"),
+		IdentityURL: e.Identity.URL(), TenancyURL: e.Tenancy.URL(), BillingURL: e.Billing.URL(), Signer: reg.Signer("admin"),
 		Timeout: 2 * time.Second, Retries: 1,
 		Sleep: func(_ context.Context, _ time.Duration) {},
 	})
@@ -251,6 +258,26 @@ func (e *Env) scriptIdentity() {
 			return true
 		}
 		fakeup.WriteJSON(w, http.StatusOK, e.issueVendor(u, vs.ends))
+		return true
+	})
+	e.Identity.On("getVendorApproval", func(c fakeup.Call, w http.ResponseWriter) bool {
+		e.mu.Lock()
+		kind := e.approvedKind
+		e.mu.Unlock()
+		if kind == "" || c.Bearer == nil {
+			return false // the spec example
+		}
+		ap := map[string]any{
+			"id": ApprovalID, "kind": kind, "state": "approved", "requested_by": UserID, "approved_by": c.Bearer.Subject,
+			"ticket_reference": "SUP-2041", "reason": "Owner asked to close the outlet group.",
+			"verification_method": "callback_to_registered_number",
+			"created_at":          e.Clock.Now().Add(-time.Minute).UTC().Format(time.RFC3339Nano),
+			"expires_at":          e.Clock.Now().Add(24 * time.Hour).UTC().Format(time.RFC3339Nano),
+		}
+		if kind != "tax_rule_set_publish" {
+			ap["organisation_id"] = OrgID
+		}
+		fakeup.WriteJSON(w, http.StatusOK, ap)
 		return true
 	})
 	e.Identity.On("updateVendorUser", func(c fakeup.Call, w http.ResponseWriter) bool {
@@ -476,6 +503,26 @@ func (e *Env) SignInAs(email string) *Session {
 	}
 	e.T.Fatal("sign-in set no session cookie")
 	return nil
+}
+
+// holdGrant puts the grant of the approved example approval into a session, as approving it would,
+// when the example world says the caller approved it.
+func (e *Env) holdGrant(s *Session) {
+	e.mu.Lock()
+	kind := e.approvedKind
+	e.mu.Unlock()
+	if kind == "" {
+		return
+	}
+	sess, ok := e.Sessions.Get(s.Cookie)
+	if !ok {
+		return
+	}
+	sess.Lock()
+	defer sess.Unlock()
+	sess.Grants = map[string]repository.Grant{ApprovalID: {
+		ApprovalID: ApprovalID, Kind: kind, Token: GrantToken, Expires: e.Clock.Now().Add(5 * time.Minute),
+	}}
 }
 
 // StartSupport starts a support session for the example organisation and returns its id.

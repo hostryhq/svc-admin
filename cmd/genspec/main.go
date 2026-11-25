@@ -34,7 +34,9 @@ type operation struct {
 	// top of the gate permission.
 	PermissionByKind map[string]string `json:"permission_by_kind,omitempty"`
 	// World is x-example-world: the named fixture the operation's examples assume.
-	World          string     `json:"world,omitempty"`
+	World string `json:"world,omitempty"`
+	// RequiresGrant is true when the operation takes the Hostry-Vendor-Approval header (ADR-0014 A2.6).
+	RequiresGrant  bool       `json:"requires_grant,omitempty"`
 	ServiceCallers []string   `json:"service_callers,omitempty"`
 	Security       [][]string `json:"security"`
 	Responses      []response `json:"responses"`
@@ -87,7 +89,7 @@ func run(in, out string) error {
 			if !ok {
 				continue
 			}
-			doc.Operations = append(doc.Operations, buildOp(m, path, om, components(raw)))
+			doc.Operations = append(doc.Operations, buildOp(m, path, om, components(raw, "responses"), components(raw, "parameters")))
 		}
 	}
 	sort.Slice(doc.Operations, func(i, j int) bool { return doc.Operations[i].ID < doc.Operations[j].ID })
@@ -98,7 +100,7 @@ func run(in, out string) error {
 	return os.WriteFile(filepath.Join(out, name+".json"), append(data, '\n'), 0o644)
 }
 
-func buildOp(method, path string, om map[string]any, comps map[string]any) operation {
+func buildOp(method, path string, om map[string]any, comps, params map[string]any) operation {
 	op := operation{ID: str(om["operationId"]), Method: strings.ToUpper(method), Path: path,
 		Permission: str(om["x-permission"]), Security: [][]string{}}
 	op.World = str(om["x-example-world"])
@@ -108,6 +110,7 @@ func buildOp(method, path string, om map[string]any, comps map[string]any) opera
 			op.PermissionByKind[k] = str(v)
 		}
 	}
+	op.RequiresGrant = needsGrant(om, params)
 	if cs, ok := om["x-service-callers"].([]any); ok {
 		for _, c := range cs {
 			op.ServiceCallers = append(op.ServiceCallers, str(c))
@@ -165,10 +168,25 @@ func buildOp(method, path string, om map[string]any, comps map[string]any) opera
 	return op
 }
 
-func components(raw map[string]any) map[string]any {
+func components(raw map[string]any, kind string) map[string]any {
 	c, _ := raw["components"].(map[string]any)
-	r, _ := c["responses"].(map[string]any)
+	r, _ := c[kind].(map[string]any)
 	return r
+}
+
+// needsGrant reports a declared Hostry-Vendor-Approval header parameter (inline or by reference).
+func needsGrant(om map[string]any, params map[string]any) bool {
+	ps, _ := om["parameters"].([]any)
+	for _, p := range ps {
+		pm, _ := p.(map[string]any)
+		if ref, ok := pm["$ref"].(string); ok {
+			pm, _ = params[strings.TrimPrefix(ref, "#/components/parameters/")].(map[string]any)
+		}
+		if str(pm["in"]) == "header" && strings.EqualFold(str(pm["name"]), "Hostry-Vendor-Approval") {
+			return true
+		}
+	}
+	return false
 }
 
 func str(v any) string {

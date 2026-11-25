@@ -2,16 +2,26 @@
  "service": "tenancy",
  "worlds": [
   "base",
+  "book-registered",
+  "charge-overdue",
   "empty",
   "link-accepted",
+  "link-accepted-changed",
   "link-active",
   "link-amendment-pending",
   "link-none",
+  "link-proposed",
   "link-proposed-to-caller",
   "link-suspended",
+  "org-active",
+  "org-suspended",
+  "payment-recorded",
+  "plan-active",
+  "plan-seeded",
   "registration-spare-verified",
   "registration-verified",
-  "series-issued"
+  "series-issued",
+  "subscribed"
  ],
  "operations": [
   {
@@ -116,6 +126,541 @@
      "headers": [
       "Retry-After"
      ]
+    }
+   ]
+  },
+  {
+   "id": "activatePlanVersion",
+   "method": "POST",
+   "path": "/internal/v1/vendor/plans/{plan_key}/versions/{version}/activation",
+   "permission": "admin.plan.manage",
+   "world": "plan-seeded",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "activated_at": "2026-11-24T13:05:11.120Z",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "feature_keys": [
+        "restaurant.core",
+        "restaurant.kds",
+        "restaurant.captain",
+        "restaurant.reports.core"
+       ],
+       "included_outlets": 1,
+       "prices": [
+        {
+         "cycle": "monthly",
+         "list_price": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         }
+        }
+       ],
+       "state": "active",
+       "version": 1
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "cancelCharge",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges/{charge_id}/cancellation",
+   "permission": "admin.subscription.adjust",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "reason": "Duplicate period raised by mistake.",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "cancelled",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "cancelSubscription",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/subscription/cancellation",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "addons": [],
+       "agreed_price": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "cancel_at_period_end": true,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "cycle": "monthly",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outlets_over_limit": false,
+       "overdue": false,
+       "paid_through": "2026-12-31",
+       "plan_key": "table_service",
+       "plan_version": 1,
+       "start_date": "2026-12-01",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "changeOutletTaxRegistration",
+   "method": "PUT",
+   "path": "/v1/outlets/{outlet_id}/tax-registration",
+   "permission": "tax_registration.manage",
+   "world": "registration-spare-verified",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "brand_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "kind": "restaurant",
+       "name": "Main Restaurant",
+       "state_code": "33",
+       "status": "active",
+       "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a93",
+       "timezone": "Asia/Kolkata"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "changeSubscription",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/subscription",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "addons": [],
+       "agreed_price": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "cancel_at_period_end": false,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "cycle": "annual",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outlets_over_limit": false,
+       "overdue": false,
+       "paid_through": "2026-12-31",
+       "plan_key": "table_service",
+       "plan_version": 1,
+       "start_date": "2026-12-01",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
     }
    ]
   },
@@ -251,6 +796,103 @@
        "status": 409,
        "title": "Conflict",
        "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "closeOrganisation",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/closure",
+   "permission": "admin.org.lifecycle.approve",
+   "world": "org-active",
+   "requires_grant": true,
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "changed_at": "2026-11-24T13:05:11.120Z",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "status": "closed"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "grant.used",
+       "status": 403,
+       "title": "Approval grant refused",
+       "type": "urn:hostry:problem:grant.used"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "open_trading_day",
+       "status": 409,
+       "title": "Trading day in progress",
+       "type": "urn:hostry:problem:open_trading_day"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     }
@@ -451,6 +1093,95 @@
        "status": 409,
        "title": "The link is not in a state that allows this",
        "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createBillingConfiguration",
+   "method": "POST",
+   "path": "/internal/v1/vendor/billing-configurations",
+   "permission": "admin.plan.manage",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_from": "2026-12-01",
+       "gst_rate_bp": 1800,
+       "gst_registered": true,
+       "hostry_state_code": "33",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8041",
+       "payment_terms_days": 7,
+       "payment_tolerance_paise": 99,
+       "sac": "997331"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
       }
      }
     },
@@ -738,6 +1469,224 @@
    ]
   },
   {
+   "id": "createPlan",
+   "method": "POST",
+   "path": "/internal/v1/vendor/plans",
+   "permission": "admin.plan.manage",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "key": "table_service",
+       "name_key": "plan.table_service",
+       "versions": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "feature_keys": [
+          "restaurant.core",
+          "restaurant.kds",
+          "restaurant.captain",
+          "restaurant.reports.core"
+         ],
+         "included_outlets": 1,
+         "prices": [
+          {
+           "cycle": "monthly",
+           "list_price": {
+            "amount_paise": 129900,
+            "currency": "INR"
+           }
+          }
+         ],
+         "state": "draft",
+         "version": 1
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createPlanVersion",
+   "method": "POST",
+   "path": "/internal/v1/vendor/plans/{plan_key}/versions",
+   "permission": "admin.plan.manage",
+   "world": "plan-seeded",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "feature_keys": [
+        "restaurant.core",
+        "restaurant.kds",
+        "restaurant.captain",
+        "restaurant.reports.core"
+       ],
+       "included_outlets": 1,
+       "prices": [
+        {
+         "cycle": "monthly",
+         "list_price": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         }
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "createTaxRegistration",
    "method": "POST",
    "path": "/v1/tax-registrations",
@@ -992,6 +1941,74 @@
    ]
   },
   {
+   "id": "exportLedger",
+   "method": "GET",
+   "path": "/internal/v1/vendor/ledger-exports",
+   "permission": "admin.report.ledger",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "text/csv",
+     "examples": {
+      "default": "organisation_id,organisation_name,period_start,period_end,taxable_paise,total_paise,due_date,invoice_number,status,outstanding_paise\n"
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "getBrand",
    "method": "GET",
    "path": "/v1/brands/{brand_id}",
@@ -1007,6 +2024,101 @@
        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6a",
        "is_default": true,
        "name": "Example Hospitality"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getCharge",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges/{charge_id}",
+   "permission": "admin.subscription.read",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "open",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
       }
      }
     },
@@ -1247,6 +2359,95 @@
    ]
   },
   {
+   "id": "getMyPlan",
+   "method": "GET",
+   "path": "/v1/subscription",
+   "permission": "subscription.read",
+   "world": "payment-recorded",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "agreed_price": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "charges": [
+        {
+         "due_date": "2026-12-08",
+         "invoice_number": "HQ/2627/0042",
+         "period_end": "2026-12-31",
+         "period_start": "2026-12-01",
+         "status": "paid",
+         "total": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         }
+        }
+       ],
+       "cycle": "monthly",
+       "overdue": false,
+       "paid_through": "2026-12-31",
+       "payments": [
+        {
+         "amount": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         },
+         "method": "upi",
+         "received_on": "2026-12-02"
+        }
+       ],
+       "plan_key": "table_service",
+       "plan_name_key": "plan.table_service",
+       "plan_version": 1,
+       "start_date": "2026-12-01",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "getOrganisationDirectoryEntry",
    "method": "GET",
    "path": "/internal/v1/vendor/organisations/{organisation_id}",
@@ -1386,6 +2587,88 @@
    ]
   },
   {
+   "id": "getOrganisationSubscription",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/subscription",
+   "permission": "admin.subscription.read",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "current": {
+        "addons": [],
+        "agreed_price": {
+         "amount_paise": 129900,
+         "currency": "INR"
+        },
+        "cancel_at_period_end": false,
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "cycle": "monthly",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+        "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+        "outlets_over_limit": false,
+        "overdue": false,
+        "paid_through": "2026-12-31",
+        "plan_key": "table_service",
+        "plan_version": 1,
+        "start_date": "2026-12-01",
+        "state": "active"
+       },
+       "history": []
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "getOutlet",
    "method": "GET",
    "path": "/v1/outlets/{outlet_id}",
@@ -1406,6 +2689,94 @@
        "status": "active",
        "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
        "timezone": "Asia/Kolkata"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getPlan",
+   "method": "GET",
+   "path": "/internal/v1/vendor/plans/{plan_key}",
+   "permission": "admin.subscription.read",
+   "world": "plan-seeded",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "key": "table_service",
+       "name_key": "plan.table_service",
+       "versions": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "feature_keys": [
+          "restaurant.core",
+          "restaurant.kds",
+          "restaurant.captain",
+          "restaurant.reports.core"
+         ],
+         "included_outlets": 1,
+         "prices": [
+          {
+           "cycle": "monthly",
+           "list_price": {
+            "amount_paise": 129900,
+            "currency": "INR"
+           }
+          }
+         ],
+         "state": "draft",
+         "version": 1
+        }
+       ]
       }
      }
     },
@@ -1637,6 +3008,88 @@
    ]
   },
   {
+   "id": "listBillingConfigurations",
+   "method": "GET",
+   "path": "/internal/v1/vendor/billing-configurations",
+   "permission": "admin.subscription.read",
+   "world": "plan-seeded",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "effective_from": "2026-12-01",
+         "gst_rate_bp": 1800,
+         "gst_registered": true,
+         "hostry_state_code": "33",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8041",
+         "payment_terms_days": 7,
+         "payment_tolerance_paise": 99,
+         "sac": "997331"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "listBrands",
    "method": "GET",
    "path": "/v1/brands",
@@ -1680,6 +3133,220 @@
        "status": 403,
        "title": "Permission denied",
        "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listChargePayments",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges/{charge_id}/payments",
+   "permission": "admin.subscription.read",
+   "world": "payment-recorded",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "amount": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         },
+         "charge_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8031",
+         "method": "upi",
+         "received_on": "2026-12-02",
+         "recorded_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+         "reference": "UTR1234567890"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listCharges",
+   "method": "GET",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges",
+   "permission": "admin.subscription.read",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "cgst": {
+          "amount_paise": 11691,
+          "currency": "INR"
+         },
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "due_date": "2026-12-08",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+         "igst": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "kind": "period",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "outstanding": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         },
+         "period_end": "2026-12-31",
+         "period_start": "2026-12-01",
+         "sgst": {
+          "amount_paise": 11691,
+          "currency": "INR"
+         },
+         "status": "open",
+         "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+         "taxable": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         },
+         "total": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         }
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     }
@@ -1744,6 +3411,100 @@
        "status": 403,
        "title": "Permission denied",
        "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listLedgerEntries",
+   "method": "GET",
+   "path": "/internal/v1/vendor/ledger-lists/{list_kind}",
+   "permission": "admin.subscription.read",
+   "world": "charge-overdue",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "age_days": 3,
+         "amount": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         },
+         "due_date": "2026-12-08",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "organisation_name": "Example Hospitality",
+         "subject_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     }
@@ -1907,6 +3668,60 @@
    ]
   },
   {
+   "id": "listManualBookSeries",
+   "method": "GET",
+   "path": "/v1/manual-book-series",
+   "permission": "series.read",
+   "world": "book-registered",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "code": "BKB",
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8051",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "status": "active",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "listOrganisationDirectory",
    "method": "GET",
    "path": "/internal/v1/vendor/organisations",
@@ -2032,6 +3847,105 @@
        "status": 403,
        "title": "Permission denied",
        "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listPlans",
+   "method": "GET",
+   "path": "/internal/v1/vendor/plans",
+   "permission": "admin.subscription.read",
+   "world": "plan-seeded",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "key": "table_service",
+         "name_key": "plan.table_service",
+         "versions": [
+          {
+           "created_at": "2026-11-24T13:05:11.120Z",
+           "feature_keys": [
+            "restaurant.core",
+            "restaurant.kds",
+            "restaurant.captain",
+            "restaurant.reports.core"
+           ],
+           "included_outlets": 1,
+           "prices": [
+            {
+             "cycle": "monthly",
+             "list_price": {
+              "amount_paise": 129900,
+              "currency": "INR"
+             }
+            }
+           ],
+           "state": "draft",
+           "version": 1
+          }
+         ]
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     }
@@ -2329,6 +4243,615 @@
    ]
   },
   {
+   "id": "raiseCharge",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges",
+   "permission": "admin.subscription.manage",
+   "world": "plan-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "open",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "reacceptLink",
+   "method": "PUT",
+   "path": "/v1/links/{link_id}/re-acceptance",
+   "permission": "link.manage",
+   "world": "link-accepted-changed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "accepted_at": "2026-11-24T13:12:11.120Z",
+       "counterparty": {
+        "display_name": "Example Hospitality",
+        "registrations": [
+         {
+          "gstin": "33ABCDE1234F1Z7",
+          "gstin_verified": true,
+          "legal_name": "Example Hospitality Pvt Ltd",
+          "state_code": "33"
+         }
+        ]
+       },
+       "counterparty_organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "expires_at": "2026-12-08T13:05:11.120Z",
+       "grants": [
+        {
+         "direction": "inbound",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+         "outlet_ids": [
+          "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+         ],
+         "scope": "test.echo.read",
+         "status": "pending"
+        }
+       ],
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+       "proposed_at": "2026-11-24T13:05:11.120Z",
+       "role": "acceptor",
+       "status": "accepted",
+       "template": "on_premises_outlet"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "recordPayment",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges/{charge_id}/payments",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "amount": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "charge_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8031",
+       "method": "upi",
+       "received_on": "2026-12-02",
+       "recorded_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+       "reference": "UTR1234567890"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "overpayment",
+       "status": 422,
+       "title": "Payment exceeds outstanding",
+       "type": "urn:hostry:problem:overpayment"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "registerManualBookSeries",
+   "method": "POST",
+   "path": "/v1/manual-book-series",
+   "permission": "series.manual_book.register",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "code": "BKB",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8051",
+       "outlet_ids": [
+        "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+       ],
+       "status": "active",
+       "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "strong_session_required",
+       "status": 403,
+       "title": "Strong session required",
+       "type": "urn:hostry:problem:strong_session_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "reinstateOrganisation",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/reinstatement",
+   "permission": "admin.org.lifecycle.approve",
+   "world": "org-suspended",
+   "requires_grant": true,
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "changed_at": "2026-11-24T13:05:11.120Z",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "status": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "grant.used",
+       "status": 403,
+       "title": "Approval grant refused",
+       "type": "urn:hostry:problem:grant.used"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "reissueLinkInvitation",
+   "method": "POST",
+   "path": "/v1/links/{link_id}/invitations",
+   "permission": "link.manage",
+   "world": "link-proposed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "invitation_code": "8WZ4TX2VH6JN3PCD",
+       "link": {
+        "expires_at": "2026-12-08T13:05:11.120Z",
+        "grants": [
+         {
+          "direction": "outbound",
+          "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a72",
+          "outlet_ids": [
+           "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+          ],
+          "scope": "test.echo.read",
+          "status": "pending"
+         }
+        ],
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a62",
+        "proposed_at": "2026-11-24T13:05:11.120Z",
+        "role": "proposer",
+        "status": "proposed",
+        "template": "on_premises_outlet"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "step": {
+       "code": "step_up_required",
+       "status": 403,
+       "title": "A fresh sign-in is required",
+       "type": "urn:hostry:problem:step_up_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 429,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "rate_limited",
+       "status": 429,
+       "title": "Too many requests",
+       "type": "urn:hostry:problem:rate_limited"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
    "id": "rejectTaxRegistration",
    "method": "PUT",
    "path": "/internal/v1/vendor/organisations/{organisation_id}/tax-registrations/{registration_id}/rejection",
@@ -2584,6 +5107,206 @@
    ]
   },
   {
+   "id": "retirePlanVersion",
+   "method": "POST",
+   "path": "/internal/v1/vendor/plans/{plan_key}/versions/{version}/retirement",
+   "permission": "admin.plan.manage",
+   "world": "plan-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "feature_keys": [
+        "restaurant.core",
+        "restaurant.kds",
+        "restaurant.captain",
+        "restaurant.reports.core"
+       ],
+       "included_outlets": 1,
+       "prices": [
+        {
+         "cycle": "monthly",
+         "list_price": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         }
+        }
+       ],
+       "retired_at": "2026-11-24T13:05:11.120Z",
+       "state": "retired",
+       "version": 1
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "reversePayment",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges/{charge_id}/payments/{payment_id}/reversal",
+   "permission": "admin.subscription.adjust",
+   "world": "payment-recorded",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "amount": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "charge_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8032",
+       "method": "upi",
+       "reason": "Duplicate period raised by mistake.",
+       "received_on": "2026-12-02",
+       "recorded_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+       "reference": "UTR1234567890",
+       "reversal_of": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8031"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "revokeLink",
    "method": "PUT",
    "path": "/v1/links/{link_id}/revocation",
@@ -2663,6 +5386,246 @@
        "status": 404,
        "title": "Not found",
        "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "setChargeInvoiceReference",
+   "method": "PUT",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges/{charge_id}/invoice-reference",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "invoice_reference": {
+        "date": "2026-12-01",
+        "number": "HQ/2627/0042"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "open",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "startSubscription",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/subscription",
+   "permission": "admin.subscription.start",
+   "world": "plan-active",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "addons": [],
+       "agreed_price": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "cancel_at_period_end": false,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "cycle": "monthly",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outlets_over_limit": false,
+       "overdue": false,
+       "paid_through": "2026-12-31",
+       "plan_key": "table_service",
+       "plan_version": 1,
+       "start_date": "2026-12-01",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     }
@@ -2766,6 +5729,103 @@
        "status": 409,
        "title": "The link is not in a state that allows this",
        "type": "urn:hostry:problem:link_state_conflict"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "suspendOrganisation",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/suspension",
+   "permission": "admin.org.lifecycle.approve",
+   "world": "org-active",
+   "requires_grant": true,
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "changed_at": "2026-11-24T13:05:11.120Z",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "status": "suspended"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "grant.used",
+       "status": 403,
+       "title": "Approval grant refused",
+       "type": "urn:hostry:problem:grant.used"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "open_trading_day",
+       "status": 409,
+       "title": "Trading day in progress",
+       "type": "urn:hostry:problem:open_trading_day"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     }
@@ -3154,6 +6214,133 @@
        "status": 409,
        "title": "GSTIN already registered to another organisation",
        "type": "urn:hostry:problem:gstin_in_use"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "waiveCharge",
+   "method": "POST",
+   "path": "/internal/v1/vendor/organisations/{organisation_id}/charges/{charge_id}/waiver",
+   "permission": "admin.subscription.adjust",
+   "world": "subscribed",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "reason": "Duplicate period raised by mistake.",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "waived",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     }

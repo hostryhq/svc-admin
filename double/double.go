@@ -4,7 +4,10 @@
 // to a client: the session cookie, the CSRF token and Origin on state-changing requests, the
 // permission of the signed-in role, Idempotency-Key replays, and the problem+json errors.
 //
-// It is example-driven, not stateful: a list answers its example whatever was created before.
+// It is example-driven, not stateful: a list answers its example whatever was created before. The one
+// exception is single use: an approval executes once (suspendOrganisation, reinstateOrganisation,
+// closeOrganisation, publishTaxRuleSet), the next try answers 409 approval_not_executable with reason
+// "executed"; the other reasons are driven with Fail or X-Double-Scenario: 409:approval.
 // Failure injection (Fail, Delay, the X-Double-Scenario header) lets a client test its error
 // states. Verified by the shared contract suite (api-specs/contracttest) with
 // ExpectExamples set; a double that fails the suite is a bug in the double.
@@ -76,6 +79,8 @@ type Double struct {
 	delay    map[string]time.Duration
 	replays  map[string]stored
 	calls    []Call
+	// spent are the approvals an executing operation already ran: a grant is single use.
+	spent map[string]bool
 }
 
 // Call is one request the double served (for assertions in a client's tests).
@@ -88,7 +93,7 @@ type Call struct {
 func New(o Options) *Double {
 	d := &Double{
 		opt: o, doc: specdata.MustLoad("admin"), sessions: map[string]*session{},
-		failures: map[string][]failure{}, delay: map[string]time.Duration{}, replays: map[string]stored{},
+		failures: map[string][]failure{}, delay: map[string]time.Duration{}, replays: map[string]stored{}, spent: map[string]bool{},
 	}
 	d.sessions[SeedCookie] = &session{perms: allPerms(d.doc), admin: true}
 	return d
@@ -280,6 +285,7 @@ func (d *Double) SeedWorld(_ context.Context, world string) error {
 	d.mu.Lock()
 	d.replays = map[string]stored{}
 	d.failures = map[string][]failure{}
+	d.spent = map[string]bool{}
 	d.mu.Unlock()
 	return nil
 }
@@ -315,7 +321,44 @@ func (d *Double) nextFailure(op string) (failure, bool) {
 	return q[0], true
 }
 
+// executes are the operations that run an approved action by approval_id (ADR-0014 A2.5 item 4).
+var executes = map[string]bool{
+	"suspendOrganisation": true, "reinstateOrganisation": true, "closeOrganisation": true, "publishTaxRuleSet": true,
+}
+
+// spend enforces that an approval executes once: the grant behind it is single use, so a second
+// execution of the same approval is 409 approval_not_executable with reason "executed".
+func (d *Double) spend(w http.ResponseWriter, op *specdata.Operation, body []byte) bool {
+	if !executes[op.ID] {
+		return true
+	}
+	var in struct {
+		ApprovalID string `json:"approval_id"`
+	}
+	_ = json.Unmarshal(body, &in)
+	d.mu.Lock()
+	used := in.ApprovalID != "" && d.spent[in.ApprovalID]
+	if in.ApprovalID != "" {
+		d.spent[in.ApprovalID] = true
+	}
+	d.mu.Unlock()
+	if !used {
+		return true
+	}
+	w.Header().Set("Content-Type", "application/problem+json")
+	w.WriteHeader(http.StatusConflict)
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"type": "urn:hostry:problem:approval_not_executable", "title": "The approval cannot be executed",
+		"status": http.StatusConflict, "code": "approval_not_executable", "reason": "executed",
+	})
+	d.note(op.ID, http.StatusConflict)
+	return false
+}
+
 func (d *Double) success(w http.ResponseWriter, r *http.Request, op *specdata.Operation, key string, body []byte) {
+	if !d.spend(w, op, body) {
+		return
+	}
 	switch op.ID {
 	case "signIn":
 		if !d.signIn(w, r, op, body) {

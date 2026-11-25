@@ -23,6 +23,7 @@ import (
 	"github.com/hostryhq/go-common/apperr"
 	"github.com/hostryhq/go-common/logx"
 
+	"github.com/hostryhq/svc-admin/internal/gen/billing"
 	"github.com/hostryhq/svc-admin/internal/gen/identity"
 	"github.com/hostryhq/svc-admin/internal/gen/tenancy"
 )
@@ -76,6 +77,7 @@ func StatusOf(err error) int {
 type Config struct {
 	IdentityURL string
 	TenancyURL  string
+	BillingURL  string
 	Signer      *auth.ServiceSigner
 	Timeout     time.Duration
 	Base        http.RoundTripper
@@ -89,6 +91,7 @@ type Config struct {
 type Upstream struct {
 	ident   *identity.Client
 	ten     *tenancy.Client
+	bill    *billing.Client
 	retries int
 	sleep   func(ctx context.Context, d time.Duration)
 	http    []*http.Client
@@ -123,7 +126,7 @@ func New(cfg Config) (*Upstream, error) {
 			CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },
 		}
 	}
-	ih, th := mk("identity"), mk("tenancy")
+	ih, th, bh := mk("identity"), mk("tenancy"), mk("billing")
 	ic, err := identity.NewClient(strings.TrimRight(cfg.IdentityURL, "/"), identity.WithHTTPClient(ih), identity.WithRequestEditorFn(editor))
 	if err != nil {
 		return nil, err
@@ -132,7 +135,11 @@ func New(cfg Config) (*Upstream, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Upstream{ident: ic, ten: tc, retries: retries, sleep: sleep, http: []*http.Client{ih, th}}, nil
+	bc, err := billing.NewClient(strings.TrimRight(cfg.BillingURL, "/"), billing.WithHTTPClient(bh), billing.WithRequestEditorFn(editor))
+	if err != nil {
+		return nil, err
+	}
+	return &Upstream{ident: ic, ten: tc, bill: bc, retries: retries, sleep: sleep, http: []*http.Client{ih, th, bh}}, nil
 }
 
 // editor adds the caller's credential and the request id to every call.
@@ -533,12 +540,12 @@ func (u *Upstream) Ping(ctx context.Context) error {
 	for _, c := range []struct {
 		name string
 		base string
-	}{{"identity", u.ident.Server}, {"tenancy", u.ten.Server}} {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.base+"/healthz", nil)
+	}{{"identity", u.ident.Server}, {"tenancy", u.ten.Server}, {"billing", u.bill.Server}} {
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, strings.TrimRight(c.base, "/")+"/healthz", nil)
 		if err != nil {
 			return err
 		}
-		resp, err := u.http[0].Do(req)
+		resp, err := u.http[0].Do(req) // any client: the service token is not needed for /healthz
 		if err != nil {
 			return errors.New(c.name + " unreachable")
 		}

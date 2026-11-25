@@ -21,19 +21,19 @@ lint-tool:
 	GOBIN=$(TOOLS) go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_LINT_VERSION)
 
 # Bundle each spec (inlines shared $refs, output in the git-ignored .build/), then generate:
-#   identity, tenancy: types + client (what admin calls)
+#   identity, tenancy, billing: types + client (what admin calls)
 #   admin:             types + std-http-server (what admin serves)
 # and extract operations and examples for the double and the upstream fakes.
 gen: tools
 	mkdir -p $(BUNDLE)
-	for s in identity tenancy admin; do \
+	for s in identity tenancy billing admin; do \
 	  (cd $(API_SPECS) && npx --yes @redocly/cli@$(REDOCLY_VERSION) bundle openapi/$$s/v1/openapi.yaml -o $(BUNDLE)/$$s.yaml >/dev/null) || exit 1; \
 	done
-	for s in identity tenancy; do \
+	for s in identity tenancy billing; do \
 	  oapi-codegen -generate types,client -package $$s -o internal/gen/$$s/$$s.gen.go $(BUNDLE)/$$s.yaml || exit 1; \
 	done
 	oapi-codegen -generate types,std-http-server -package admin -o internal/gen/admin/admin.gen.go $(BUNDLE)/admin.yaml
-	go run ./cmd/genspec -out internal/specdata $(BUNDLE)/identity.yaml $(BUNDLE)/tenancy.yaml $(BUNDLE)/admin.yaml
+	go run ./cmd/genspec -out internal/specdata $(BUNDLE)/identity.yaml $(BUNDLE)/tenancy.yaml $(BUNDLE)/billing.yaml $(BUNDLE)/admin.yaml
 	git -C $(API_SPECS) rev-parse HEAD > internal/gen/API_SPECS_COMMIT
 	test -z "$$(gofmt -l internal/gen)"
 
