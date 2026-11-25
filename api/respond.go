@@ -12,6 +12,7 @@ import (
 	"github.com/hostryhq/go-common/idempotency"
 	"github.com/hostryhq/go-common/logx"
 
+	"github.com/hostryhq/svc-admin/service"
 	"github.com/hostryhq/svc-admin/upstream"
 )
 
@@ -25,6 +26,7 @@ type rendered struct {
 	status     int
 	body       []byte
 	retryAfter string
+	ctype      string // set for an answer that is neither JSON nor a problem (text/csv)
 }
 
 func (r rendered) response() idempotency.Response {
@@ -68,6 +70,16 @@ func (h *Handler) renderJSON(r *http.Request, status int, v any, o scrubOpts) re
 	return rendered{status: status, body: b}
 }
 
+// renderCSV answers an export. The text is searched for what the deny list forbids anywhere in a
+// body (a full mobile number, an email address): the export is organisation ids and names only.
+func (h *Handler) renderCSV(r *http.Request, status int, b []byte) rendered {
+	if fullMobile.Match(b) || emailLike.Match(b) {
+		h.log.ErrorContext(r.Context(), "export refused by the deny list")
+		return h.renderError(r, errUnavailable)
+	}
+	return rendered{status: status, body: b, ctype: "text/csv; charset=utf-8"}
+}
+
 var errUnavailable = apperr.New(apperr.Unavailable, "upstream_unavailable", "")
 
 // renderError maps any error to a problem+json answer. Upstream refusals keep their sanitised
@@ -87,6 +99,15 @@ func (h *Handler) renderError(r *http.Request, err error) rendered {
 		b, _ := json.Marshal(p)
 		return rendered{status: p.Status, body: b, retryAfter: ue.RetryAfter}
 	}
+	var nx *service.NotExecutableError
+	if errors.As(err, &nx) {
+		p := apperr.ToProblem(r, err)
+		b, _ := json.Marshal(struct {
+			apperr.Problem
+			Reason string `json:"reason"`
+		}{p, nx.Reason})
+		return rendered{status: p.Status, body: b}
+	}
 	if ue != nil { // unavailable upstream
 		err = errUnavailable
 	}
@@ -103,6 +124,8 @@ func (h *Handler) write(w http.ResponseWriter, r rendered) {
 		ct := jsonCT
 		if r.status >= 400 {
 			ct = problemCT
+		} else if r.ctype != "" {
+			ct = r.ctype
 		}
 		w.Header().Set("Content-Type", ct)
 	}
@@ -128,6 +151,7 @@ type scrubOpts struct {
 
 var (
 	// A full Indian mobile number, with or without the country code, anywhere in a string.
+	emailLike  = regexp.MustCompile(`[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}`)
 	fullMobile = regexp.MustCompile(`(\+91|\b)[6-9][0-9]{9}\b`)
 	deniedKeys = map[string]bool{
 		"mobile_e164": true, "phone": true, "mobile": true, "phone_number": true,

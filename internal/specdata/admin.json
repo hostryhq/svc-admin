@@ -4,14 +4,128 @@
   "account-setup-pending",
   "approval-pending",
   "base",
+  "charge-overdue",
   "device-revoked",
   "empty",
+  "org-active-approved-close",
+  "org-active-approved-suspend",
   "org-no-owner",
+  "org-suspended-approved-reinstate",
+  "payment-recorded",
+  "plan-active",
+  "plan-seeded",
+  "rule-set-draft",
+  "rule-set-signed-approved",
   "session-open",
   "signin-code-approved",
+  "subscribed",
   "support-session-active"
  ],
  "operations": [
+  {
+   "id": "activatePlanVersion",
+   "method": "POST",
+   "path": "/v1/plans/{plan_key}/versions/{version}/activation",
+   "permission": "admin.plan.manage",
+   "world": "plan-seeded",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "activated_at": "2026-11-24T13:05:11.120Z",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "feature_keys": [
+        "restaurant.core",
+        "restaurant.kds",
+        "restaurant.captain",
+        "restaurant.reports.core"
+       ],
+       "included_outlets": 1,
+       "prices": [
+        {
+         "cycle": "monthly",
+         "list_price": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         }
+        }
+       ],
+       "state": "active",
+       "version": 1
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
   {
    "id": "approveVendorApproval",
    "method": "PUT",
@@ -192,6 +306,143 @@
    ]
   },
   {
+   "id": "cancelCharge",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/charges/{charge_id}/cancellation",
+   "permission": "admin.subscription.adjust",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "reason": "Duplicate period raised by mistake.",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "cancelled",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "cancelOwnerInvitation",
    "method": "PUT",
    "path": "/v1/organisations/{organisation_id}/owner-invitations/{invitation_id}/cancellation",
@@ -270,6 +521,126 @@
        "status": 409,
        "title": "The organisation already has an owner",
        "type": "urn:hostry:problem:owner_exists"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "cancelSubscription",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/subscription/cancellation",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "addons": [],
+       "agreed_price": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "cancel_at_period_end": true,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "cycle": "monthly",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outlets_over_limit": false,
+       "overdue": false,
+       "paid_through": "2026-12-31",
+       "plan_key": "table_service",
+       "plan_version": 1,
+       "start_date": "2026-12-01",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     },
@@ -407,6 +778,126 @@
    ]
   },
   {
+   "id": "changeSubscription",
+   "method": "PUT",
+   "path": "/v1/organisations/{organisation_id}/subscription",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "addons": [],
+       "agreed_price": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "cancel_at_period_end": false,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "cycle": "annual",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outlets_over_limit": false,
+       "overdue": false,
+       "paid_through": "2026-12-31",
+       "plan_key": "table_service",
+       "plan_version": 1,
+       "start_date": "2026-12-01",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "claimCodeHalf",
    "method": "POST",
    "path": "/v1/approvals/{approval_id}/code-half-claims",
@@ -499,6 +990,131 @@
    ]
   },
   {
+   "id": "closeOrganisation",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/closure",
+   "permission": "admin.org.lifecycle.approve",
+   "world": "org-active-approved-close",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "changed_at": "2026-11-24T13:05:11.120Z",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "status": "closed"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_not_executable",
+       "reason": "not_approved",
+       "status": 409,
+       "title": "The approval cannot be executed",
+       "type": "urn:hostry:problem:approval_not_executable"
+      },
+      "state": {
+       "code": "conflict",
+       "status": 409,
+       "title": "The state does not allow this",
+       "type": "urn:hostry:problem:conflict"
+      },
+      "trading": {
+       "code": "open_trading_day",
+       "status": 409,
+       "title": "A trading day is in progress",
+       "type": "urn:hostry:problem:open_trading_day"
+      },
+      "unsigned": {
+       "code": "not_signed",
+       "status": 409,
+       "title": "The rule set is not signed",
+       "type": "urn:hostry:problem:not_signed"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "completeAccountSetup",
    "method": "POST",
    "path": "/v1/account-setup-completions",
@@ -547,6 +1163,105 @@
      "headers": [
       "Retry-After"
      ]
+    }
+   ]
+  },
+  {
+   "id": "createBillingConfiguration",
+   "method": "POST",
+   "path": "/v1/billing-configurations",
+   "permission": "admin.plan.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_from": "2026-12-01",
+       "gst_rate_bp": 1800,
+       "gst_registered": true,
+       "hostry_state_code": "33",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8041",
+       "payment_terms_days": 7,
+       "payment_tolerance_paise": 99,
+       "sac": "997331"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
     }
    ]
   },
@@ -806,6 +1521,356 @@
    ]
   },
   {
+   "id": "createPlan",
+   "method": "POST",
+   "path": "/v1/plans",
+   "permission": "admin.plan.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "key": "table_service",
+       "name_key": "plan.table_service",
+       "versions": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "feature_keys": [
+          "restaurant.core",
+          "restaurant.kds",
+          "restaurant.captain",
+          "restaurant.reports.core"
+         ],
+         "included_outlets": 1,
+         "prices": [
+          {
+           "cycle": "monthly",
+           "list_price": {
+            "amount_paise": 129900,
+            "currency": "INR"
+           }
+          }
+         ],
+         "state": "draft",
+         "version": 1
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createPlanVersion",
+   "method": "POST",
+   "path": "/v1/plans/{plan_key}/versions",
+   "permission": "admin.plan.manage",
+   "world": "plan-seeded",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "feature_keys": [
+        "restaurant.core",
+        "restaurant.kds",
+        "restaurant.captain",
+        "restaurant.reports.core"
+       ],
+       "included_outlets": 1,
+       "prices": [
+        {
+         "cycle": "monthly",
+         "list_price": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         }
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "createTaxRuleSetDraft",
+   "method": "POST",
+   "path": "/v1/tax-rule-sets",
+   "permission": "admin.taxrules.manage",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "unreviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "createVendorUser",
    "method": "POST",
    "path": "/v1/vendor-users",
@@ -903,6 +1968,85 @@
    ]
   },
   {
+   "id": "deleteTaxRuleSetDraft",
+   "method": "DELETE",
+   "path": "/v1/tax-rule-sets/{rule_set_id}",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "security": [],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "endSupportSession",
    "method": "DELETE",
    "path": "/v1/support-sessions/current",
@@ -940,6 +2084,84 @@
        "status": 403,
        "title": "Permission denied",
        "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "exportLedger",
+   "method": "GET",
+   "path": "/v1/ledger-exports",
+   "permission": "admin.report.ledger",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "text/csv",
+     "examples": {
+      "default": "organisation_id,organisation_name,period_start,period_end,taxable_paise,total_paise,due_date,invoice_number,status,outstanding_paise\n"
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     },
@@ -1067,6 +2289,111 @@
        "status": 422,
        "title": "Validation failed",
        "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getCharge",
+   "method": "GET",
+   "path": "/v1/organisations/{organisation_id}/charges/{charge_id}",
+   "permission": "admin.subscription.read",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "open",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
       }
      }
     },
@@ -1236,6 +2563,196 @@
      "content_type": "application/problem+json",
      "examples": {
       "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getOrganisationSubscription",
+   "method": "GET",
+   "path": "/v1/organisations/{organisation_id}/subscription",
+   "permission": "admin.subscription.read",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "current": {
+        "addons": [],
+        "agreed_price": {
+         "amount_paise": 129900,
+         "currency": "INR"
+        },
+        "cancel_at_period_end": false,
+        "created_at": "2026-11-24T13:05:11.120Z",
+        "cycle": "monthly",
+        "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+        "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+        "outlets_over_limit": false,
+        "overdue": false,
+        "paid_through": "2026-12-31",
+        "plan_key": "table_service",
+        "plan_version": 1,
+        "start_date": "2026-12-01",
+        "state": "active"
+       },
+       "history": []
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getPlan",
+   "method": "GET",
+   "path": "/v1/plans/{plan_key}",
+   "permission": "admin.subscription.read",
+   "world": "plan-seeded",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "key": "table_service",
+       "name_key": "plan.table_service",
+       "versions": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "feature_keys": [
+          "restaurant.core",
+          "restaurant.kds",
+          "restaurant.captain",
+          "restaurant.reports.core"
+         ],
+         "included_outlets": 1,
+         "prices": [
+          {
+           "cycle": "monthly",
+           "list_price": {
+            "amount_paise": 129900,
+            "currency": "INR"
+           }
+          }
+         ],
+         "state": "draft",
+         "version": 1
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
        "code": "forbidden",
        "status": 403,
        "title": "Permission denied",
@@ -1559,6 +3076,100 @@
    ]
   },
   {
+   "id": "getTaxRuleSetMaster",
+   "method": "GET",
+   "path": "/v1/tax-rule-sets/{rule_set_id}",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "unreviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "getVendorApproval",
    "method": "GET",
    "path": "/v1/approvals/{approval_id}",
@@ -1691,6 +3302,436 @@
        "status": 403,
        "title": "Permission denied",
        "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listBillingConfigurations",
+   "method": "GET",
+   "path": "/v1/billing-configurations",
+   "permission": "admin.subscription.read",
+   "world": "plan-seeded",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "effective_from": "2026-12-01",
+         "gst_rate_bp": 1800,
+         "gst_registered": true,
+         "hostry_state_code": "33",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8041",
+         "payment_terms_days": 7,
+         "payment_tolerance_paise": 99,
+         "sac": "997331"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listChargePayments",
+   "method": "GET",
+   "path": "/v1/organisations/{organisation_id}/charges/{charge_id}/payments",
+   "permission": "admin.subscription.read",
+   "world": "payment-recorded",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "amount": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         },
+         "charge_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8031",
+         "method": "upi",
+         "received_on": "2026-12-02",
+         "recorded_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+         "reference": "UTR1234567890"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listCharges",
+   "method": "GET",
+   "path": "/v1/organisations/{organisation_id}/charges",
+   "permission": "admin.subscription.read",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "cgst": {
+          "amount_paise": 11691,
+          "currency": "INR"
+         },
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "due_date": "2026-12-08",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+         "igst": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "kind": "period",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "outstanding": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         },
+         "period_end": "2026-12-31",
+         "period_start": "2026-12-01",
+         "sgst": {
+          "amount_paise": 11691,
+          "currency": "INR"
+         },
+         "status": "open",
+         "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+         "taxable": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         },
+         "total": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         }
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listLedgerEntries",
+   "method": "GET",
+   "path": "/v1/ledger-lists/{list_kind}",
+   "permission": "admin.subscription.read",
+   "world": "charge-overdue",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "age_days": 3,
+         "amount": {
+          "amount_paise": 153282,
+          "currency": "INR"
+         },
+         "due_date": "2026-12-08",
+         "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+         "organisation_name": "Example Hospitality",
+         "subject_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     },
@@ -1927,6 +3968,115 @@
        "status": 404,
        "title": "Not found",
        "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listPlans",
+   "method": "GET",
+   "path": "/v1/plans",
+   "permission": "admin.subscription.read",
+   "world": "plan-seeded",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "key": "table_service",
+         "name_key": "plan.table_service",
+         "versions": [
+          {
+           "created_at": "2026-11-24T13:05:11.120Z",
+           "feature_keys": [
+            "restaurant.core",
+            "restaurant.kds",
+            "restaurant.captain",
+            "restaurant.reports.core"
+           ],
+           "included_outlets": 1,
+           "prices": [
+            {
+             "cycle": "monthly",
+             "list_price": {
+              "amount_paise": 129900,
+              "currency": "INR"
+             }
+            }
+           ],
+           "state": "draft",
+           "version": 1
+          }
+         ]
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     },
@@ -2700,6 +4850,111 @@
    ]
   },
   {
+   "id": "listTaxRuleSetMasters",
+   "method": "GET",
+   "path": "/v1/tax-rule-sets",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "calc_v": 1,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "effective_date": "2026-12-15",
+         "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+         "name": "GST restaurant services 2026 B",
+         "review_status": "unreviewed",
+         "revision": 1,
+         "rules": [
+          {
+           "cgst_bp": 250,
+           "doc_type": "tax_invoice",
+           "gst_applies": true,
+           "igst_bp": 0,
+           "order_channel": "dine_in",
+           "regime": "regular",
+           "sgst_bp": 250,
+           "specified_premises": false,
+           "tax_class": "fnb_standard"
+          }
+         ],
+         "state": "draft",
+         "version": 2
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "listVendorApprovals",
    "method": "GET",
    "path": "/v1/approvals",
@@ -2829,6 +5084,612 @@
        "status": 403,
        "title": "Permission denied",
        "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "publishTaxRuleSet",
+   "method": "POST",
+   "path": "/v1/tax-rule-sets/{rule_set_id}/publication",
+   "permission": "admin.taxrules.publish",
+   "world": "rule-set-signed-approved",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "organisations_total": 3,
+       "published_at": "2026-11-24T13:09:40.000Z",
+       "review_status": "reviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "signoff": {
+        "reference_note": "CA advice note 2026-11 ref 12",
+        "reviewer_name": "A. Reviewer",
+        "signed_on": "2026-11-20"
+       },
+       "state": "published",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_not_executable",
+       "reason": "not_approved",
+       "status": 409,
+       "title": "The approval cannot be executed",
+       "type": "urn:hostry:problem:approval_not_executable"
+      },
+      "state": {
+       "code": "conflict",
+       "status": 409,
+       "title": "The state does not allow this",
+       "type": "urn:hostry:problem:conflict"
+      },
+      "trading": {
+       "code": "open_trading_day",
+       "status": 409,
+       "title": "A trading day is in progress",
+       "type": "urn:hostry:problem:open_trading_day"
+      },
+      "unsigned": {
+       "code": "not_signed",
+       "status": 409,
+       "title": "The rule set is not signed",
+       "type": "urn:hostry:problem:not_signed"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "effective_date_too_soon",
+       "status": 422,
+       "title": "Effective date too soon",
+       "type": "urn:hostry:problem:effective_date_too_soon"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "raiseCharge",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/charges",
+   "permission": "admin.subscription.manage",
+   "world": "plan-active",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "open",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "recordPayment",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/charges/{charge_id}/payments",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "amount": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "charge_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8031",
+       "method": "upi",
+       "received_on": "2026-12-02",
+       "recorded_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+       "reference": "UTR1234567890"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "overpayment",
+       "status": 422,
+       "title": "Payment exceeds outstanding",
+       "type": "urn:hostry:problem:overpayment"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "reinstateOrganisation",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/reinstatement",
+   "permission": "admin.org.lifecycle.approve",
+   "world": "org-suspended-approved-reinstate",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "changed_at": "2026-11-24T13:05:11.120Z",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "status": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_not_executable",
+       "reason": "not_approved",
+       "status": 409,
+       "title": "The approval cannot be executed",
+       "type": "urn:hostry:problem:approval_not_executable"
+      },
+      "state": {
+       "code": "conflict",
+       "status": 409,
+       "title": "The state does not allow this",
+       "type": "urn:hostry:problem:conflict"
+      },
+      "trading": {
+       "code": "open_trading_day",
+       "status": 409,
+       "title": "A trading day is in progress",
+       "type": "urn:hostry:problem:open_trading_day"
+      },
+      "unsigned": {
+       "code": "not_signed",
+       "status": 409,
+       "title": "The rule set is not signed",
+       "type": "urn:hostry:problem:not_signed"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "rejectTaxRegistration",
+   "method": "PUT",
+   "path": "/v1/organisations/{organisation_id}/tax-registrations/{registration_id}/rejection",
+   "permission": "admin.registration.verify",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "gstin": "33ABCDE1234F1Z7",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b",
+       "legal_name": "Example Hospitality Pvt Ltd",
+       "regime": "regular",
+       "state_code": "33",
+       "status": "open",
+       "verification": {
+        "rejected_at": "2026-11-24T13:10:11.120Z",
+        "state": "rejected"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "gstin": {
+       "code": "gstin_in_use",
+       "status": 409,
+       "title": "GSTIN already registered to another organisation",
+       "type": "urn:hostry:problem:gstin_in_use"
       }
      }
     },
@@ -3021,6 +5882,226 @@
    ]
   },
   {
+   "id": "retirePlanVersion",
+   "method": "POST",
+   "path": "/v1/plans/{plan_key}/versions/{version}/retirement",
+   "permission": "admin.plan.manage",
+   "world": "plan-active",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "feature_keys": [
+        "restaurant.core",
+        "restaurant.kds",
+        "restaurant.captain",
+        "restaurant.reports.core"
+       ],
+       "included_outlets": 1,
+       "prices": [
+        {
+         "cycle": "monthly",
+         "list_price": {
+          "amount_paise": 129900,
+          "currency": "INR"
+         }
+        }
+       ],
+       "retired_at": "2026-11-24T13:05:11.120Z",
+       "state": "retired",
+       "version": 1
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "reversePayment",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/charges/{charge_id}/payments/{payment_id}/reversal",
+   "permission": "admin.subscription.adjust",
+   "world": "payment-recorded",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "amount": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "charge_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8032",
+       "method": "upi",
+       "reason": "Duplicate period raised by mistake.",
+       "received_on": "2026-12-02",
+       "recorded_by": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a78",
+       "reference": "UTR1234567890",
+       "reversal_of": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8031"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "revokeOrganisationDevice",
    "method": "PUT",
    "path": "/v1/organisations/{organisation_id}/devices/{device_id}/revocation",
@@ -3098,6 +6179,146 @@
        "status": 409,
        "title": "A second vendor approver is required",
        "type": "urn:hostry:problem:vendor_approval_required"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "setChargeInvoiceReference",
+   "method": "PUT",
+   "path": "/v1/organisations/{organisation_id}/charges/{charge_id}/invoice-reference",
+   "permission": "admin.subscription.manage",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "invoice_reference": {
+        "date": "2026-12-01",
+        "number": "HQ/2627/0042"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "open",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
       }
      }
     },
@@ -3244,6 +6465,256 @@
    ]
   },
   {
+   "id": "signTaxRuleSet",
+   "method": "POST",
+   "path": "/v1/tax-rule-sets/{rule_set_id}/signature",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "reviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "signoff": {
+        "reference_note": "CA advice note 2026-11 ref 12",
+        "reviewer_name": "A. Reviewer",
+        "signed_on": "2026-11-20"
+       },
+       "state": "signed",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "startSubscription",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/subscription",
+   "permission": "admin.subscription.start",
+   "world": "plan-active",
+   "security": [],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "addons": [],
+       "agreed_price": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "cancel_at_period_end": false,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "cycle": "monthly",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outlets_over_limit": false,
+       "overdue": false,
+       "paid_through": "2026-12-31",
+       "plan_key": "table_service",
+       "plan_version": 1,
+       "start_date": "2026-12-01",
+       "state": "active"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "startSupportSession",
    "method": "POST",
    "path": "/v1/support-sessions",
@@ -3332,6 +6803,268 @@
        "status": 422,
        "title": "Act mode is not supported",
        "type": "urn:hostry:problem:mode_not_supported"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "suspendOrganisation",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/suspension",
+   "permission": "admin.org.lifecycle.approve",
+   "world": "org-active-approved-suspend",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "changed_at": "2026-11-24T13:05:11.120Z",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "status": "suspended"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "approval": {
+       "code": "approval_not_executable",
+       "reason": "not_approved",
+       "status": 409,
+       "title": "The approval cannot be executed",
+       "type": "urn:hostry:problem:approval_not_executable"
+      },
+      "state": {
+       "code": "conflict",
+       "status": 409,
+       "title": "The state does not allow this",
+       "type": "urn:hostry:problem:conflict"
+      },
+      "trading": {
+       "code": "open_trading_day",
+       "status": 409,
+       "title": "A trading day is in progress",
+       "type": "urn:hostry:problem:open_trading_day"
+      },
+      "unsigned": {
+       "code": "not_signed",
+       "status": 409,
+       "title": "The rule set is not signed",
+       "type": "urn:hostry:problem:not_signed"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateTaxRuleSetDraft",
+   "method": "PATCH",
+   "path": "/v1/tax-rule-sets/{rule_set_id}",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "unreviewed",
+       "revision": 2,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 412,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "precondition_failed",
+       "status": 412,
+       "title": "Stale version",
+       "type": "urn:hostry:problem:precondition_failed"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     },
@@ -3465,6 +7198,94 @@
    ]
   },
   {
+   "id": "validateTaxRuleSet",
+   "method": "POST",
+   "path": "/v1/tax-rule-sets/{rule_set_id}/validation",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "errors": [],
+       "valid": true,
+       "vectors_passed": 65,
+       "vectors_total": 65
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
    "id": "verifyTaxRegistration",
    "method": "PUT",
    "path": "/v1/organisations/{organisation_id}/tax-registrations/{registration_id}/verification",
@@ -3542,6 +7363,143 @@
        "status": 409,
        "title": "GSTIN already registered to another organisation",
        "type": "urn:hostry:problem:gstin_in_use"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "up": {
+       "code": "upstream_unavailable",
+       "status": 503,
+       "title": "A required service is unavailable",
+       "type": "urn:hostry:problem:upstream_unavailable"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "waiveCharge",
+   "method": "POST",
+   "path": "/v1/organisations/{organisation_id}/charges/{charge_id}/waiver",
+   "permission": "admin.subscription.adjust",
+   "world": "subscribed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "cgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "due_date": "2026-12-08",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8021",
+       "igst": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "kind": "period",
+       "organisation_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a60",
+       "outstanding": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "period_end": "2026-12-31",
+       "period_start": "2026-12-01",
+       "reason": "Duplicate period raised by mistake.",
+       "sgst": {
+        "amount_paise": 11691,
+        "currency": "INR"
+       },
+       "status": "waived",
+       "subscription_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f8011",
+       "taxable": {
+        "amount_paise": 129900,
+        "currency": "INR"
+       },
+       "total": {
+        "amount_paise": 153282,
+        "currency": "INR"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "csrf": {
+       "code": "csrf_failed",
+       "status": 403,
+       "title": "Request refused",
+       "type": "urn:hostry:problem:csrf_failed"
+      },
+      "forbidden": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
       }
      }
     },

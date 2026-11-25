@@ -48,7 +48,7 @@ func run() error {
 		return err
 	}
 	up, err := upstream.New(upstream.Config{
-		IdentityURL: cfg.IdentityURL, TenancyURL: cfg.TenancyURL, Timeout: cfg.UpstreamTimeout,
+		IdentityURL: cfg.IdentityURL, TenancyURL: cfg.TenancyURL, BillingURL: cfg.BillingURL, Timeout: cfg.UpstreamTimeout,
 		Signer: &auth.ServiceSigner{Name: "admin", Key: key},
 	})
 	if err != nil {

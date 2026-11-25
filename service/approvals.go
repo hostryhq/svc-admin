@@ -173,7 +173,11 @@ func (s *Service) ApproveVendorApproval(ctx context.Context, sess *repository.Se
 		}
 		sess.Unlock()
 	}
-	return admin.ApprovalDecisionView{Approval: dec.Approval, CodeHalf: dec.CodeHalf}, nil
+	view := admin.ApprovalDecisionView{Approval: dec.Approval, CodeHalf: dec.CodeHalf}
+	if dec.Grant != nil && dec.Grant.Token != "" {
+		view.Execution = s.executeAtApproval(ctx, sess, dec.Approval)
+	}
+	return view, nil
 }
 
 // TakeGrant returns the unused, unexpired grant of an approved approval and forgets it (single

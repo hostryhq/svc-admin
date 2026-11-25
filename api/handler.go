@@ -185,6 +185,8 @@ type outcome struct {
 	// noStore keeps the answer out of the idempotency store, so replaying the same key re-runs the
 	// operation (an onboarding that ended "incomplete" is completed by replaying it).
 	noStore bool
+	// csv, when set, is the whole answer (text/csv); it passes the deny list as text.
+	csv []byte
 }
 
 // read runs a GET: admit, run, answer.
@@ -196,6 +198,10 @@ func (h *Handler) read(w http.ResponseWriter, r *http.Request, a access, fn func
 	o, err := fn(q)
 	if err != nil {
 		h.fail(w, q.r, err)
+		return
+	}
+	if o.csv != nil {
+		h.write(w, h.renderCSV(q.r, o.status, o.csv))
 		return
 	}
 	h.write(w, h.renderJSON(q.r, o.status, o.v, o.scrub))

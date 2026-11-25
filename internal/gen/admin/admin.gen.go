@@ -15,6 +15,24 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for ApprovalDecisionViewExecutionState.
+const (
+	ApprovalDecisionViewExecutionStateExecuted ApprovalDecisionViewExecutionState = "executed"
+	ApprovalDecisionViewExecutionStateRefused  ApprovalDecisionViewExecutionState = "refused"
+)
+
+// Valid indicates whether the value is a known member of the ApprovalDecisionViewExecutionState enum.
+func (e ApprovalDecisionViewExecutionState) Valid() bool {
+	switch e {
+	case ApprovalDecisionViewExecutionStateExecuted:
+		return true
+	case ApprovalDecisionViewExecutionStateRefused:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for ApprovalKind.
 const (
 	DeviceRevokeOverQuota ApprovalKind = "device_revoke_over_quota"
@@ -48,6 +66,27 @@ func (e ApprovalKind) Valid() bool {
 	}
 }
 
+// Defines values for BillDocType.
+const (
+	BillDocTypeBillOfSupply BillDocType = "bill_of_supply"
+	BillDocTypePlainBill    BillDocType = "plain_bill"
+	BillDocTypeTaxInvoice   BillDocType = "tax_invoice"
+)
+
+// Valid indicates whether the value is a known member of the BillDocType enum.
+func (e BillDocType) Valid() bool {
+	switch e {
+	case BillDocTypeBillOfSupply:
+		return true
+	case BillDocTypePlainBill:
+		return true
+	case BillDocTypeTaxInvoice:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for BillingCapability.
 const (
 	BillingCapabilityActive  BillingCapability = "active"
@@ -69,6 +108,48 @@ func (e BillingCapability) Valid() bool {
 	}
 }
 
+// Defines values for ChargeKind.
+const (
+	ChargeKindExtra  ChargeKind = "extra"
+	ChargeKindPeriod ChargeKind = "period"
+)
+
+// Valid indicates whether the value is a known member of the ChargeKind enum.
+func (e ChargeKind) Valid() bool {
+	switch e {
+	case ChargeKindExtra:
+		return true
+	case ChargeKindPeriod:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ChargeStatus.
+const (
+	ChargeStatusCancelled ChargeStatus = "cancelled"
+	ChargeStatusOpen      ChargeStatus = "open"
+	ChargeStatusPaid      ChargeStatus = "paid"
+	ChargeStatusWaived    ChargeStatus = "waived"
+)
+
+// Valid indicates whether the value is a known member of the ChargeStatus enum.
+func (e ChargeStatus) Valid() bool {
+	switch e {
+	case ChargeStatusCancelled:
+		return true
+	case ChargeStatusOpen:
+		return true
+	case ChargeStatusPaid:
+		return true
+	case ChargeStatusWaived:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for CodeHalfPosition.
 const (
 	First  CodeHalfPosition = "first"
@@ -81,6 +162,27 @@ func (e CodeHalfPosition) Valid() bool {
 	case First:
 		return true
 	case Second:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for Cycle.
+const (
+	CycleAnnual  Cycle = "annual"
+	CycleMonthly Cycle = "monthly"
+	CycleNone    Cycle = "none"
+)
+
+// Valid indicates whether the value is a known member of the Cycle enum.
+func (e Cycle) Valid() bool {
+	switch e {
+	case CycleAnnual:
+		return true
+	case CycleMonthly:
+		return true
+	case CycleNone:
 		return true
 	default:
 		return false
@@ -182,22 +284,22 @@ func (e DirectoryRegistrationVerificationState) Valid() bool {
 
 // Defines values for DocType.
 const (
-	BillOfSupply DocType = "bill_of_supply"
-	CreditNote   DocType = "credit_note"
-	PlainBill    DocType = "plain_bill"
-	TaxInvoice   DocType = "tax_invoice"
+	DocTypeBillOfSupply DocType = "bill_of_supply"
+	DocTypeCreditNote   DocType = "credit_note"
+	DocTypePlainBill    DocType = "plain_bill"
+	DocTypeTaxInvoice   DocType = "tax_invoice"
 )
 
 // Valid indicates whether the value is a known member of the DocType enum.
 func (e DocType) Valid() bool {
 	switch e {
-	case BillOfSupply:
+	case DocTypeBillOfSupply:
 		return true
-	case CreditNote:
+	case DocTypeCreditNote:
 		return true
-	case PlainBill:
+	case DocTypePlainBill:
 		return true
-	case TaxInvoice:
+	case DocTypeTaxInvoice:
 		return true
 	default:
 		return false
@@ -270,6 +372,36 @@ func (e KeyProtection) Valid() bool {
 	}
 }
 
+// Defines values for LedgerListKind.
+const (
+	ChargesToRaise                 LedgerListKind = "charges_to_raise"
+	ChargesWithoutInvoiceReference LedgerListKind = "charges_without_invoice_reference"
+	OutletsOverLimit               LedgerListKind = "outlets_over_limit"
+	OverdueCharges                 LedgerListKind = "overdue_charges"
+	PilotsEnding                   LedgerListKind = "pilots_ending"
+	RetiredVersionSubscriptions    LedgerListKind = "retired_version_subscriptions"
+)
+
+// Valid indicates whether the value is a known member of the LedgerListKind enum.
+func (e LedgerListKind) Valid() bool {
+	switch e {
+	case ChargesToRaise:
+		return true
+	case ChargesWithoutInvoiceReference:
+		return true
+	case OutletsOverLimit:
+		return true
+	case OverdueCharges:
+		return true
+	case PilotsEnding:
+		return true
+	case RetiredVersionSubscriptions:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for MemberStatus.
 const (
 	MemberStatusActive    MemberStatus = "active"
@@ -285,6 +417,21 @@ func (e MemberStatus) Valid() bool {
 	case MemberStatusInvited:
 		return true
 	case MemberStatusSuspended:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for MoneyCurrency.
+const (
+	INR MoneyCurrency = "INR"
+)
+
+// Valid indicates whether the value is a known member of the MoneyCurrency enum.
+func (e MoneyCurrency) Valid() bool {
+	switch e {
+	case INR:
 		return true
 	default:
 		return false
@@ -465,6 +612,69 @@ func (e OwnerStatus) Valid() bool {
 	}
 }
 
+// Defines values for PaymentMethod.
+const (
+	BankTransfer PaymentMethod = "bank_transfer"
+	Cash         PaymentMethod = "cash"
+	Cheque       PaymentMethod = "cheque"
+	Upi          PaymentMethod = "upi"
+)
+
+// Valid indicates whether the value is a known member of the PaymentMethod enum.
+func (e PaymentMethod) Valid() bool {
+	switch e {
+	case BankTransfer:
+		return true
+	case Cash:
+		return true
+	case Cheque:
+		return true
+	case Upi:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for PlanVersionState.
+const (
+	PlanVersionStateActive  PlanVersionState = "active"
+	PlanVersionStateDraft   PlanVersionState = "draft"
+	PlanVersionStateRetired PlanVersionState = "retired"
+)
+
+// Valid indicates whether the value is a known member of the PlanVersionState enum.
+func (e PlanVersionState) Valid() bool {
+	switch e {
+	case PlanVersionStateActive:
+		return true
+	case PlanVersionStateDraft:
+		return true
+	case PlanVersionStateRetired:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RaiseChargeKind.
+const (
+	RaiseChargeKindExtra  RaiseChargeKind = "extra"
+	RaiseChargeKindPeriod RaiseChargeKind = "period"
+)
+
+// Valid indicates whether the value is a known member of the RaiseChargeKind enum.
+func (e RaiseChargeKind) Valid() bool {
+	switch e {
+	case RaiseChargeKindExtra:
+		return true
+	case RaiseChargeKindPeriod:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for RequesterVerification.
 const (
 	RequesterVerificationCallbackToRegisteredNumber RequesterVerification = "callback_to_registered_number"
@@ -498,6 +708,27 @@ func (e StartSupportMode) Valid() bool {
 	case StartSupportModeAct:
 		return true
 	case StartSupportModeView:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for SubscriptionState.
+const (
+	SubscriptionStateActive    SubscriptionState = "active"
+	SubscriptionStateCancelled SubscriptionState = "cancelled"
+	SubscriptionStatePilot     SubscriptionState = "pilot"
+)
+
+// Valid indicates whether the value is a known member of the SubscriptionState enum.
+func (e SubscriptionState) Valid() bool {
+	switch e {
+	case SubscriptionStateActive:
+		return true
+	case SubscriptionStateCancelled:
+		return true
+	case SubscriptionStatePilot:
 		return true
 	default:
 		return false
@@ -542,19 +773,19 @@ func (e SupportSessionStatus) Valid() bool {
 
 // Defines values for TaxRegime.
 const (
-	Composition  TaxRegime = "composition"
-	Regular      TaxRegime = "regular"
-	Unregistered TaxRegime = "unregistered"
+	TaxRegimeComposition  TaxRegime = "composition"
+	TaxRegimeRegular      TaxRegime = "regular"
+	TaxRegimeUnregistered TaxRegime = "unregistered"
 )
 
 // Valid indicates whether the value is a known member of the TaxRegime enum.
 func (e TaxRegime) Valid() bool {
 	switch e {
-	case Composition:
+	case TaxRegimeComposition:
 		return true
-	case Regular:
+	case TaxRegimeRegular:
 		return true
-	case Unregistered:
+	case TaxRegimeUnregistered:
 		return true
 	default:
 		return false
@@ -573,6 +804,90 @@ func (e TaxRegistrationStatus) Valid() bool {
 	case TaxRegistrationStatusClosed:
 		return true
 	case TaxRegistrationStatusOpen:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TaxRuleOrderChannel.
+const (
+	Counter  TaxRuleOrderChannel = "counter"
+	DineIn   TaxRuleOrderChannel = "dine_in"
+	Eco      TaxRuleOrderChannel = "eco"
+	Takeaway TaxRuleOrderChannel = "takeaway"
+)
+
+// Valid indicates whether the value is a known member of the TaxRuleOrderChannel enum.
+func (e TaxRuleOrderChannel) Valid() bool {
+	switch e {
+	case Counter:
+		return true
+	case DineIn:
+		return true
+	case Eco:
+		return true
+	case Takeaway:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TaxRuleRegime.
+const (
+	TaxRuleRegimeComposition  TaxRuleRegime = "composition"
+	TaxRuleRegimeRegular      TaxRuleRegime = "regular"
+	TaxRuleRegimeUnregistered TaxRuleRegime = "unregistered"
+)
+
+// Valid indicates whether the value is a known member of the TaxRuleRegime enum.
+func (e TaxRuleRegime) Valid() bool {
+	switch e {
+	case TaxRuleRegimeComposition:
+		return true
+	case TaxRuleRegimeRegular:
+		return true
+	case TaxRuleRegimeUnregistered:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TaxRuleSetMasterReviewStatus.
+const (
+	Reviewed   TaxRuleSetMasterReviewStatus = "reviewed"
+	Unreviewed TaxRuleSetMasterReviewStatus = "unreviewed"
+)
+
+// Valid indicates whether the value is a known member of the TaxRuleSetMasterReviewStatus enum.
+func (e TaxRuleSetMasterReviewStatus) Valid() bool {
+	switch e {
+	case Reviewed:
+		return true
+	case Unreviewed:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TaxRuleSetMasterState.
+const (
+	TaxRuleSetMasterStateDraft     TaxRuleSetMasterState = "draft"
+	TaxRuleSetMasterStatePublished TaxRuleSetMasterState = "published"
+	TaxRuleSetMasterStateSigned    TaxRuleSetMasterState = "signed"
+)
+
+// Valid indicates whether the value is a known member of the TaxRuleSetMasterState enum.
+func (e TaxRuleSetMasterState) Valid() bool {
+	switch e {
+	case TaxRuleSetMasterStateDraft:
+		return true
+	case TaxRuleSetMasterStatePublished:
+		return true
+	case TaxRuleSetMasterStateSigned:
 		return true
 	default:
 		return false
@@ -629,19 +944,19 @@ func (e VendorApprovalState) Valid() bool {
 
 // Defines values for VendorAuditEntryResult.
 const (
-	Failed    VendorAuditEntryResult = "failed"
-	Refused   VendorAuditEntryResult = "refused"
-	Succeeded VendorAuditEntryResult = "succeeded"
+	VendorAuditEntryResultFailed    VendorAuditEntryResult = "failed"
+	VendorAuditEntryResultRefused   VendorAuditEntryResult = "refused"
+	VendorAuditEntryResultSucceeded VendorAuditEntryResult = "succeeded"
 )
 
 // Valid indicates whether the value is a known member of the VendorAuditEntryResult enum.
 func (e VendorAuditEntryResult) Valid() bool {
 	switch e {
-	case Failed:
+	case VendorAuditEntryResultFailed:
 		return true
-	case Refused:
+	case VendorAuditEntryResultRefused:
 		return true
-	case Succeeded:
+	case VendorAuditEntryResultSucceeded:
 		return true
 	default:
 		return false
@@ -798,6 +1113,67 @@ func (e ListVendorApprovalsParamsState) Valid() bool {
 	}
 }
 
+// Defines values for ListChargesParamsStatus.
+const (
+	ListChargesParamsStatusCancelled ListChargesParamsStatus = "cancelled"
+	ListChargesParamsStatusOpen      ListChargesParamsStatus = "open"
+	ListChargesParamsStatusPaid      ListChargesParamsStatus = "paid"
+	ListChargesParamsStatusWaived    ListChargesParamsStatus = "waived"
+)
+
+// Valid indicates whether the value is a known member of the ListChargesParamsStatus enum.
+func (e ListChargesParamsStatus) Valid() bool {
+	switch e {
+	case ListChargesParamsStatusCancelled:
+		return true
+	case ListChargesParamsStatusOpen:
+		return true
+	case ListChargesParamsStatusPaid:
+		return true
+	case ListChargesParamsStatusWaived:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListTaxRuleSetMastersParamsState.
+const (
+	ListTaxRuleSetMastersParamsStateDraft     ListTaxRuleSetMastersParamsState = "draft"
+	ListTaxRuleSetMastersParamsStatePublished ListTaxRuleSetMastersParamsState = "published"
+	ListTaxRuleSetMastersParamsStateSigned    ListTaxRuleSetMastersParamsState = "signed"
+)
+
+// Valid indicates whether the value is a known member of the ListTaxRuleSetMastersParamsState enum.
+func (e ListTaxRuleSetMastersParamsState) Valid() bool {
+	switch e {
+	case ListTaxRuleSetMastersParamsStateDraft:
+		return true
+	case ListTaxRuleSetMastersParamsStatePublished:
+		return true
+	case ListTaxRuleSetMastersParamsStateSigned:
+		return true
+	default:
+		return false
+	}
+}
+
+// Addon An add-on line, for example an extra outlet.
+type Addon struct {
+	// AgreedPrice Amount in integer paise. Never a float.
+	AgreedPrice Money `json:"agreed_price"`
+
+	// Name Add-on key.
+	//
+	// Example: extra_outlet
+	Name string `json:"name"`
+
+	// Quantity Quantity.
+	//
+	// Example: 1
+	Quantity int `json:"quantity"`
+}
+
 // AdminSession The signed-in vendor user and the session clocks. The CSRF token is for the X-CSRF-Token header; it is not a credential. No access token is ever included.
 type AdminSession struct {
 	// AbsoluteExpiresAt RFC 3339 instant in UTC.
@@ -827,14 +1203,28 @@ type AdminSession struct {
 	User VendorPrincipal `json:"user"`
 }
 
-// ApprovalDecisionView Result of an approval decision as the browser sees it. The vendor approval grant of the executing kinds stays in the admin service and is never included.
+// ApprovalDecisionView Result of an approval decision as the browser sees it. The vendor approval grant of the executing kinds stays in the admin service and is never included. For the kinds executed outside identity the approver's Approve call approves and executes in one request (ADR-0014 A2.5 item 4); a guard refusal keeps its own code in execution and leaves the approval approved, and the named operation with approval_id is the retry.
 type ApprovalDecisionView struct {
 	// Approval A two-person approval record. Phone numbers appear only masked.
 	Approval VendorApproval `json:"approval"`
 
 	// CodeHalf Half of a vendor-assisted sign-in code, shown once. The requester gets characters 1 to 4, the approver 5 to 8.
 	CodeHalf *CodeHalf `json:"code_half,omitempty"`
+
+	// Execution What happened to the action itself. Absent for kinds identity does not hand to another service.
+	Execution *struct {
+		// Code The guard's problem code when state is refused.
+		//
+		// Example: open_trading_day
+		Code *string `json:"code,omitempty"`
+
+		// State executed, or refused when a guard (open_trading_day, lead time, not signed) stopped it and the approval stays approved.
+		State ApprovalDecisionViewExecutionState `json:"state"`
+	} `json:"execution,omitempty"`
 }
+
+// ApprovalDecisionViewExecutionState executed, or refused when a guard (open_trading_day, lead time, not signed) stopped it and the approval stays approved.
+type ApprovalDecisionViewExecutionState string
 
 // ApprovalKind What the two-person approval authorises. org_suspend, org_reinstate and org_close are executed by tenancy and tax_rule_set_publish by billing, with a vendor approval grant from the approval decision (ADR-0014 A1.3); they lapse after 24 hours, and tax_rule_set_publish concerns no organisation.
 //
@@ -857,10 +1247,72 @@ type BeginVendorSetup struct {
 	SetupToken string `json:"setup_token"`
 }
 
+// BillDocType Sale document type, following the regime of the registration (ADR-0002 S7): tax_invoice (regular), bill_of_supply (composition or exempt), plain_bill (unregistered).
+//
+// Example: tax_invoice
+type BillDocType string
+
 // BillingCapability Whether the device may finalise legal documents: active series, dormant series (waiter), or none.
 //
 // Example: active
 type BillingCapability string
+
+// BillingConfiguration Hostry's own GST configuration for charges, versioned and effective-dated (BR-A1-30). Hostry's GST invoices are issued from the founder's books; this only drives the GST shown on a charge. x-provisional: SAC and registration facts are CA-pending (A1-Q3).
+type BillingConfiguration struct {
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// EffectiveFrom First date the configuration applies to charges raised.
+	//
+	// Example: 2026-11-24
+	EffectiveFrom openapi_types.Date `json:"effective_from"`
+
+	// GstRateBp GST rate in basis points (default 1800).
+	//
+	// Example: 1800
+	GstRateBp int `json:"gst_rate_bp"`
+
+	// GstRegistered When false no GST is added to a charge.
+	GstRegistered bool `json:"gst_registered"`
+
+	// HostryStateCode Two-digit GST state code from the platform state reference table.
+	//
+	// Example: 33
+	HostryStateCode StateCode `json:"hostry_state_code"`
+
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	Id Id `json:"id"`
+
+	// PaymentTermsDays Days from the first charge to its due date (default 7).
+	//
+	// Example: 7
+	PaymentTermsDays int `json:"payment_terms_days"`
+
+	// PaymentTolerancePaise A charge counts as paid within this many paise of the total (default 99).
+	//
+	// Example: 99
+	PaymentTolerancePaise int `json:"payment_tolerance_paise"`
+
+	// Sac SAC code; seeded 997331 as a placeholder until the CA answers.
+	//
+	// Example: 997331
+	Sac string `json:"sac"`
+}
+
+// BillingConfigurationPage defines model for BillingConfigurationPage.
+type BillingConfigurationPage struct {
+	// Items Items, in the order stated by the operation.
+	Items []BillingConfiguration `json:"items"`
+
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	//
+	// Example: eyJhZnRlciI6IjAxOTBhMWIyLWMzZDQtN2U1Zi04YTliLTBjMWQyZTNmNGE1YiJ9
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
 
 // Brand A trading name inside an organisation, the scope for shared masters. The default brand is created automatically.
 type Brand struct {
@@ -869,7 +1321,7 @@ type Brand struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -893,6 +1345,144 @@ type BrandPage struct {
 	// NextCursor Opaque cursor for the next page; absent when there are no more results.
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
+
+// CancelSubscription Record the owner's cancellation request.
+type CancelSubscription struct {
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason *Reason `json:"reason,omitempty"`
+}
+
+// ChangeSubscription A plan or price change; takes effect from the next charge as a new row, no proration (BR-A1-23).
+type ChangeSubscription struct {
+	// Addons Add-on lines.
+	Addons *[]Addon `json:"addons,omitempty"`
+
+	// AgreedPrice Amount in integer paise. Never a float.
+	AgreedPrice *Money `json:"agreed_price,omitempty"`
+
+	// Cycle Billing cycle; none is the pilot.
+	//
+	// Example: monthly
+	Cycle Cycle `json:"cycle"`
+
+	// EffectiveFrom First day of the next charge period.
+	//
+	// Example: 2026-11-24
+	EffectiveFrom openapi_types.Date `json:"effective_from"`
+
+	// PlanKey Plan key.
+	//
+	// Example: table_service
+	PlanKey string `json:"plan_key"`
+
+	// PlanVersion Active version.
+	//
+	// Example: 1
+	PlanVersion int `json:"plan_version"`
+
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason *Reason `json:"reason,omitempty"`
+}
+
+// Charge A charge, append-only (BR-A1-31). GST comes from the billing configuration at the moment it is raised and is stored here; there is no round-off and no invoice rendering.
+type Charge struct {
+	// Cgst Amount in integer paise. Never a float.
+	Cgst Money `json:"cgst"`
+
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// DueDate Due date (BR-A1-33).
+	//
+	// Example: 2026-11-24
+	DueDate openapi_types.Date `json:"due_date"`
+
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	Id Id `json:"id"`
+
+	// Igst Amount in integer paise. Never a float.
+	Igst Money `json:"igst"`
+
+	// InvoiceReference Number and date of the invoice raised in the founder's books; set once, never edited; the panel does not check it (BR-A1-34).
+	InvoiceReference *InvoiceReference `json:"invoice_reference,omitempty"`
+
+	// Kind period or extra (an extra charge carries a reason).
+	//
+	// Example: period
+	Kind ChargeKind `json:"kind"`
+
+	// Note Free-text note for staff, at most 200 characters, no personal data.
+	Note *string `json:"note,omitempty"`
+
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	OrganisationId Id `json:"organisation_id"`
+
+	// Outstanding Amount in integer paise. Never a float.
+	Outstanding Money `json:"outstanding"`
+
+	// PeriodEnd Last day covered.
+	//
+	// Example: 2026-11-24
+	PeriodEnd openapi_types.Date `json:"period_end"`
+
+	// PeriodStart First day covered.
+	//
+	// Example: 2026-11-24
+	PeriodStart openapi_types.Date `json:"period_start"`
+
+	// Reason Reason for an extra, waived or cancelled charge.
+	Reason *string `json:"reason,omitempty"`
+
+	// Sgst Amount in integer paise. Never a float.
+	Sgst Money `json:"sgst"`
+
+	// Status open, paid (derived from payments within tolerance), waived or cancelled (reversing rows).
+	//
+	// Example: open
+	Status ChargeStatus `json:"status"`
+
+	// SubscriptionId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	SubscriptionId Id `json:"subscription_id"`
+
+	// Taxable Amount in integer paise. Never a float.
+	Taxable Money `json:"taxable"`
+
+	// Total Amount in integer paise. Never a float.
+	Total Money `json:"total"`
+}
+
+// ChargeKind period or extra (an extra charge carries a reason).
+//
+// Example: period
+type ChargeKind string
+
+// ChargePage defines model for ChargePage.
+type ChargePage struct {
+	// Items Items, in the order stated by the operation.
+	Items []Charge `json:"items"`
+
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	//
+	// Example: eyJhZnRlciI6IjAxOTBhMWIyLWMzZDQtN2U1Zi04YTliLTBjMWQyZTNmNGE1YiJ9
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// ChargeStatus open, paid (derived from payments within tolerance), waived or cancelled (reversing rows).
+//
+// Example: open
+type ChargeStatus string
 
 // CodeHalf Half of a vendor-assisted sign-in code, shown once. The requester gets characters 1 to 4, the approver 5 to 8.
 type CodeHalf struct {
@@ -930,6 +1520,42 @@ type CompleteVendorSetup struct {
 	TotpCode string `json:"totp_code"`
 }
 
+// CreateBillingConfiguration A new configuration version.
+type CreateBillingConfiguration struct {
+	// EffectiveFrom First date the configuration applies to charges raised.
+	//
+	// Example: 2026-11-24
+	EffectiveFrom openapi_types.Date `json:"effective_from"`
+
+	// GstRateBp GST rate in basis points (default 1800).
+	//
+	// Example: 1800
+	GstRateBp int `json:"gst_rate_bp"`
+
+	// GstRegistered When false no GST is added to a charge.
+	GstRegistered bool `json:"gst_registered"`
+
+	// HostryStateCode Two-digit GST state code from the platform state reference table.
+	//
+	// Example: 33
+	HostryStateCode StateCode `json:"hostry_state_code"`
+
+	// PaymentTermsDays Days from the first charge to its due date (default 7).
+	//
+	// Example: 7
+	PaymentTermsDays int `json:"payment_terms_days"`
+
+	// PaymentTolerancePaise A charge counts as paid within this many paise of the total (default 99).
+	//
+	// Example: 99
+	PaymentTolerancePaise int `json:"payment_tolerance_paise"`
+
+	// Sac SAC code; seeded 997331 as a placeholder until the CA answers.
+	//
+	// Example: 997331
+	Sac string `json:"sac"`
+}
+
 // CreateOrganisationForm The single form: organisation, first outlet, tax registration, optional GSTIN verification and the owner. Timezone is IST; business-day settings are not asked.
 type CreateOrganisationForm struct {
 	// Name Organisation display name.
@@ -948,6 +1574,22 @@ type CreateOrganisationForm struct {
 
 	// Verification Verification recorded in the same submit; needs admin.registration.verify, otherwise the registration starts unverified.
 	Verification *VerificationInput `json:"verification,omitempty"`
+}
+
+// CreatePlan A new plan with its first draft version.
+type CreatePlan struct {
+	// Key Unique lower_snake key.
+	//
+	// Example: table_service
+	Key string `json:"key"`
+
+	// NameKey i18n key of the plan name.
+	//
+	// Example: plan.table_service
+	NameKey string `json:"name_key"`
+
+	// Version Content of a plan version. Plans, versions, prices and feature keys are data, never code (BR-A1-11).
+	Version PlanVersionDraft `json:"version"`
 }
 
 // CreateVendorApproval File a request that needs a second vendor user (ADR-0005 A2.3). With fewer than two eligible users it is refused (second_approver_unavailable); no single-person override exists.
@@ -972,7 +1614,7 @@ type CreateVendorApproval struct {
 	// Example: +919876543210
 	NewMobileE164 *MobileE164 `json:"new_mobile_e164,omitempty"`
 
-	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId *Id `json:"organisation_id,omitempty"`
@@ -987,12 +1629,12 @@ type CreateVendorApproval struct {
 	// Example: sha256:cf03a846706f29a88ba61a212f79e7c224142fdd5df92fc1d7ed8bb1283fb8c8
 	RuleSetContentHash *string `json:"rule_set_content_hash,omitempty"`
 
-	// RuleSetId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// RuleSetId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	RuleSetId *Id `json:"rule_set_id,omitempty"`
 
-	// SubjectId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// SubjectId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	SubjectId *Id `json:"subject_id,omitempty"`
@@ -1020,7 +1662,7 @@ type CreateVendorUser struct {
 	// Example: staff@example.invalid
 	Email openapi_types.Email `json:"email"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1031,6 +1673,11 @@ type CreateVendorUser struct {
 	Role VendorRole `json:"role"`
 }
 
+// Cycle Billing cycle; none is the pilot.
+//
+// Example: monthly
+type Cycle string
+
 // Device A registered device. Keys, PIN data and pack contents are never part of this resource.
 type Device struct {
 	// BillingCapability Whether the device may finalise legal documents: active series, dormant series (waiter), or none.
@@ -1038,7 +1685,7 @@ type Device struct {
 	// Example: active
 	BillingCapability BillingCapability `json:"billing_capability"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1063,7 +1710,7 @@ type Device struct {
 	// Example: Counter 1
 	Name string `json:"name"`
 
-	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OutletId Id `json:"outlet_id"`
@@ -1100,7 +1747,7 @@ type DeviceState string
 
 // DirectoryBrand Brand in the directory.
 type DirectoryBrand struct {
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1123,7 +1770,7 @@ type DirectoryOrganisation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1146,7 +1793,7 @@ type DirectoryOrganisation struct {
 
 // DirectoryOutlet Outlet in the directory: name, kind, state only.
 type DirectoryOutlet struct {
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1179,7 +1826,7 @@ type DirectoryRegistration struct {
 	// Example: 33ABCDE1234F1Z7
 	Gstin *Gstin `json:"gstin,omitempty"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1237,7 +1884,7 @@ type DocumentSeries struct {
 	// Example: A7K
 	Code string `json:"code"`
 
-	// DeviceId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// DeviceId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	DeviceId Id `json:"device_id"`
@@ -1247,7 +1894,7 @@ type DocumentSeries struct {
 	// Example: tax_invoice
 	DocType DocType `json:"doc_type"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1257,7 +1904,10 @@ type DocumentSeries struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	IssuedAt Timestamp `json:"issued_at"`
 
-	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// LastNumber The last running number the device stated when it closed the series (control intent series.close, or its drain record). Empty at closure and until reconciled.
+	LastNumber *int `json:"last_number,omitempty"`
+
+	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OutletId Id `json:"outlet_id"`
@@ -1267,7 +1917,12 @@ type DocumentSeries struct {
 	// Example: active
 	Status DocumentSeriesStatus `json:"status"`
 
-	// TaxRegistrationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// TailConfirmedAt When billing confirmed that its register holds every number up to last_number (billing.series.reconciled). Empty at closure; a series that is closed and has no tail_confirmed_at reads "closed, awaiting device" (ADR-0014 A2.5 item 2).
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	TailConfirmedAt *Timestamp `json:"tail_confirmed_at,omitempty"`
+
+	// TaxRegistrationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	TaxRegistrationId Id `json:"tax_registration_id"`
@@ -1287,12 +1942,48 @@ type DocumentSeriesPage struct {
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
+// ExecuteLifecycle Execution of an approved organisation lifecycle action (suspend, reinstate or close). The browser names the approval; the admin service holds the matching single-use grant.
+type ExecuteLifecycle struct {
+	// ApprovalId Id of the approved vendor approval (fileVendorApproval, approveVendorApproval) of the matching kind for this organisation.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	ApprovalId Id `json:"approval_id"`
+
+	// OwnerExportOffered Close only: recorded confirmation that the owner was offered an export (BR-A1-72).
+	//
+	// Example: true
+	OwnerExportOffered *bool `json:"owner_export_offered,omitempty"`
+
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason Reason `json:"reason"`
+
+	// Ticket Support ticket reference. Fixed pattern so it can travel in events without free text.
+	//
+	// Example: SUP-2041
+	Ticket TicketReference `json:"ticket"`
+}
+
+// ExecutePublication Publication of a signed tax rule set after its tax_rule_set_publish approval was approved.
+type ExecutePublication struct {
+	// ApprovalId Id of the approved tax_rule_set_publish approval whose subject is this rule set, its content hash and its effective date.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	ApprovalId Id `json:"approval_id"`
+
+	// Note Optional note for the vendor log, at most 200 characters, no personal data.
+	//
+	// Example: Notified rate change
+	Note *string `json:"note,omitempty"`
+}
+
 // Gstin GSTIN, 15 characters, upper case, no spaces. Format only here; the check character and the state-code match are validated by the service (rule from gst-invoicing-india).
 //
 // Example: 33ABCDE1234F1Z7
 type Gstin = string
 
-// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 //
 // Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 type Id = string
@@ -1302,10 +1993,148 @@ type Id = string
 // Example: pending
 type InvitationStatus string
 
+// InvoiceReference Number and date of the invoice raised in the founder's books; set once, never edited; the panel does not check it (BR-A1-34).
+type InvoiceReference struct {
+	// Date Invoice date.
+	//
+	// Example: 2026-11-24
+	Date openapi_types.Date `json:"date"`
+
+	// Number Invoice number as in the books.
+	//
+	// Example: HQ/2627/0042
+	Number string `json:"number"`
+}
+
 // KeyProtection Protection tier of the device key, reported by the device at registration. Information, not proof, and no permission depends on it (ADR-0005 A1).
 //
 // Example: hardware
 type KeyProtection string
+
+// LedgerListKind Work lists for staff; nothing is sent automatically (BR-A1-50).
+//
+// Example: overdue_charges
+type LedgerListKind string
+
+// LedgerListRow One row of a work list.
+type LedgerListRow struct {
+	// AgeDays Days past due, for the overdue list; buckets 1-7, 8-15, 16-30, over 30 are derived by the client.
+	//
+	// Example: 3
+	AgeDays *int `json:"age_days,omitempty"`
+
+	// Amount Amount in integer paise. Never a float.
+	Amount *Money `json:"amount,omitempty"`
+
+	// DueDate Due date or review date.
+	//
+	// Example: 2026-11-24
+	DueDate *openapi_types.Date `json:"due_date,omitempty"`
+
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	OrganisationId Id `json:"organisation_id"`
+
+	// OrganisationName Organisation name from the directory.
+	//
+	// Example: Example Hospitality
+	OrganisationName string `json:"organisation_name"`
+
+	// SubjectId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	SubjectId *Id `json:"subject_id,omitempty"`
+}
+
+// LedgerListRowPage defines model for LedgerListRowPage.
+type LedgerListRowPage struct {
+	// Items Items, in the order stated by the operation.
+	Items []LedgerListRow `json:"items"`
+
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	//
+	// Example: eyJhZnRlciI6IjAxOTBhMWIyLWMzZDQtN2U1Zi04YTliLTBjMWQyZTNmNGE1YiJ9
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// LedgerPayment A recorded payment, append-only and idempotent by key (BR-A1-43). A correction is a reversing row.
+type LedgerPayment struct {
+	// Amount Amount in integer paise. Never a float.
+	Amount Money `json:"amount"`
+
+	// ChargeId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	ChargeId Id `json:"charge_id"`
+
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	Id Id `json:"id"`
+
+	// Method Payment method; gateway_link is reserved and not available in A1.
+	//
+	// Example: upi
+	Method PaymentMethod `json:"method"`
+
+	// Reason Reason, for a reversing row.
+	Reason *string `json:"reason,omitempty"`
+
+	// ReceivedOn Date received, not in the future.
+	//
+	// Example: 2026-11-24
+	ReceivedOn openapi_types.Date `json:"received_on"`
+
+	// RecordedBy Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	RecordedBy Id `json:"recorded_by"`
+
+	// Reference UTR or cheque number, up to 40 characters.
+	//
+	// Example: UTR1234567890
+	Reference *string `json:"reference,omitempty"`
+
+	// ReversalOf Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	ReversalOf *Id `json:"reversal_of,omitempty"`
+}
+
+// LedgerPaymentPage defines model for LedgerPaymentPage.
+type LedgerPaymentPage struct {
+	// Items Items, in the order stated by the operation.
+	Items []LedgerPayment `json:"items"`
+
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	//
+	// Example: eyJhZnRlciI6IjAxOTBhMWIyLWMzZDQtN2U1Zi04YTliLTBjMWQyZTNmNGE1YiJ9
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// LifecycleResult The organisation after the action.
+type LifecycleResult struct {
+	// ChangedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	ChangedAt Timestamp `json:"changed_at"`
+
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	OrganisationId Id `json:"organisation_id"`
+
+	// Status Organisation lifecycle state. Phase 1 only reads and shows it; no operation changes it.
+	//
+	// Example: trial
+	Status OrganisationStatus `json:"status"`
+}
 
 // Member A staff member. Mobile number only in masked form; email and ID documents never appear.
 type Member struct {
@@ -1324,7 +2153,7 @@ type Member struct {
 	// Example: true
 	HasPin bool `json:"has_pin"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1333,6 +2162,9 @@ type Member struct {
 	//
 	// Example: +91*******210
 	MobileMasked *MobileMasked `json:"mobile_masked,omitempty"`
+
+	// NewDeviceCaution True while the member signed in from a binding under caution (a new device, 24 hours; strong-only actions are blocked). Shown to support so the owner can be told why an action is refused.
+	NewDeviceCaution *bool `json:"new_device_caution,omitempty"`
 
 	// RoleAssignments Role assignments.
 	RoleAssignments []RoleAssignment `json:"role_assignments"`
@@ -1366,6 +2198,24 @@ type MobileE164 = string
 //
 // Example: +91*******210
 type MobileMasked = string
+
+// Money Amount in integer paise. Never a float.
+type Money struct {
+	// AmountPaise Amount in paise (1 INR = 100 paise).
+	//
+	// Example: 12500
+	AmountPaise int64 `json:"amount_paise"`
+
+	// Currency ISO 4217 currency code.
+	//
+	// Example: INR
+	Currency MoneyCurrency `json:"currency"`
+}
+
+// MoneyCurrency ISO 4217 currency code.
+//
+// Example: INR
+type MoneyCurrency string
 
 // NewOutlet The first outlet.
 type NewOutlet struct {
@@ -1470,7 +2320,7 @@ type Organisation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1578,7 +2428,7 @@ type OrganisationSummary struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1606,7 +2456,7 @@ type OrganisationSummary struct {
 
 // Outlet An outlet or property: one physical place with its own business date, devices, staff assignments and tax registration.
 type Outlet struct {
-	// BrandId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// BrandId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	BrandId Id `json:"brand_id"`
@@ -1616,7 +2466,7 @@ type Outlet struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1626,7 +2476,7 @@ type Outlet struct {
 	// Example: restaurant
 	Kind OutletKind `json:"kind"`
 
-	// LocatedInOutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// LocatedInOutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	LocatedInOutletId *Id `json:"located_in_outlet_id,omitempty"`
@@ -1646,7 +2496,7 @@ type Outlet struct {
 	// Example: active
 	Status OutletStatus `json:"status"`
 
-	// TaxRegistrationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// TaxRegistrationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	TaxRegistrationId Id `json:"tax_registration_id"`
@@ -1698,7 +2548,7 @@ type OwnerInvitation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	ExpiresAt Timestamp `json:"expires_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1708,7 +2558,7 @@ type OwnerInvitation struct {
 	// Example: +91*******210
 	MobileMasked MobileMasked `json:"mobile_masked"`
 
-	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId Id `json:"organisation_id"`
@@ -1735,10 +2585,124 @@ type OwnerInvitationList struct {
 // Example: pending
 type OwnerStatus string
 
+// PageCursor Cursor pagination field shared by every list response (compose with allOf).
+type PageCursor struct {
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	//
+	// Example: eyJhZnRlciI6IjAxOTBhMWIyLWMzZDQtN2U1Zi04YTliLTBjMWQyZTNmNGE1YiJ9
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// PaymentMethod Payment method; gateway_link is reserved and not available in A1.
+//
+// Example: upi
+type PaymentMethod string
+
 // PermissionKey Permission string, <resource>.<action>[.<qualifier>].
 //
 // Example: order.create
 type PermissionKey = string
+
+// Plan A plan: a key and its versions. Seeded drafts: pilot, table_service and an extra-outlet add-on become sellable only after the founder activates them (A1-Q1, A1-Q2).
+type Plan struct {
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// Key Unique lower_snake key.
+	//
+	// Example: table_service
+	Key string `json:"key"`
+
+	// NameKey i18n key of the plan name.
+	//
+	// Example: plan.table_service
+	NameKey string `json:"name_key"`
+
+	// Versions Versions, newest first.
+	Versions []PlanVersion `json:"versions"`
+}
+
+// PlanPage defines model for PlanPage.
+type PlanPage struct {
+	// Items Items, in the order stated by the operation.
+	Items []Plan `json:"items"`
+
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	//
+	// Example: eyJhZnRlciI6IjAxOTBhMWIyLWMzZDQtN2U1Zi04YTliLTBjMWQyZTNmNGE1YiJ9
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// PlanPrice A list price for one cycle, in paise excluding GST.
+type PlanPrice struct {
+	// Cycle Billing cycle; none is the pilot.
+	//
+	// Example: monthly
+	Cycle Cycle `json:"cycle"`
+
+	// ListPrice Amount in integer paise. Never a float.
+	ListPrice Money `json:"list_price"`
+}
+
+// PlanVersion defines model for PlanVersion.
+type PlanVersion struct {
+	// ActivatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	ActivatedAt *Timestamp `json:"activated_at,omitempty"`
+
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// FeatureKeys Feature keys granted; an app ignores a key it does not know.
+	FeatureKeys []string `json:"feature_keys"`
+
+	// IncludedOutlets Outlets included; the only metered quantity (BR-A1-13).
+	//
+	// Example: 1
+	IncludedOutlets int `json:"included_outlets"`
+
+	// Prices List price per cycle.
+	Prices []PlanPrice `json:"prices"`
+
+	// RetiredAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	RetiredAt *Timestamp `json:"retired_at,omitempty"`
+
+	// State draft is editable; active is immutable and sellable; retired stays on existing subscriptions (BR-A1-10, BR-A1-15).
+	//
+	// Example: draft
+	State PlanVersionState `json:"state"`
+
+	// Version Version number within the plan, from 1.
+	//
+	// Example: 1
+	Version int `json:"version"`
+}
+
+// PlanVersionDraft Content of a plan version. Plans, versions, prices and feature keys are data, never code (BR-A1-11).
+type PlanVersionDraft struct {
+	// FeatureKeys Feature keys granted; an app ignores a key it does not know.
+	FeatureKeys []string `json:"feature_keys"`
+
+	// IncludedOutlets Outlets included; the only metered quantity (BR-A1-13).
+	//
+	// Example: 1
+	IncludedOutlets int `json:"included_outlets"`
+
+	// Prices List price per cycle.
+	Prices []PlanPrice `json:"prices"`
+}
+
+// PlanVersionState draft is editable; active is immutable and sellable; retired stays on existing subscriptions (BR-A1-10, BR-A1-15).
+//
+// Example: draft
+type PlanVersionState string
 
 // Problem RFC 9457 problem details. `type` is a stable URI per error kind.
 type Problem struct {
@@ -1775,6 +2739,11 @@ type Problem struct {
 	// Example: /v1/resources/0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Instance *string `json:"instance,omitempty"`
 
+	// Reason Optional sub-code that refines `code`, for example approval_not_executable carries not_approved, lapsed, executed, not_approver or subject_changed.
+	//
+	// Example: not_approved
+	Reason *string `json:"reason,omitempty"`
+
 	// RequestId Request ID for log correlation.
 	//
 	// Example: req_0190a1b2c3d4
@@ -1796,10 +2765,81 @@ type Problem struct {
 	Type string `json:"type"`
 }
 
+// RaiseCharge Raise a charge for the next period, or an extra charge.
+type RaiseCharge struct {
+	// Kind period or extra.
+	//
+	// Example: period
+	Kind RaiseChargeKind `json:"kind"`
+
+	// Note Staff note.
+	Note *string `json:"note,omitempty"`
+
+	// PeriodEnd Last day covered.
+	//
+	// Example: 2026-11-24
+	PeriodEnd openapi_types.Date `json:"period_end"`
+
+	// PeriodStart First day covered.
+	//
+	// Example: 2026-11-24
+	PeriodStart openapi_types.Date `json:"period_start"`
+
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason *Reason `json:"reason,omitempty"`
+
+	// Taxable Amount in integer paise. Never a float.
+	Taxable *Money `json:"taxable,omitempty"`
+}
+
+// RaiseChargeKind period or extra.
+//
+// Example: period
+type RaiseChargeKind string
+
 // Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
 //
 // Example: Owner phoned to report a lost tablet.
 type Reason = string
+
+// ReasonBody A reason for an adjustment.
+type ReasonBody struct {
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason Reason `json:"reason"`
+}
+
+// RecordPayment Record a payment by hand. A payment above the outstanding amount is refused 422 overpayment.
+type RecordPayment struct {
+	// Amount Amount in integer paise. Never a float.
+	Amount Money `json:"amount"`
+
+	// Method Payment method; gateway_link is reserved and not available in A1.
+	//
+	// Example: upi
+	Method PaymentMethod `json:"method"`
+
+	// ReceivedOn Date received.
+	//
+	// Example: 2026-11-24
+	ReceivedOn openapi_types.Date `json:"received_on"`
+
+	// Reference UTR or cheque number.
+	//
+	// Example: UTR1234567890
+	Reference *string `json:"reference,omitempty"`
+}
+
+// RejectRegistration Reject a registration. The reason is the record for the auditor.
+type RejectRegistration struct {
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason Reason `json:"reason"`
+}
 
 // RejectVendorApproval Reject or cancel an approval.
 type RejectVendorApproval struct {
@@ -1826,7 +2866,7 @@ type Role struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1847,7 +2887,7 @@ type Role struct {
 
 // RoleAssignment A member-role-scope assignment.
 type RoleAssignment struct {
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1855,7 +2895,7 @@ type RoleAssignment struct {
 	// OutletIds Outlets the assignment covers; absent means the whole organisation.
 	OutletIds *[]Id `json:"outlet_ids,omitempty"`
 
-	// RoleId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// RoleId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	RoleId Id `json:"role_id"`
@@ -1870,6 +2910,75 @@ type RolePage struct {
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
+// SetInvoiceReference The invoice reference from the books.
+type SetInvoiceReference struct {
+	// InvoiceReference Number and date of the invoice raised in the founder's books; set once, never edited; the panel does not check it (BR-A1-34).
+	InvoiceReference InvoiceReference `json:"invoice_reference"`
+}
+
+// SignOff The CA sign-off record (reviewer, date and a reference note); immutable once signed.
+type SignOff struct {
+	// ReferenceNote Where the advice is recorded, at least 10 characters.
+	//
+	// Example: CA advice note 2026-11 ref 12
+	ReferenceNote string `json:"reference_note"`
+
+	// ReviewerName Reviewer's name.
+	//
+	// Example: A. Reviewer
+	ReviewerName string `json:"reviewer_name"`
+
+	// SignedOn Date of sign-off.
+	//
+	// Example: 2026-11-24
+	SignedOn openapi_types.Date `json:"signed_on"`
+}
+
+// SignTaxRuleSet Sign-off of a validated draft.
+type SignTaxRuleSet struct {
+	// Signoff The CA sign-off record (reviewer, date and a reference note); immutable once signed.
+	Signoff SignOff `json:"signoff"`
+}
+
+// StartSubscription Assign a plan version or a pilot. Below-list price needs admin.subscription.adjust and a reason; a pilot has no charge and a review date (default 90 days).
+type StartSubscription struct {
+	// Addons Add-on lines.
+	Addons *[]Addon `json:"addons,omitempty"`
+
+	// AgreedPrice Amount in integer paise. Never a float.
+	AgreedPrice *Money `json:"agreed_price,omitempty"`
+
+	// Cycle Billing cycle; none is the pilot.
+	//
+	// Example: monthly
+	Cycle Cycle `json:"cycle"`
+
+	// PlanKey Plan key.
+	//
+	// Example: table_service
+	PlanKey string `json:"plan_key"`
+
+	// PlanVersion Active version to assign.
+	//
+	// Example: 1
+	PlanVersion int `json:"plan_version"`
+
+	// Reason Free-text reason, 10 to 500 characters. Stays with the owning record; never placed in events.
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason *Reason `json:"reason,omitempty"`
+
+	// ReviewDate Pilot review date.
+	//
+	// Example: 2026-11-24
+	ReviewDate *openapi_types.Date `json:"review_date,omitempty"`
+
+	// StartDate Start date.
+	//
+	// Example: 2026-11-24
+	StartDate openapi_types.Date `json:"start_date"`
+}
+
 // StartSupport Start a read-only support session.
 type StartSupport struct {
 	// DurationMinutes Session length; default 30, maximum 60.
@@ -1882,7 +2991,7 @@ type StartSupport struct {
 	// Example: view
 	Mode *StartSupportMode `json:"mode,omitempty"`
 
-	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId Id `json:"organisation_id"`
@@ -1908,6 +3017,88 @@ type StartSupportMode string
 // Example: 33
 type StateCode = string
 
+// Subscription A subscription row. One is current per organisation; earlier rows are history. The ledger holds no personal data (BR-A1-27).
+type Subscription struct {
+	// Addons Add-on lines.
+	Addons []Addon `json:"addons"`
+
+	// AgreedPrice Amount in integer paise. Never a float.
+	AgreedPrice Money `json:"agreed_price"`
+
+	// CancelAtPeriodEnd Cancellation requested; no charge after paid_through.
+	CancelAtPeriodEnd bool `json:"cancel_at_period_end"`
+
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// Cycle Billing cycle; none is the pilot.
+	//
+	// Example: monthly
+	Cycle Cycle `json:"cycle"`
+
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	Id Id `json:"id"`
+
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	OrganisationId Id `json:"organisation_id"`
+
+	// OutletsOverLimit Soft limit notice in Phase 2 (A1-Q9).
+	OutletsOverLimit *bool `json:"outlets_over_limit,omitempty"`
+
+	// Overdue Derived: an open charge past its due date.
+	Overdue bool `json:"overdue"`
+
+	// PaidThrough Paid-through date; for a pilot the review date.
+	//
+	// Example: 2026-11-24
+	PaidThrough *openapi_types.Date `json:"paid_through,omitempty"`
+
+	// PlanKey Plan key.
+	//
+	// Example: table_service
+	PlanKey string `json:"plan_key"`
+
+	// PlanVersion Plan version.
+	//
+	// Example: 1
+	PlanVersion int `json:"plan_version"`
+
+	// StartDate Start date.
+	//
+	// Example: 2026-11-24
+	StartDate openapi_types.Date `json:"start_date"`
+
+	// State Stored state: pilot, active or cancelled. overdue is derived and shown separately (BR-A1-26).
+	//
+	// Example: active
+	State SubscriptionState `json:"state"`
+
+	// SupersededAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	SupersededAt *Timestamp `json:"superseded_at,omitempty"`
+}
+
+// SubscriptionHistory The current subscription and the earlier rows.
+type SubscriptionHistory struct {
+	// Current A subscription row. One is current per organisation; earlier rows are history. The ledger holds no personal data (BR-A1-27).
+	Current *Subscription `json:"current,omitempty"`
+
+	// History Earlier rows, newest first.
+	History []Subscription `json:"history"`
+}
+
+// SubscriptionState Stored state: pilot, active or cancelled. overdue is derived and shown separately (BR-A1-26).
+//
+// Example: active
+type SubscriptionState string
+
 // SupportOrganisation Organisation profile and status.
 type SupportOrganisation struct {
 	// CreatedAt RFC 3339 instant in UTC.
@@ -1915,7 +3106,7 @@ type SupportOrganisation struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	CreatedAt Timestamp `json:"created_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1943,7 +3134,7 @@ type SupportSession struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	EndsAt Timestamp `json:"ends_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -1953,7 +3144,7 @@ type SupportSession struct {
 	// Example: view
 	Mode SupportSessionMode `json:"mode"`
 
-	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId Id `json:"organisation_id"`
@@ -1973,7 +3164,7 @@ type SupportSession struct {
 	// Example: SUP-2041
 	TicketReference TicketReference `json:"ticket_reference"`
 
-	// VendorUserId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// VendorUserId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	VendorUserId Id `json:"vendor_user_id"`
@@ -2017,7 +3208,7 @@ type TaxRegistration struct {
 	// Example: 33ABCDE1234F1Z7
 	Gstin *Gstin `json:"gstin,omitempty"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -2060,6 +3251,208 @@ type TaxRegistrationPage struct {
 	NextCursor *string `json:"next_cursor,omitempty"`
 }
 
+// TaxRule One mapping of (tax class, regime, specified-premises flag, order channel) to rate components and a document type. Components for an intra-state supply are two equal halves; igst_bp is 0 in Phase 2 (RM-T8). Maps one-to-one to the tax_rule entity.
+type TaxRule struct {
+	// CgstBp CGST in basis points.
+	//
+	// Example: 250
+	CgstBp int `json:"cgst_bp"`
+
+	// DocType Sale document type, following the regime of the registration (ADR-0002 S7): tax_invoice (regular), bill_of_supply (composition or exempt), plain_bill (unregistered).
+	//
+	// Example: tax_invoice
+	DocType BillDocType `json:"doc_type"`
+
+	// GstApplies False for non-GST items (for example alcohol) and for composition and unregistered.
+	GstApplies bool `json:"gst_applies"`
+
+	// IgstBp IGST in basis points; must be 0 in Phase 2.
+	//
+	// Example: 0
+	IgstBp int `json:"igst_bp"`
+
+	// OrderChannel Order channel; eco supplies may carry their own rule.
+	//
+	// Example: dine_in
+	OrderChannel TaxRuleOrderChannel `json:"order_channel"`
+
+	// Regime Registration regime.
+	//
+	// Example: regular
+	Regime TaxRuleRegime `json:"regime"`
+
+	// Sac SAC or HSN code, up to 8 digits; not shipped until the CA advises (RM-T7).
+	Sac *string `json:"sac,omitempty"`
+
+	// SgstBp SGST in basis points; equals cgst_bp.
+	//
+	// Example: 250
+	SgstBp int `json:"sgst_bp"`
+
+	// SpecifiedPremises Specified-premises flag of the outlet for the FY.
+	SpecifiedPremises bool `json:"specified_premises"`
+
+	// TaxClass Tax class key.
+	//
+	// Example: fnb_standard
+	TaxClass string `json:"tax_class"`
+}
+
+// TaxRuleOrderChannel Order channel; eco supplies may carry their own rule.
+//
+// Example: dine_in
+type TaxRuleOrderChannel string
+
+// TaxRuleRegime Registration regime.
+//
+// Example: regular
+type TaxRuleRegime string
+
+// TaxRuleSetDraft Content of a draft.
+type TaxRuleSetDraft struct {
+	// CalcV Calculation version.
+	//
+	// Example: 1
+	CalcV int `json:"calc_v"`
+
+	// EffectiveDate Effective date.
+	//
+	// Example: 2026-11-24
+	EffectiveDate openapi_types.Date `json:"effective_date"`
+
+	// Name Label.
+	//
+	// Example: GST restaurant services 2026 B
+	Name string `json:"name"`
+
+	// Rules Mappings.
+	Rules []TaxRule `json:"rules"`
+}
+
+// TaxRuleSetMaster A rule-set version in the vendor master: draft (editable), signed (immutable, sign-off recorded) or published (emitted to every organisation).
+type TaxRuleSetMaster struct {
+	// CalcV Calculation version.
+	//
+	// Example: 1
+	CalcV int `json:"calc_v"`
+
+	// ContentHash Hash stored at signing.
+	//
+	// Example: a3f5c0de9d1b7e44c2f9a8b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6
+	ContentHash *string `json:"content_hash,omitempty"`
+
+	// CreatedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CreatedAt Timestamp `json:"created_at"`
+
+	// EffectiveDate Effective date; immutable from signing.
+	//
+	// Example: 2026-11-24
+	EffectiveDate openapi_types.Date `json:"effective_date"`
+
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
+	//
+	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
+	Id Id `json:"id"`
+
+	// Name Label.
+	//
+	// Example: GST restaurant services 2026 B
+	Name string `json:"name"`
+
+	// OrganisationsAcknowledged Acknowledged emits (BR-A1-84); counts only, no tenant data.
+	//
+	// Example: 0
+	OrganisationsAcknowledged *int `json:"organisations_acknowledged,omitempty"`
+
+	// OrganisationsTotal Organisations the version was queued for (published only).
+	//
+	// Example: 0
+	OrganisationsTotal *int `json:"organisations_total,omitempty"`
+
+	// PublishedAt RFC 3339 instant in UTC.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	PublishedAt *Timestamp `json:"published_at,omitempty"`
+
+	// ReviewStatus reviewed (sign-off recorded) or unreviewed.
+	//
+	// Example: unreviewed
+	ReviewStatus TaxRuleSetMasterReviewStatus `json:"review_status"`
+
+	// Revision Edit counter of a draft; the ETag is its string form.
+	//
+	// Example: 1
+	Revision int `json:"revision"`
+
+	// Rules Mappings.
+	Rules []TaxRule `json:"rules"`
+
+	// Signoff The CA sign-off record (reviewer, date and a reference note); immutable once signed.
+	Signoff *SignOff `json:"signoff,omitempty"`
+
+	// State draft, signed or published. A published version is never edited, withdrawn or deleted (BR-A1-81).
+	//
+	// Example: draft
+	State TaxRuleSetMasterState `json:"state"`
+
+	// Version Platform-wide version number, assigned at creation.
+	//
+	// Example: 2
+	Version int `json:"version"`
+}
+
+// TaxRuleSetMasterReviewStatus reviewed (sign-off recorded) or unreviewed.
+//
+// Example: unreviewed
+type TaxRuleSetMasterReviewStatus string
+
+// TaxRuleSetMasterState draft, signed or published. A published version is never edited, withdrawn or deleted (BR-A1-81).
+//
+// Example: draft
+type TaxRuleSetMasterState string
+
+// TaxRuleSetMasterPage defines model for TaxRuleSetMasterPage.
+type TaxRuleSetMasterPage struct {
+	// Items Items, in the order stated by the operation.
+	Items []TaxRuleSetMaster `json:"items"`
+
+	// NextCursor Opaque cursor for the next page; absent when there are no more results.
+	//
+	// Example: eyJhZnRlciI6IjAxOTBhMWIyLWMzZDQtN2U1Zi04YTliLTBjMWQyZTNmNGE1YiJ9
+	NextCursor *string `json:"next_cursor,omitempty"`
+}
+
+// TaxRuleSetValidation Outcome of the BR-A1-82 checks and the shared conformance vectors.
+type TaxRuleSetValidation struct {
+	// Errors Failed checks.
+	Errors []struct {
+		// Code Stable code, for example mapping_missing, odd_rate, unequal_halves, vector_failed.
+		//
+		// Example: mapping_missing
+		Code string `json:"code"`
+
+		// Detail Which mapping or vector.
+		//
+		// Example: fnb_standard/regular/false/dine_in
+		Detail string `json:"detail"`
+	} `json:"errors"`
+
+	// Valid True when every check and every vector passes.
+	Valid bool `json:"valid"`
+
+	// VectorsPassed Vectors passed.
+	//
+	// Example: 48
+	VectorsPassed int `json:"vectors_passed"`
+
+	// VectorsTotal Conformance vectors run.
+	//
+	// Example: 48
+	VectorsTotal int `json:"vectors_total"`
+}
+
 // TicketReference Support ticket reference. Fixed pattern so it can travel in events without free text.
 //
 // Example: SUP-2041
@@ -2090,7 +3483,7 @@ type UpdateVendorUserStatus string
 
 // VendorApproval A two-person approval record. Phone numbers appear only masked.
 type VendorApproval struct {
-	// ApprovedBy Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// ApprovedBy Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	ApprovedBy *Id `json:"approved_by,omitempty"`
@@ -2110,7 +3503,7 @@ type VendorApproval struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	ExpiresAt Timestamp `json:"expires_at"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -2125,12 +3518,17 @@ type VendorApproval struct {
 	// Example: +91*******210
 	MobileMasked *MobileMasked `json:"mobile_masked,omitempty"`
 
-	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId *Id `json:"organisation_id,omitempty"`
 
-	// RequestedBy Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Reason The requester's reason, shown to the approver (Admin A0 AC 90).
+	//
+	// Example: Owner phoned to report a lost tablet.
+	Reason *Reason `json:"reason,omitempty"`
+
+	// RequestedBy Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	RequestedBy Id `json:"requested_by"`
@@ -2140,7 +3538,10 @@ type VendorApproval struct {
 	// Example: pending
 	State VendorApprovalState `json:"state"`
 
-	// SubjectId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Subject Human-readable statement of what approving will do, built from the stored fields, for example "Suspend organisation Example Hospitality". The approver is shown this, never requester text.
+	Subject *string `json:"subject,omitempty"`
+
+	// SubjectId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	SubjectId *Id `json:"subject_id,omitempty"`
@@ -2177,12 +3578,12 @@ type VendorAuditEntry struct {
 	// Example: vendor.device.revoked
 	Action string `json:"action"`
 
-	// ActorVendorUserId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// ActorVendorUserId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	ActorVendorUserId Id `json:"actor_vendor_user_id"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -2192,7 +3593,7 @@ type VendorAuditEntry struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	OccurredAt Timestamp `json:"occurred_at"`
 
-	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OrganisationId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OrganisationId *Id `json:"organisation_id,omitempty"`
@@ -2217,12 +3618,12 @@ type VendorAuditEntry struct {
 	// Example: 203.0.113.7
 	SourceAddress *string `json:"source_address,omitempty"`
 
-	// SupportSessionId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// SupportSessionId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	SupportSessionId *Id `json:"support_session_id,omitempty"`
 
-	// TargetId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// TargetId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	TargetId *Id `json:"target_id,omitempty"`
@@ -2254,7 +3655,7 @@ type VendorDevice struct {
 	// Example: true
 	BillingCapable bool `json:"billing_capable"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -2274,7 +3675,7 @@ type VendorDevice struct {
 	// Example: 2026-11-24T13:05:11.120Z
 	LastContactAt *Timestamp `json:"last_contact_at,omitempty"`
 
-	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// OutletId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	OutletId Id `json:"outlet_id"`
@@ -2301,15 +3702,25 @@ type VendorDevicePage struct {
 
 // VendorPrincipal The signed-in vendor user and what the role allows.
 type VendorPrincipal struct {
+	// CanApproveFrom From when the account may approve (created_at plus 7 days, ADR-0005 A2.3); in the past once eligible.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	CanApproveFrom *Timestamp `json:"can_approve_from,omitempty"`
+
 	// DisplayName Display name.
 	//
 	// Example: Priya
 	DisplayName string `json:"display_name"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
+
+	// LastSignInAt When the user last signed in; absent before the first sign-in.
+	//
+	// Example: 2026-11-24T13:05:11.120Z
+	LastSignInAt *Timestamp `json:"last_sign_in_at,omitempty"`
 
 	// Permissions admin.* permission strings held.
 	Permissions []string `json:"permissions"`
@@ -2322,7 +3733,7 @@ type VendorPrincipal struct {
 
 // VendorRevoke Revoke one active device on a verified request. Terminal; no un-revoke and no wipe.
 type VendorRevoke struct {
-	// ApprovalId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// ApprovalId Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	ApprovalId *Id `json:"approval_id,omitempty"`
@@ -2433,7 +3844,7 @@ type VendorUser struct {
 	// Example: staff@example.invalid
 	Email openapi_types.Email `json:"email"`
 
-	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted).
+	// Id Client-generated, time-sortable UUIDv7 in lower-case canonical form (ADR-0003 policy; ULID is not accepted). The row id of an entity whose entity file declares a deterministic id (id.rule uuidv5, ADR-0014) is a UUIDv5 in the same form, so two devices that write the same natural key converge on one row.
 	//
 	// Example: 0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5b
 	Id Id `json:"id"`
@@ -2533,6 +3944,9 @@ type Cursor = string
 // IdempotencyKey defines model for IdempotencyKey.
 type IdempotencyKey = string
 
+// IfMatch defines model for IfMatch.
+type IfMatch = string
+
 // VendorLimit defines model for VendorLimit.
 type VendorLimit = int
 
@@ -2541,6 +3955,9 @@ type ApprovalConflict = Problem
 
 // Conflict RFC 9457 problem details. `type` is a stable URI per error kind.
 type Conflict = Problem
+
+// ExecuteConflict RFC 9457 problem details. `type` is a stable URI per error kind.
+type ExecuteConflict = Problem
 
 // Forbidden RFC 9457 problem details. `type` is a stable URI per error kind.
 type Forbidden = Problem
@@ -2557,11 +3974,20 @@ type GstinInUse = Problem
 // InvitationConflict RFC 9457 problem details. `type` is a stable URI per error kind.
 type InvitationConflict = Problem
 
+// LeadTooShort RFC 9457 problem details. `type` is a stable URI per error kind.
+type LeadTooShort = Problem
+
 // ModeNotSupported RFC 9457 problem details. `type` is a stable URI per error kind.
 type ModeNotSupported = Problem
 
 // NotFound RFC 9457 problem details. `type` is a stable URI per error kind.
 type NotFound = Problem
+
+// Overpayment RFC 9457 problem details. `type` is a stable URI per error kind.
+type Overpayment = Problem
+
+// PreconditionFailed RFC 9457 problem details. `type` is a stable URI per error kind.
+type PreconditionFailed = Problem
 
 // RevokeRefused RFC 9457 problem details. `type` is a stable URI per error kind.
 type RevokeRefused = Problem
@@ -2683,6 +4109,42 @@ type ListAuditEntriesParams struct {
 	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
 }
 
+// ListBillingConfigurationsParams defines parameters for ListBillingConfigurations.
+type ListBillingConfigurationsParams struct {
+	// Cursor Opaque cursor from a previous response's next_cursor.
+	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Page size for vendor lists (default 25, maximum 100).
+	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// CreateBillingConfigurationParams defines parameters for CreateBillingConfiguration.
+type CreateBillingConfigurationParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ExportLedgerParams defines parameters for ExportLedger.
+type ExportLedgerParams struct {
+	// From First charge due date.
+	From *openapi_types.Date `form:"from,omitempty" json:"from,omitempty"`
+
+	// To Last charge due date.
+	To *openapi_types.Date `form:"to,omitempty" json:"to,omitempty"`
+}
+
+// ListLedgerEntriesParams defines parameters for ListLedgerEntries.
+type ListLedgerEntriesParams struct {
+	// Cursor Opaque cursor from a previous response's next_cursor.
+	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Page size for vendor lists (default 25, maximum 100).
+	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
 // ListOrganisationsParams defines parameters for ListOrganisations.
 type ListOrganisationsParams struct {
 	// Q Name contains (any case), an organisation id, an exact GSTIN, or an exact owner mobile (10 digits or +91 form). Partial GSTIN or phone never matches.
@@ -2690,6 +4152,9 @@ type ListOrganisationsParams struct {
 
 	// Status Filter by status.
 	Status *OrganisationStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// HasUnverifiedRegistration When true, only organisations with at least one open tax registration that is not yet verified (the onboarding work queue, Admin A0 AC 73 and 74); when false, only those without.
+	HasUnverifiedRegistration *bool `form:"has_unverified_registration,omitempty" json:"has_unverified_registration,omitempty"`
 
 	// Cursor Opaque cursor from a previous response's next_cursor.
 	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
@@ -2700,6 +4165,93 @@ type ListOrganisationsParams struct {
 
 // CreateOrganisationParams defines parameters for CreateOrganisation.
 type CreateOrganisationParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ListChargesParams defines parameters for ListCharges.
+type ListChargesParams struct {
+	// Status Filter by status.
+	Status *ListChargesParamsStatus `form:"status,omitempty" json:"status,omitempty"`
+
+	// Cursor Opaque cursor from a previous response's next_cursor.
+	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Page size for vendor lists (default 25, maximum 100).
+	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// ListChargesParamsStatus defines parameters for ListCharges.
+type ListChargesParamsStatus string
+
+// RaiseChargeParams defines parameters for RaiseCharge.
+type RaiseChargeParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// CancelChargeParams defines parameters for CancelCharge.
+type CancelChargeParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// SetChargeInvoiceReferenceParams defines parameters for SetChargeInvoiceReference.
+type SetChargeInvoiceReferenceParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ListChargePaymentsParams defines parameters for ListChargePayments.
+type ListChargePaymentsParams struct {
+	// Cursor Opaque cursor from a previous response's next_cursor.
+	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Page size for vendor lists (default 25, maximum 100).
+	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// RecordPaymentParams defines parameters for RecordPayment.
+type RecordPaymentParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ReversePaymentParams defines parameters for ReversePayment.
+type ReversePaymentParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// WaiveChargeParams defines parameters for WaiveCharge.
+type WaiveChargeParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// CloseOrganisationParams defines parameters for CloseOrganisation.
+type CloseOrganisationParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
@@ -2745,6 +4297,42 @@ type CancelOwnerInvitationParams struct {
 
 // RenewOwnerInvitationParams defines parameters for RenewOwnerInvitation.
 type RenewOwnerInvitationParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ReinstateOrganisationParams defines parameters for ReinstateOrganisation.
+type ReinstateOrganisationParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// StartSubscriptionParams defines parameters for StartSubscription.
+type StartSubscriptionParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ChangeSubscriptionParams defines parameters for ChangeSubscription.
+type ChangeSubscriptionParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// CancelSubscriptionParams defines parameters for CancelSubscription.
+type CancelSubscriptionParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
@@ -2815,8 +4403,71 @@ type ListSupportTaxRegistrationsParams struct {
 	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
 }
 
+// SuspendOrganisationParams defines parameters for SuspendOrganisation.
+type SuspendOrganisationParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// RejectTaxRegistrationParams defines parameters for RejectTaxRegistration.
+type RejectTaxRegistrationParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
 // VerifyTaxRegistrationParams defines parameters for VerifyTaxRegistration.
 type VerifyTaxRegistrationParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ListPlansParams defines parameters for ListPlans.
+type ListPlansParams struct {
+	// Cursor Opaque cursor from a previous response's next_cursor.
+	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Page size for vendor lists (default 25, maximum 100).
+	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
+}
+
+// CreatePlanParams defines parameters for CreatePlan.
+type CreatePlanParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// CreatePlanVersionParams defines parameters for CreatePlanVersion.
+type CreatePlanVersionParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ActivatePlanVersionParams defines parameters for ActivatePlanVersion.
+type ActivatePlanVersionParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// RetirePlanVersionParams defines parameters for RetirePlanVersion.
+type RetirePlanVersionParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
@@ -2850,6 +4501,78 @@ type StartSupportSessionParams struct {
 
 // EndSupportSessionParams defines parameters for EndSupportSession.
 type EndSupportSessionParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ListTaxRuleSetMastersParams defines parameters for ListTaxRuleSetMasters.
+type ListTaxRuleSetMastersParams struct {
+	// Cursor Opaque cursor from a previous response's next_cursor.
+	Cursor *Cursor `form:"cursor,omitempty" json:"cursor,omitempty"`
+
+	// Limit Page size for vendor lists (default 25, maximum 100).
+	Limit *VendorLimit `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// State Filter by state.
+	State *ListTaxRuleSetMastersParamsState `form:"state,omitempty" json:"state,omitempty"`
+}
+
+// ListTaxRuleSetMastersParamsState defines parameters for ListTaxRuleSetMasters.
+type ListTaxRuleSetMastersParamsState string
+
+// CreateTaxRuleSetDraftParams defines parameters for CreateTaxRuleSetDraft.
+type CreateTaxRuleSetDraftParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// DeleteTaxRuleSetDraftParams defines parameters for DeleteTaxRuleSetDraft.
+type DeleteTaxRuleSetDraftParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// UpdateTaxRuleSetDraftParams defines parameters for UpdateTaxRuleSetDraft.
+type UpdateTaxRuleSetDraftParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IfMatch Entity tag of the version being edited (from the last read); a stale tag returns 412 with code precondition_failed.
+	IfMatch IfMatch `json:"If-Match"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// PublishTaxRuleSetParams defines parameters for PublishTaxRuleSet.
+type PublishTaxRuleSetParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// SignTaxRuleSetParams defines parameters for SignTaxRuleSet.
+type SignTaxRuleSetParams struct {
+	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
+	XCSRFToken string `json:"X-CSRF-Token"`
+
+	// IdempotencyKey Client-generated unique key, 1-128 visible ASCII characters (a UUIDv7 is recommended). A replay with the same key and request returns the original status and body without repeating the effect. The same key with a different request returns 422 (code idempotency.mismatch); the same key while the first request is still in progress returns 409 (code idempotency.in_progress); an invalid key returns 422 (code idempotency.key_invalid).
+	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
+}
+
+// ValidateTaxRuleSetParams defines parameters for ValidateTaxRuleSet.
+type ValidateTaxRuleSetParams struct {
 	// XCSRFToken Per-session CSRF token from signIn or getSession. Required on every state-changing request together with a matching Origin.
 	XCSRFToken string `json:"X-CSRF-Token"`
 
@@ -2908,8 +4631,32 @@ type CancelVendorApprovalJSONRequestBody = RejectVendorApproval
 // ApproveVendorApprovalJSONRequestBody defines body for ApproveVendorApproval for application/json ContentType.
 type ApproveVendorApprovalJSONRequestBody = ApproveVendorApproval
 
+// CreateBillingConfigurationJSONRequestBody defines body for CreateBillingConfiguration for application/json ContentType.
+type CreateBillingConfigurationJSONRequestBody = CreateBillingConfiguration
+
 // CreateOrganisationJSONRequestBody defines body for CreateOrganisation for application/json ContentType.
 type CreateOrganisationJSONRequestBody = CreateOrganisationForm
+
+// RaiseChargeJSONRequestBody defines body for RaiseCharge for application/json ContentType.
+type RaiseChargeJSONRequestBody = RaiseCharge
+
+// CancelChargeJSONRequestBody defines body for CancelCharge for application/json ContentType.
+type CancelChargeJSONRequestBody = ReasonBody
+
+// SetChargeInvoiceReferenceJSONRequestBody defines body for SetChargeInvoiceReference for application/json ContentType.
+type SetChargeInvoiceReferenceJSONRequestBody = SetInvoiceReference
+
+// RecordPaymentJSONRequestBody defines body for RecordPayment for application/json ContentType.
+type RecordPaymentJSONRequestBody = RecordPayment
+
+// ReversePaymentJSONRequestBody defines body for ReversePayment for application/json ContentType.
+type ReversePaymentJSONRequestBody = ReasonBody
+
+// WaiveChargeJSONRequestBody defines body for WaiveCharge for application/json ContentType.
+type WaiveChargeJSONRequestBody = ReasonBody
+
+// CloseOrganisationJSONRequestBody defines body for CloseOrganisation for application/json ContentType.
+type CloseOrganisationJSONRequestBody = ExecuteLifecycle
 
 // RevokeOrganisationDeviceJSONRequestBody defines body for RevokeOrganisationDevice for application/json ContentType.
 type RevokeOrganisationDeviceJSONRequestBody = VendorRevoke
@@ -2917,14 +4664,50 @@ type RevokeOrganisationDeviceJSONRequestBody = VendorRevoke
 // CreateOwnerInvitationJSONRequestBody defines body for CreateOwnerInvitation for application/json ContentType.
 type CreateOwnerInvitationJSONRequestBody = NewOwnerInvitation
 
+// ReinstateOrganisationJSONRequestBody defines body for ReinstateOrganisation for application/json ContentType.
+type ReinstateOrganisationJSONRequestBody = ExecuteLifecycle
+
+// StartSubscriptionJSONRequestBody defines body for StartSubscription for application/json ContentType.
+type StartSubscriptionJSONRequestBody = StartSubscription
+
+// ChangeSubscriptionJSONRequestBody defines body for ChangeSubscription for application/json ContentType.
+type ChangeSubscriptionJSONRequestBody = ChangeSubscription
+
+// CancelSubscriptionJSONRequestBody defines body for CancelSubscription for application/json ContentType.
+type CancelSubscriptionJSONRequestBody = CancelSubscription
+
+// SuspendOrganisationJSONRequestBody defines body for SuspendOrganisation for application/json ContentType.
+type SuspendOrganisationJSONRequestBody = ExecuteLifecycle
+
+// RejectTaxRegistrationJSONRequestBody defines body for RejectTaxRegistration for application/json ContentType.
+type RejectTaxRegistrationJSONRequestBody = RejectRegistration
+
 // VerifyTaxRegistrationJSONRequestBody defines body for VerifyTaxRegistration for application/json ContentType.
 type VerifyTaxRegistrationJSONRequestBody = VerifyRegistration
+
+// CreatePlanJSONRequestBody defines body for CreatePlan for application/json ContentType.
+type CreatePlanJSONRequestBody = CreatePlan
+
+// CreatePlanVersionJSONRequestBody defines body for CreatePlanVersion for application/json ContentType.
+type CreatePlanVersionJSONRequestBody = PlanVersionDraft
 
 // SignInJSONRequestBody defines body for SignIn for application/json ContentType.
 type SignInJSONRequestBody = VendorSignIn
 
 // StartSupportSessionJSONRequestBody defines body for StartSupportSession for application/json ContentType.
 type StartSupportSessionJSONRequestBody = StartSupport
+
+// CreateTaxRuleSetDraftJSONRequestBody defines body for CreateTaxRuleSetDraft for application/json ContentType.
+type CreateTaxRuleSetDraftJSONRequestBody = TaxRuleSetDraft
+
+// UpdateTaxRuleSetDraftJSONRequestBody defines body for UpdateTaxRuleSetDraft for application/json ContentType.
+type UpdateTaxRuleSetDraftJSONRequestBody = TaxRuleSetDraft
+
+// PublishTaxRuleSetJSONRequestBody defines body for PublishTaxRuleSet for application/json ContentType.
+type PublishTaxRuleSetJSONRequestBody = ExecutePublication
+
+// SignTaxRuleSetJSONRequestBody defines body for SignTaxRuleSet for application/json ContentType.
+type SignTaxRuleSetJSONRequestBody = SignTaxRuleSet
 
 // CreateVendorUserJSONRequestBody defines body for CreateVendorUser for application/json ContentType.
 type CreateVendorUserJSONRequestBody = CreateVendorUser
@@ -2961,6 +4744,18 @@ type ServerInterface interface {
 	// ListAuditEntries Read the vendor audit log
 	// (GET /v1/audit-entries)
 	ListAuditEntries(w http.ResponseWriter, r *http.Request, params ListAuditEntriesParams)
+	// ListBillingConfigurations List Hostry GST configuration versions
+	// (GET /v1/billing-configurations)
+	ListBillingConfigurations(w http.ResponseWriter, r *http.Request, params ListBillingConfigurationsParams)
+	// CreateBillingConfiguration Add a GST configuration version
+	// (POST /v1/billing-configurations)
+	CreateBillingConfiguration(w http.ResponseWriter, r *http.Request, params CreateBillingConfigurationParams)
+	// ExportLedger Export the ledger as CSV
+	// (GET /v1/ledger-exports)
+	ExportLedger(w http.ResponseWriter, r *http.Request, params ExportLedgerParams)
+	// ListLedgerEntries Work lists for billing staff
+	// (GET /v1/ledger-lists/{list_kind})
+	ListLedgerEntries(w http.ResponseWriter, r *http.Request, listKind LedgerListKind, params ListLedgerEntriesParams)
 	// ListOrganisations List and search organisations
 	// (GET /v1/organisations)
 	ListOrganisations(w http.ResponseWriter, r *http.Request, params ListOrganisationsParams)
@@ -2970,6 +4765,36 @@ type ServerInterface interface {
 	// GetOrganisation Organisation detail
 	// (GET /v1/organisations/{organisation_id})
 	GetOrganisation(w http.ResponseWriter, r *http.Request, organisationId Id)
+	// ListCharges List an organisation's charges
+	// (GET /v1/organisations/{organisation_id}/charges)
+	ListCharges(w http.ResponseWriter, r *http.Request, organisationId Id, params ListChargesParams)
+	// RaiseCharge Raise a charge
+	// (POST /v1/organisations/{organisation_id}/charges)
+	RaiseCharge(w http.ResponseWriter, r *http.Request, organisationId Id, params RaiseChargeParams)
+	// GetCharge Read a charge (audited per read)
+	// (GET /v1/organisations/{organisation_id}/charges/{charge_id})
+	GetCharge(w http.ResponseWriter, r *http.Request, organisationId Id, chargeId Id)
+	// CancelCharge Cancel a charge
+	// (POST /v1/organisations/{organisation_id}/charges/{charge_id}/cancellation)
+	CancelCharge(w http.ResponseWriter, r *http.Request, organisationId Id, chargeId Id, params CancelChargeParams)
+	// SetChargeInvoiceReference Set the invoice reference once
+	// (PUT /v1/organisations/{organisation_id}/charges/{charge_id}/invoice-reference)
+	SetChargeInvoiceReference(w http.ResponseWriter, r *http.Request, organisationId Id, chargeId Id, params SetChargeInvoiceReferenceParams)
+	// ListChargePayments List payments of a charge
+	// (GET /v1/organisations/{organisation_id}/charges/{charge_id}/payments)
+	ListChargePayments(w http.ResponseWriter, r *http.Request, organisationId Id, chargeId Id, params ListChargePaymentsParams)
+	// RecordPayment Record a payment received by hand
+	// (POST /v1/organisations/{organisation_id}/charges/{charge_id}/payments)
+	RecordPayment(w http.ResponseWriter, r *http.Request, organisationId Id, chargeId Id, params RecordPaymentParams)
+	// ReversePayment Reverse a payment
+	// (POST /v1/organisations/{organisation_id}/charges/{charge_id}/payments/{payment_id}/reversal)
+	ReversePayment(w http.ResponseWriter, r *http.Request, organisationId Id, chargeId Id, paymentId Id, params ReversePaymentParams)
+	// WaiveCharge Waive a charge
+	// (POST /v1/organisations/{organisation_id}/charges/{charge_id}/waiver)
+	WaiveCharge(w http.ResponseWriter, r *http.Request, organisationId Id, chargeId Id, params WaiveChargeParams)
+	// CloseOrganisation Execute an approved closure
+	// (POST /v1/organisations/{organisation_id}/closure)
+	CloseOrganisation(w http.ResponseWriter, r *http.Request, organisationId Id, params CloseOrganisationParams)
 	// ListOrganisationDevices List an organisation's devices
 	// (GET /v1/organisations/{organisation_id}/devices)
 	ListOrganisationDevices(w http.ResponseWriter, r *http.Request, organisationId Id, params ListOrganisationDevicesParams)
@@ -2991,6 +4816,21 @@ type ServerInterface interface {
 	// RenewOwnerInvitation Resend or extend a pending invitation
 	// (POST /v1/organisations/{organisation_id}/owner-invitations/{invitation_id}/renewals)
 	RenewOwnerInvitation(w http.ResponseWriter, r *http.Request, organisationId Id, invitationId Id, params RenewOwnerInvitationParams)
+	// ReinstateOrganisation Execute an approved reinstatement
+	// (POST /v1/organisations/{organisation_id}/reinstatement)
+	ReinstateOrganisation(w http.ResponseWriter, r *http.Request, organisationId Id, params ReinstateOrganisationParams)
+	// GetOrganisationSubscription Get the current subscription and history
+	// (GET /v1/organisations/{organisation_id}/subscription)
+	GetOrganisationSubscription(w http.ResponseWriter, r *http.Request, organisationId Id)
+	// StartSubscription Assign a plan version or a pilot
+	// (POST /v1/organisations/{organisation_id}/subscription)
+	StartSubscription(w http.ResponseWriter, r *http.Request, organisationId Id, params StartSubscriptionParams)
+	// ChangeSubscription Change plan, price or add-ons from the next charge
+	// (PUT /v1/organisations/{organisation_id}/subscription)
+	ChangeSubscription(w http.ResponseWriter, r *http.Request, organisationId Id, params ChangeSubscriptionParams)
+	// CancelSubscription Record a cancellation at period end
+	// (POST /v1/organisations/{organisation_id}/subscription/cancellation)
+	CancelSubscription(w http.ResponseWriter, r *http.Request, organisationId Id, params CancelSubscriptionParams)
 	// ListSupportBrands Support view: brands
 	// (GET /v1/organisations/{organisation_id}/support-view/brands)
 	ListSupportBrands(w http.ResponseWriter, r *http.Request, organisationId Id, params ListSupportBrandsParams)
@@ -3018,9 +4858,33 @@ type ServerInterface interface {
 	// ListSupportTaxRegistrations Support view: tax registrations
 	// (GET /v1/organisations/{organisation_id}/support-view/tax-registrations)
 	ListSupportTaxRegistrations(w http.ResponseWriter, r *http.Request, organisationId Id, params ListSupportTaxRegistrationsParams)
+	// SuspendOrganisation Execute an approved suspension
+	// (POST /v1/organisations/{organisation_id}/suspension)
+	SuspendOrganisation(w http.ResponseWriter, r *http.Request, organisationId Id, params SuspendOrganisationParams)
+	// RejectTaxRegistration Reject a tax registration
+	// (PUT /v1/organisations/{organisation_id}/tax-registrations/{registration_id}/rejection)
+	RejectTaxRegistration(w http.ResponseWriter, r *http.Request, organisationId Id, registrationId Id, params RejectTaxRegistrationParams)
 	// VerifyTaxRegistration Record GSTIN verification
 	// (PUT /v1/organisations/{organisation_id}/tax-registrations/{registration_id}/verification)
 	VerifyTaxRegistration(w http.ResponseWriter, r *http.Request, organisationId Id, registrationId Id, params VerifyTaxRegistrationParams)
+	// ListPlans List plans with their versions
+	// (GET /v1/plans)
+	ListPlans(w http.ResponseWriter, r *http.Request, params ListPlansParams)
+	// CreatePlan Create a plan with a draft first version
+	// (POST /v1/plans)
+	CreatePlan(w http.ResponseWriter, r *http.Request, params CreatePlanParams)
+	// GetPlan Get a plan
+	// (GET /v1/plans/{plan_key})
+	GetPlan(w http.ResponseWriter, r *http.Request, planKey string)
+	// CreatePlanVersion Create a draft version (a price or content change is a new version)
+	// (POST /v1/plans/{plan_key}/versions)
+	CreatePlanVersion(w http.ResponseWriter, r *http.Request, planKey string, params CreatePlanVersionParams)
+	// ActivatePlanVersion Activate a draft version (immutable from here)
+	// (POST /v1/plans/{plan_key}/versions/{version}/activation)
+	ActivatePlanVersion(w http.ResponseWriter, r *http.Request, planKey string, version int, params ActivatePlanVersionParams)
+	// RetirePlanVersion Retire an active version
+	// (POST /v1/plans/{plan_key}/versions/{version}/retirement)
+	RetirePlanVersion(w http.ResponseWriter, r *http.Request, planKey string, version int, params RetirePlanVersionParams)
 	// SignIn Sign in with email, password and TOTP
 	// (POST /v1/sessions)
 	SignIn(w http.ResponseWriter, r *http.Request, params SignInParams)
@@ -3039,6 +4903,30 @@ type ServerInterface interface {
 	// GetSupportSession The active support session (banner)
 	// (GET /v1/support-sessions/current)
 	GetSupportSession(w http.ResponseWriter, r *http.Request)
+	// ListTaxRuleSetMasters List rule-set versions with emit progress
+	// (GET /v1/tax-rule-sets)
+	ListTaxRuleSetMasters(w http.ResponseWriter, r *http.Request, params ListTaxRuleSetMastersParams)
+	// CreateTaxRuleSetDraft Create a draft rule set
+	// (POST /v1/tax-rule-sets)
+	CreateTaxRuleSetDraft(w http.ResponseWriter, r *http.Request, params CreateTaxRuleSetDraftParams)
+	// DeleteTaxRuleSetDraft Delete a draft rule set
+	// (DELETE /v1/tax-rule-sets/{rule_set_id})
+	DeleteTaxRuleSetDraft(w http.ResponseWriter, r *http.Request, ruleSetId Id, params DeleteTaxRuleSetDraftParams)
+	// GetTaxRuleSetMaster Read a rule-set version with emit progress
+	// (GET /v1/tax-rule-sets/{rule_set_id})
+	GetTaxRuleSetMaster(w http.ResponseWriter, r *http.Request, ruleSetId Id)
+	// UpdateTaxRuleSetDraft Edit a draft rule set
+	// (PATCH /v1/tax-rule-sets/{rule_set_id})
+	UpdateTaxRuleSetDraft(w http.ResponseWriter, r *http.Request, ruleSetId Id, params UpdateTaxRuleSetDraftParams)
+	// PublishTaxRuleSet Publish a signed rule set
+	// (POST /v1/tax-rule-sets/{rule_set_id}/publication)
+	PublishTaxRuleSet(w http.ResponseWriter, r *http.Request, ruleSetId Id, params PublishTaxRuleSetParams)
+	// SignTaxRuleSet Sign a validated draft
+	// (POST /v1/tax-rule-sets/{rule_set_id}/signature)
+	SignTaxRuleSet(w http.ResponseWriter, r *http.Request, ruleSetId Id, params SignTaxRuleSetParams)
+	// ValidateTaxRuleSet Validate a draft against the BR-A1-82 checks and the conformance vectors
+	// (POST /v1/tax-rule-sets/{rule_set_id}/validation)
+	ValidateTaxRuleSet(w http.ResponseWriter, r *http.Request, ruleSetId Id, params ValidateTaxRuleSetParams)
 	// ListVendorUsers List vendor staff
 	// (GET /v1/vendor-users)
 	ListVendorUsers(w http.ResponseWriter, r *http.Request, params ListVendorUsersParams)
@@ -3660,6 +5548,221 @@ func (siw *ServerInterfaceWrapper) ListAuditEntries(w http.ResponseWriter, r *ht
 	handler.ServeHTTP(w, r)
 }
 
+// ListBillingConfigurations operation middleware
+func (siw *ServerInterfaceWrapper) ListBillingConfigurations(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListBillingConfigurationsParams
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", r.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "cursor"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "cursor", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListBillingConfigurations(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateBillingConfiguration operation middleware
+func (siw *ServerInterfaceWrapper) CreateBillingConfiguration(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateBillingConfigurationParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateBillingConfiguration(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ExportLedger operation middleware
+func (siw *ServerInterfaceWrapper) ExportLedger(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ExportLedgerParams
+
+	// ------------- Optional query parameter "from" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "from", r.URL.Query(), &params.From, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "from"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "from", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "to" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "to", r.URL.Query(), &params.To, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "to"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "to", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ExportLedger(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListLedgerEntries operation middleware
+func (siw *ServerInterfaceWrapper) ListLedgerEntries(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "list_kind" -------------
+	var listKind LedgerListKind
+
+	err = runtime.BindStyledParameterWithOptions("simple", "list_kind", r.PathValue("list_kind"), &listKind, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "list_kind", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListLedgerEntriesParams
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", r.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "cursor"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "cursor", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListLedgerEntries(w, r, listKind, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListOrganisations operation middleware
 func (siw *ServerInterfaceWrapper) ListOrganisations(w http.ResponseWriter, r *http.Request) {
 
@@ -3691,6 +5794,19 @@ func (siw *ServerInterfaceWrapper) ListOrganisations(w http.ResponseWriter, r *h
 			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "status"})
 		} else {
 			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "status", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "has_unverified_registration" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "has_unverified_registration", r.URL.Query(), &params.HasUnverifiedRegistration, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "has_unverified_registration"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "has_unverified_registration", Err: err})
 		}
 		return
 	}
@@ -3817,6 +5933,766 @@ func (siw *ServerInterfaceWrapper) GetOrganisation(w http.ResponseWriter, r *htt
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetOrganisation(w, r, organisationId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListCharges operation middleware
+func (siw *ServerInterfaceWrapper) ListCharges(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListChargesParams
+
+	// ------------- Optional query parameter "status" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "status", r.URL.Query(), &params.Status, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "status"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "status", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", r.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "cursor"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "cursor", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListCharges(w, r, organisationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// RaiseCharge operation middleware
+func (siw *ServerInterfaceWrapper) RaiseCharge(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params RaiseChargeParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RaiseCharge(w, r, organisationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetCharge operation middleware
+func (siw *ServerInterfaceWrapper) GetCharge(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "charge_id" -------------
+	var chargeId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "charge_id", r.PathValue("charge_id"), &chargeId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "charge_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetCharge(w, r, organisationId, chargeId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CancelCharge operation middleware
+func (siw *ServerInterfaceWrapper) CancelCharge(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "charge_id" -------------
+	var chargeId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "charge_id", r.PathValue("charge_id"), &chargeId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "charge_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CancelChargeParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CancelCharge(w, r, organisationId, chargeId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// SetChargeInvoiceReference operation middleware
+func (siw *ServerInterfaceWrapper) SetChargeInvoiceReference(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "charge_id" -------------
+	var chargeId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "charge_id", r.PathValue("charge_id"), &chargeId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "charge_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params SetChargeInvoiceReferenceParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.SetChargeInvoiceReference(w, r, organisationId, chargeId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListChargePayments operation middleware
+func (siw *ServerInterfaceWrapper) ListChargePayments(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "charge_id" -------------
+	var chargeId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "charge_id", r.PathValue("charge_id"), &chargeId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "charge_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListChargePaymentsParams
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", r.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "cursor"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "cursor", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListChargePayments(w, r, organisationId, chargeId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// RecordPayment operation middleware
+func (siw *ServerInterfaceWrapper) RecordPayment(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "charge_id" -------------
+	var chargeId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "charge_id", r.PathValue("charge_id"), &chargeId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "charge_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params RecordPaymentParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RecordPayment(w, r, organisationId, chargeId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ReversePayment operation middleware
+func (siw *ServerInterfaceWrapper) ReversePayment(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "charge_id" -------------
+	var chargeId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "charge_id", r.PathValue("charge_id"), &chargeId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "charge_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "payment_id" -------------
+	var paymentId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "payment_id", r.PathValue("payment_id"), &paymentId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "payment_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ReversePaymentParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ReversePayment(w, r, organisationId, chargeId, paymentId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// WaiveCharge operation middleware
+func (siw *ServerInterfaceWrapper) WaiveCharge(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "charge_id" -------------
+	var chargeId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "charge_id", r.PathValue("charge_id"), &chargeId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "charge_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params WaiveChargeParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.WaiveCharge(w, r, organisationId, chargeId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CloseOrganisation operation middleware
+func (siw *ServerInterfaceWrapper) CloseOrganisation(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CloseOrganisationParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CloseOrganisation(w, r, organisationId, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -4277,6 +7153,340 @@ func (siw *ServerInterfaceWrapper) RenewOwnerInvitation(w http.ResponseWriter, r
 	handler.ServeHTTP(w, r)
 }
 
+// ReinstateOrganisation operation middleware
+func (siw *ServerInterfaceWrapper) ReinstateOrganisation(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ReinstateOrganisationParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ReinstateOrganisation(w, r, organisationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetOrganisationSubscription operation middleware
+func (siw *ServerInterfaceWrapper) GetOrganisationSubscription(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetOrganisationSubscription(w, r, organisationId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// StartSubscription operation middleware
+func (siw *ServerInterfaceWrapper) StartSubscription(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params StartSubscriptionParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.StartSubscription(w, r, organisationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ChangeSubscription operation middleware
+func (siw *ServerInterfaceWrapper) ChangeSubscription(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ChangeSubscriptionParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ChangeSubscription(w, r, organisationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CancelSubscription operation middleware
+func (siw *ServerInterfaceWrapper) CancelSubscription(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CancelSubscriptionParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CancelSubscription(w, r, organisationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListSupportBrands operation middleware
 func (siw *ServerInterfaceWrapper) ListSupportBrands(w http.ResponseWriter, r *http.Request) {
 
@@ -4714,6 +7924,169 @@ func (siw *ServerInterfaceWrapper) ListSupportTaxRegistrations(w http.ResponseWr
 	handler.ServeHTTP(w, r)
 }
 
+// SuspendOrganisation operation middleware
+func (siw *ServerInterfaceWrapper) SuspendOrganisation(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params SuspendOrganisationParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.SuspendOrganisation(w, r, organisationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// RejectTaxRegistration operation middleware
+func (siw *ServerInterfaceWrapper) RejectTaxRegistration(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "organisation_id" -------------
+	var organisationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "organisation_id", r.PathValue("organisation_id"), &organisationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "organisation_id", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "registration_id" -------------
+	var registrationId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "registration_id", r.PathValue("registration_id"), &registrationId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "registration_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params RejectTaxRegistrationParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RejectTaxRegistration(w, r, organisationId, registrationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // VerifyTaxRegistration operation middleware
 func (siw *ServerInterfaceWrapper) VerifyTaxRegistration(w http.ResponseWriter, r *http.Request) {
 
@@ -4791,6 +8164,395 @@ func (siw *ServerInterfaceWrapper) VerifyTaxRegistration(w http.ResponseWriter, 
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.VerifyTaxRegistration(w, r, organisationId, registrationId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListPlans operation middleware
+func (siw *ServerInterfaceWrapper) ListPlans(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListPlansParams
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", r.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "cursor"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "cursor", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListPlans(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreatePlan operation middleware
+func (siw *ServerInterfaceWrapper) CreatePlan(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreatePlanParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreatePlan(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetPlan operation middleware
+func (siw *ServerInterfaceWrapper) GetPlan(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "plan_key" -------------
+	var planKey string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "plan_key", r.PathValue("plan_key"), &planKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "plan_key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetPlan(w, r, planKey)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreatePlanVersion operation middleware
+func (siw *ServerInterfaceWrapper) CreatePlanVersion(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "plan_key" -------------
+	var planKey string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "plan_key", r.PathValue("plan_key"), &planKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "plan_key", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreatePlanVersionParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreatePlanVersion(w, r, planKey, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ActivatePlanVersion operation middleware
+func (siw *ServerInterfaceWrapper) ActivatePlanVersion(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "plan_key" -------------
+	var planKey string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "plan_key", r.PathValue("plan_key"), &planKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "plan_key", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "version" -------------
+	var version int
+
+	err = runtime.BindStyledParameterWithOptions("simple", "version", r.PathValue("version"), &version, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "version", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ActivatePlanVersionParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ActivatePlanVersion(w, r, planKey, version, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// RetirePlanVersion operation middleware
+func (siw *ServerInterfaceWrapper) RetirePlanVersion(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "plan_key" -------------
+	var planKey string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "plan_key", r.PathValue("plan_key"), &planKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "plan_key", Err: err})
+		return
+	}
+
+	// ------------- Path parameter "version" -------------
+	var version int
+
+	err = runtime.BindStyledParameterWithOptions("simple", "version", r.PathValue("version"), &version, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "integer", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "version", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params RetirePlanVersionParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.RetirePlanVersion(w, r, planKey, version, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -5068,6 +8830,567 @@ func (siw *ServerInterfaceWrapper) GetSupportSession(w http.ResponseWriter, r *h
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetSupportSession(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListTaxRuleSetMasters operation middleware
+func (siw *ServerInterfaceWrapper) ListTaxRuleSetMasters(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListTaxRuleSetMastersParams
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", r.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "cursor"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "cursor", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", r.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "limit"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "limit", Err: err})
+		}
+		return
+	}
+
+	// ------------- Optional query parameter "state" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "state", r.URL.Query(), &params.State, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		var requiredError *runtime.RequiredParameterError
+		if errors.As(err, &requiredError) {
+			siw.ErrorHandlerFunc(w, r, &RequiredParamError{ParamName: "state"})
+		} else {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "state", Err: err})
+		}
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListTaxRuleSetMasters(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateTaxRuleSetDraft operation middleware
+func (siw *ServerInterfaceWrapper) CreateTaxRuleSetDraft(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateTaxRuleSetDraftParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateTaxRuleSetDraft(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteTaxRuleSetDraft operation middleware
+func (siw *ServerInterfaceWrapper) DeleteTaxRuleSetDraft(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "rule_set_id" -------------
+	var ruleSetId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "rule_set_id", r.PathValue("rule_set_id"), &ruleSetId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "rule_set_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params DeleteTaxRuleSetDraftParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteTaxRuleSetDraft(w, r, ruleSetId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// GetTaxRuleSetMaster operation middleware
+func (siw *ServerInterfaceWrapper) GetTaxRuleSetMaster(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "rule_set_id" -------------
+	var ruleSetId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "rule_set_id", r.PathValue("rule_set_id"), &ruleSetId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "rule_set_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetTaxRuleSetMaster(w, r, ruleSetId)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// UpdateTaxRuleSetDraft operation middleware
+func (siw *ServerInterfaceWrapper) UpdateTaxRuleSetDraft(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "rule_set_id" -------------
+	var ruleSetId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "rule_set_id", r.PathValue("rule_set_id"), &ruleSetId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "rule_set_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params UpdateTaxRuleSetDraftParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "If-Match" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("If-Match")]; found {
+		var IfMatch IfMatch
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "If-Match", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "If-Match", valueList[0], &IfMatch, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "If-Match", Err: err})
+			return
+		}
+
+		params.IfMatch = IfMatch
+
+	} else {
+		err := fmt.Errorf("Header parameter If-Match is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "If-Match", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateTaxRuleSetDraft(w, r, ruleSetId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// PublishTaxRuleSet operation middleware
+func (siw *ServerInterfaceWrapper) PublishTaxRuleSet(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "rule_set_id" -------------
+	var ruleSetId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "rule_set_id", r.PathValue("rule_set_id"), &ruleSetId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "rule_set_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params PublishTaxRuleSetParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.PublishTaxRuleSet(w, r, ruleSetId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// SignTaxRuleSet operation middleware
+func (siw *ServerInterfaceWrapper) SignTaxRuleSet(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "rule_set_id" -------------
+	var ruleSetId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "rule_set_id", r.PathValue("rule_set_id"), &ruleSetId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "rule_set_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params SignTaxRuleSetParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.SignTaxRuleSet(w, r, ruleSetId, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ValidateTaxRuleSet operation middleware
+func (siw *ServerInterfaceWrapper) ValidateTaxRuleSet(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "rule_set_id" -------------
+	var ruleSetId Id
+
+	err = runtime.BindStyledParameterWithOptions("simple", "rule_set_id", r.PathValue("rule_set_id"), &ruleSetId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "rule_set_id", Err: err})
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ValidateTaxRuleSetParams
+
+	headers := r.Header
+
+	// ------------- Required header parameter "X-CSRF-Token" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-CSRF-Token")]; found {
+		var XCSRFToken string
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "X-CSRF-Token", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-CSRF-Token", valueList[0], &XCSRFToken, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "X-CSRF-Token", Err: err})
+			return
+		}
+
+		params.XCSRFToken = XCSRFToken
+
+	} else {
+		err := fmt.Errorf("Header parameter X-CSRF-Token is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "X-CSRF-Token", Err: err})
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey IdempotencyKey
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
+		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ValidateTaxRuleSet(w, r, ruleSetId, params)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -5482,6 +9805,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/owner-invitations/{invitation_id}/renewals", wrapper.RenewOwnerInvitation)
 	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/organisations/{organisation_id}/owner-invitations/{invitation_id}/cancellation", wrapper.CancelOwnerInvitation)
 	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/organisations/{organisation_id}/tax-registrations/{registration_id}/verification", wrapper.VerifyTaxRegistration)
+	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/organisations/{organisation_id}/tax-registrations/{registration_id}/rejection", wrapper.RejectTaxRegistration)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/devices", wrapper.ListOrganisationDevices)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/devices/{device_id}", wrapper.GetOrganisationDevice)
 	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/organisations/{organisation_id}/devices/{device_id}/revocation", wrapper.RevokeOrganisationDevice)
@@ -5504,6 +9828,40 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/support-view/members", wrapper.ListSupportMembers)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/support-view/roles", wrapper.ListSupportRoles)
 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/support-view/devices", wrapper.ListSupportDevices)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/billing-configurations", wrapper.ListBillingConfigurations)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/billing-configurations", wrapper.CreateBillingConfiguration)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/ledger-exports", wrapper.ExportLedger)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/ledger-lists/{list_kind}", wrapper.ListLedgerEntries)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges", wrapper.ListCharges)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges", wrapper.RaiseCharge)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges/{charge_id}", wrapper.GetCharge)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges/{charge_id}/cancellation", wrapper.CancelCharge)
+	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges/{charge_id}/invoice-reference", wrapper.SetChargeInvoiceReference)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges/{charge_id}/payments", wrapper.ListChargePayments)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges/{charge_id}/payments", wrapper.RecordPayment)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges/{charge_id}/payments/{payment_id}/reversal", wrapper.ReversePayment)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/charges/{charge_id}/waiver", wrapper.WaiveCharge)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/closure", wrapper.CloseOrganisation)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/reinstatement", wrapper.ReinstateOrganisation)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/organisations/{organisation_id}/subscription", wrapper.GetOrganisationSubscription)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/subscription", wrapper.StartSubscription)
+	m.HandleFunc(http.MethodPut+" "+options.BaseURL+"/v1/organisations/{organisation_id}/subscription", wrapper.ChangeSubscription)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/subscription/cancellation", wrapper.CancelSubscription)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/organisations/{organisation_id}/suspension", wrapper.SuspendOrganisation)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/plans", wrapper.ListPlans)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/plans", wrapper.CreatePlan)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/plans/{plan_key}", wrapper.GetPlan)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/plans/{plan_key}/versions", wrapper.CreatePlanVersion)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/plans/{plan_key}/versions/{version}/activation", wrapper.ActivatePlanVersion)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/plans/{plan_key}/versions/{version}/retirement", wrapper.RetirePlanVersion)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/tax-rule-sets", wrapper.ListTaxRuleSetMasters)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/tax-rule-sets", wrapper.CreateTaxRuleSetDraft)
+	m.HandleFunc(http.MethodDelete+" "+options.BaseURL+"/v1/tax-rule-sets/{rule_set_id}", wrapper.DeleteTaxRuleSetDraft)
+	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/v1/tax-rule-sets/{rule_set_id}", wrapper.GetTaxRuleSetMaster)
+	m.HandleFunc(http.MethodPatch+" "+options.BaseURL+"/v1/tax-rule-sets/{rule_set_id}", wrapper.UpdateTaxRuleSetDraft)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/tax-rule-sets/{rule_set_id}/publication", wrapper.PublishTaxRuleSet)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/tax-rule-sets/{rule_set_id}/signature", wrapper.SignTaxRuleSet)
+	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/v1/tax-rule-sets/{rule_set_id}/validation", wrapper.ValidateTaxRuleSet)
 
 	return m
 }

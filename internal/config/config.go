@@ -19,6 +19,7 @@ type Config struct {
 	PublicOrigin    string        // ADMIN_PUBLIC_ORIGIN: the one origin admin-web and the API share
 	IdentityURL     string        // ADMIN_IDENTITY_URL
 	TenancyURL      string        // ADMIN_TENANCY_URL
+	BillingURL      string        // ADMIN_BILLING_URL (tax rule sets)
 	ServiceKeyFile  string        // ADMIN_SERVICE_KEY_FILE: PEM ES256 private key of the admin service token
 	StaticDir       string        // ADMIN_STATIC_DIR: admin-web build, optional
 	ClientIPHeader  string        // ADMIN_CLIENT_IP_HEADER: trusted proxy header, optional
@@ -37,6 +38,7 @@ func Load(lookup gc.Lookup) (Config, error) {
 		PublicOrigin:    strings.TrimRight(l.Required("ADMIN_PUBLIC_ORIGIN"), "/"),
 		IdentityURL:     l.Required("ADMIN_IDENTITY_URL"),
 		TenancyURL:      l.Required("ADMIN_TENANCY_URL"),
+		BillingURL:      l.Required("ADMIN_BILLING_URL"),
 		ServiceKeyFile:  l.Required("ADMIN_SERVICE_KEY_FILE"),
 		StaticDir:       l.String("ADMIN_STATIC_DIR", ""),
 		ClientIPHeader:  l.String("ADMIN_CLIENT_IP_HEADER", ""),
@@ -52,7 +54,7 @@ func Load(lookup gc.Lookup) (Config, error) {
 	if !originOK(c.PublicOrigin) {
 		problems = append(problems, "ADMIN_PUBLIC_ORIGIN must be an https origin (http only for localhost), with no path")
 	}
-	for name, v := range map[string]string{"ADMIN_IDENTITY_URL": c.IdentityURL, "ADMIN_TENANCY_URL": c.TenancyURL} {
+	for name, v := range map[string]string{"ADMIN_IDENTITY_URL": c.IdentityURL, "ADMIN_TENANCY_URL": c.TenancyURL, "ADMIN_BILLING_URL": c.BillingURL} {
 		if u, err := url.Parse(v); err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			problems = append(problems, name+" must be an http(s) URL")
 		}

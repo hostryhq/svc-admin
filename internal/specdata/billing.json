@@ -1,0 +1,3884 @@
+{
+ "service": "billing",
+ "worlds": [
+  "base",
+  "gap-open",
+  "late-revision",
+  "payments-exceed",
+  "rule-set-draft",
+  "rule-set-signed"
+ ],
+ "operations": [
+  {
+   "id": "createTaxRuleSetDraft",
+   "method": "POST",
+   "path": "/internal/v1/vendor/tax-rule-sets",
+   "permission": "admin.taxrules.manage",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 201,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "unreviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "deleteTaxRuleSetDraft",
+   "method": "DELETE",
+   "path": "/internal/v1/vendor/tax-rule-sets/{rule_set_id}",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 204
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getBill",
+   "method": "GET",
+   "path": "/v1/bills/{bill_id}",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "business_date": "2026-11-24",
+       "calc_v": 1,
+       "cashier_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+       "check_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f6001",
+       "credited": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "discount_total": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "doc_type": "tax_invoice",
+       "eco": false,
+       "finalized_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+       "invoice_date": "2026-11-24",
+       "late": false,
+       "lines": [
+        {
+         "bill_discount_alloc": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "category_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5001",
+         "category_name": "Starters",
+         "comp": false,
+         "item_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5101",
+         "item_name": "Paneer Tikka",
+         "line_discount": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "line_no": 1,
+         "modifier_delta": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "net": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         },
+         "order_line_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f6011",
+         "qty_milli": 2000,
+         "tax_class": "fnb_standard",
+         "unit_price": {
+          "amount_paise": 24000,
+          "currency": "INR"
+         },
+         "variant_name": "Full"
+        }
+       ],
+       "non_gst_subtotal": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "number": "A7K/2627/000001",
+       "order_type": "dine_in",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "packing_charge": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "paid": {
+        "amount_paise": 50400,
+        "currency": "INR"
+       },
+       "payment_status": "paid",
+       "payments": [
+        {
+         "amount": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "bill_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+         "business_date": "2026-11-24",
+         "change": {
+          "amount_paise": 600,
+          "currency": "INR"
+         },
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7021",
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "paid_at": "2026-11-24T13:05:11.120Z",
+         "shift_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7051",
+         "target_kind": "bill",
+         "tender": "cash",
+         "tendered": {
+          "amount_paise": 51000,
+          "currency": "INR"
+         }
+        }
+       ],
+       "price_mode": "exclusive",
+       "round_off": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "ruleset_id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+       "service_charge": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "source_kind": "check",
+       "tax_lines": [
+        {
+         "cgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "charge_alloc": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "gst_applies": true,
+         "igst": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "rate_bp": 500,
+         "sgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "tax_class": "fnb_standard",
+         "taxable": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         }
+        }
+       ],
+       "total": {
+        "amount_paise": 50400,
+        "currency": "INR"
+       },
+       "verification": {
+        "calc_v": 1,
+        "checked_at": "2026-11-24T13:05:11.120Z",
+        "difference": {
+         "amount_paise": 0,
+         "currency": "INR"
+        },
+        "ruleset_id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+        "status": "verified"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getBillingException",
+   "method": "GET",
+   "path": "/v1/exceptions/{exception_id}",
+   "permission": "exceptions.view",
+   "world": "payments-exceed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "business_date": "2026-11-24",
+       "detail_key": "exception.payments_exceed_total",
+       "detected_at": "2026-11-24T13:05:11.120Z",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7091",
+       "kind": "payments_exceed_total",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "params": {
+        "paid_paise": 100800,
+        "total_paise": 50400
+       },
+       "severity": "high",
+       "status": "open",
+       "subject_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+       "subject_kind": "bill"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getBillingProjectionDigest",
+   "method": "GET",
+   "path": "/v1/projection-digests",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "algorithm": "sha256-canon-v1",
+       "business_date": "2026-11-24",
+       "computed_at": "2026-11-24T13:05:11.120Z",
+       "entities": [
+        {
+         "entity": "bill",
+         "hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+         "row_count": 1
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "state_hash": "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getBusinessDay",
+   "method": "GET",
+   "path": "/v1/business-days/{business_day_id}",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "business_date": "2026-11-24",
+       "close": {
+        "closed_at": "2026-11-24T13:05:11.120Z",
+        "closing_device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+        "closing_member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+        "cutoff": "{\"0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e\":812}",
+        "series_ranges": [
+         {
+          "count": 1,
+          "doc_type": "tax_invoice",
+          "first_number": "A7K/2627/000001",
+          "last_number": "A7K/2627/000001",
+          "series_code": "A7K"
+         }
+        ],
+        "totals": {
+         "bill_count": 1,
+         "cgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "credit_note_count": 0,
+         "credit_note_total": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "discounts": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "gross": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         },
+         "internal_consumption": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "net": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         },
+         "non_gst": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "refund_total": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "round_off": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "service_charge": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "sgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "tenders": [
+          {
+           "amount": {
+            "amount_paise": 48000,
+            "currency": "INR"
+           },
+           "count": 1,
+           "tender": "cash"
+          }
+         ],
+         "total": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         }
+        },
+        "z_number": "Z/2026-11-24/P1"
+       },
+       "id": "781c2cf3-5c86-5dca-8c74-ef356237bbac",
+       "late_document_count": 0,
+       "opened_at": "2026-11-24T13:05:11.120Z",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "revision_count": 0,
+       "status": "closed"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getCategorySalesReport",
+   "method": "GET",
+   "path": "/v1/reports/category-sales",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "business_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "category_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5001",
+         "category_name": "Starters",
+         "gross": {
+          "amount_paise": 576000,
+          "currency": "INR"
+         },
+         "net": {
+          "amount_paise": 576000,
+          "currency": "INR"
+         },
+         "qty_milli": 24000
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getCreditNote",
+   "method": "GET",
+   "path": "/v1/credit-notes/{credit_note_id}",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "bill_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+       "bill_invoice_date": "2026-11-24",
+       "bill_number": "A7K/2627/000001",
+       "business_date": "2026-11-24",
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+       "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7011",
+       "invoice_date": "2026-11-24",
+       "lines": [
+        {
+         "bill_discount_alloc": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "category_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5001",
+         "category_name": "Starters",
+         "comp": false,
+         "item_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5101",
+         "item_name": "Paneer Tikka",
+         "line_discount": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "line_no": 1,
+         "modifier_delta": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "net": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         },
+         "order_line_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f6011",
+         "qty_milli": 2000,
+         "tax_class": "fnb_standard",
+         "unit_price": {
+          "amount_paise": 24000,
+          "currency": "INR"
+         },
+         "variant_name": "Full"
+        }
+       ],
+       "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+       "number": "A7M/2627/000001",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "refund_tender": "cash",
+       "round_off": {
+        "amount_paise": 0,
+        "currency": "INR"
+       },
+       "tax_lines": [
+        {
+         "cgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "charge_alloc": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "gst_applies": true,
+         "igst": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "rate_bp": 500,
+         "sgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "tax_class": "fnb_standard",
+         "taxable": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         }
+        }
+       ],
+       "total": {
+        "amount_paise": 50400,
+        "currency": "INR"
+       },
+       "verification": {
+        "calc_v": 1,
+        "checked_at": "2026-11-24T13:05:11.120Z",
+        "difference": {
+         "amount_paise": 0,
+         "currency": "INR"
+        },
+        "ruleset_id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+        "status": "verified"
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getDaySummaryReport",
+   "method": "GET",
+   "path": "/v1/reports/day-summary",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "business_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "business_date": "2026-11-24",
+         "revision_count": 0,
+         "status": "closed",
+         "totals": {
+          "bill_count": 1,
+          "cgst": {
+           "amount_paise": 1200,
+           "currency": "INR"
+          },
+          "credit_note_count": 0,
+          "credit_note_total": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "discounts": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "gross": {
+           "amount_paise": 48000,
+           "currency": "INR"
+          },
+          "internal_consumption": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "net": {
+           "amount_paise": 48000,
+           "currency": "INR"
+          },
+          "non_gst": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "refund_total": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "round_off": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "service_charge": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "sgst": {
+           "amount_paise": 1200,
+           "currency": "INR"
+          },
+          "tenders": [
+           {
+            "amount": {
+             "amount_paise": 48000,
+             "currency": "INR"
+            },
+            "count": 1,
+            "tender": "cash"
+           }
+          ],
+          "total": {
+           "amount_paise": 50400,
+           "currency": "INR"
+          }
+         }
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getDiscountReport",
+   "method": "GET",
+   "path": "/v1/reports/discounts",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "business_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "at": "2026-11-24T13:05:11.120Z",
+         "bill_number": "A7K/2627/000001",
+         "business_date": "2026-11-24",
+         "kind": "discount",
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "reason_code_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5164",
+         "subject_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+         "value": {
+          "amount_paise": 5000,
+          "currency": "INR"
+         },
+         "within_allowance": false
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24",
+       "totals": {
+        "count": 1,
+        "value": {
+         "amount_paise": 5000,
+         "currency": "INR"
+        }
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getHourlySalesReport",
+   "method": "GET",
+   "path": "/v1/reports/hourly-sales",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "business_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "bill_count": 1,
+         "business_date": "2026-11-24",
+         "hour": 13,
+         "net": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         },
+         "order_type": "dine_in"
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getItemSalesReport",
+   "method": "GET",
+   "path": "/v1/reports/item-sales",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "business_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "gross": {
+          "amount_paise": 576000,
+          "currency": "INR"
+         },
+         "item_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5101",
+         "item_name": "Paneer Tikka",
+         "net": {
+          "amount_paise": 576000,
+          "currency": "INR"
+         },
+         "qty_milli": 24000,
+         "variant_name": "Full"
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getOutletBillingConfig",
+   "method": "GET",
+   "path": "/v1/outlets/{outlet_id}/billing-config",
+   "permission": "settings.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "settings": {
+        "comp_allowance": {
+         "amount_paise": 50000,
+         "currency": "INR"
+        },
+        "discount_limit_bp": 1000,
+        "handover_count": true,
+        "manual_entry_max_days_back": 2,
+        "number_at": "settle",
+        "open_item_limit": {
+         "amount_paise": 50000,
+         "currency": "INR"
+        },
+        "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+        "price_mode": "exclusive",
+        "rebill_allowance_per_shift": 3,
+        "round_off": true,
+        "service_charge_bp": 0,
+        "shift_required": true,
+        "updated_at": "2026-11-24T13:05:11.120Z"
+       },
+       "tax_profiles": [
+        {
+         "financial_year": "2627",
+         "fssai_number": "12345678901234",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "specified_premises": false,
+         "updated_at": "2026-11-24T13:05:11.120Z"
+        }
+       ],
+       "tenders": [
+        {
+         "enabled": true,
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f70a1",
+         "kind": "other",
+         "name": "Coupon",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getSeriesLastSeen",
+   "method": "GET",
+   "path": "/internal/v1/document-series/{series_id}/last-seen",
+   "permission": "register.read",
+   "service_callers": [
+    "tenancy",
+    "identity"
+   ],
+   "security": [
+    [
+     "serviceAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "as_of": "2026-11-24T13:05:11.120Z",
+       "count": 1,
+       "last_number": "A7K/2627/000001",
+       "series_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6c"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getStaffSalesReport",
+   "method": "GET",
+   "path": "/v1/reports/staff-sales",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "business_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "bill_count": 1,
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "net": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         },
+         "role": "cashier"
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getTaxRuleSet",
+   "method": "GET",
+   "path": "/v1/tax-rule-sets/{rule_set_id}",
+   "permission": "settings.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "content_hash": "a3f5c0de9d1b7e44c2f9a8b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6",
+       "effective_date": "2026-04-01",
+       "id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+       "name": "GST restaurant services 2026",
+       "published_at": "2026-11-24T13:05:11.120Z",
+       "review_status": "unreviewed",
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "version": 1
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getTaxRuleSetMaster",
+   "method": "GET",
+   "path": "/internal/v1/vendor/tax-rule-sets/{rule_set_id}",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "unreviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getTaxSummaryReport",
+   "method": "GET",
+   "path": "/v1/reports/tax-summary",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "invoice_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "bill_cgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "bill_sgst": {
+          "amount_paise": 1200,
+          "currency": "INR"
+         },
+         "bill_taxable": {
+          "amount_paise": 48000,
+          "currency": "INR"
+         },
+         "credit_cgst": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "credit_sgst": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "credit_taxable": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "gst_applies": true,
+         "rate_bp": 500,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24",
+       "totals": {
+        "net_cgst": {
+         "amount_paise": 1200,
+         "currency": "INR"
+        },
+        "net_sgst": {
+         "amount_paise": 1200,
+         "currency": "INR"
+        },
+        "net_taxable": {
+         "amount_paise": 48000,
+         "currency": "INR"
+        },
+        "non_gst": {
+         "amount_paise": 0,
+         "currency": "INR"
+        }
+       }
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "getTenderSummaryReport",
+   "method": "GET",
+   "path": "/v1/reports/tender-summary",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "basis": "business_date",
+       "from": "2026-11-24",
+       "items": [
+        {
+         "net": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "paid": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "payment_count": 1,
+         "refunded": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "tender": "cash"
+        }
+       ],
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "to": "2026-11-24"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listBillingExceptions",
+   "method": "GET",
+   "path": "/v1/exceptions",
+   "permission": "exceptions.view",
+   "world": "payments-exceed",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "business_date": "2026-11-24",
+         "detail_key": "exception.payments_exceed_total",
+         "detected_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7091",
+         "kind": "payments_exceed_total",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "params": {
+          "paid_paise": 100800,
+          "total_paise": 50400
+         },
+         "severity": "high",
+         "status": "open",
+         "subject_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+         "subject_kind": "bill"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listBills",
+   "method": "GET",
+   "path": "/v1/bills",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "business_date": "2026-11-24",
+         "calc_v": 1,
+         "cashier_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "check_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f6001",
+         "credited": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "doc_type": "tax_invoice",
+         "eco": false,
+         "finalized_at": "2026-11-24T13:05:11.120Z",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+         "invoice_date": "2026-11-24",
+         "late": false,
+         "number": "A7K/2627/000001",
+         "order_type": "dine_in",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "paid": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "payment_status": "paid",
+         "price_mode": "exclusive",
+         "round_off": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "ruleset_id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+         "source_kind": "check",
+         "total": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "verification": {
+          "calc_v": 1,
+          "checked_at": "2026-11-24T13:05:11.120Z",
+          "difference": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "ruleset_id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+          "status": "verified"
+         }
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listBusinessDayRevisions",
+   "method": "GET",
+   "path": "/v1/business-days/{business_day_id}/revisions",
+   "permission": "report.view.outlet",
+   "world": "late-revision",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "added_series_ranges": [
+          {
+           "count": 1,
+           "doc_type": "tax_invoice",
+           "first_number": "A7K/2627/000001",
+           "last_number": "A7K/2627/000001",
+           "series_code": "A7K"
+          }
+         ],
+         "added_totals": {
+          "bill_count": 1,
+          "cgst": {
+           "amount_paise": 1200,
+           "currency": "INR"
+          },
+          "credit_note_count": 0,
+          "credit_note_total": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "discounts": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "gross": {
+           "amount_paise": 48000,
+           "currency": "INR"
+          },
+          "internal_consumption": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "net": {
+           "amount_paise": 48000,
+           "currency": "INR"
+          },
+          "non_gst": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "refund_total": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "round_off": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "service_charge": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "sgst": {
+           "amount_paise": 1200,
+           "currency": "INR"
+          },
+          "tenders": [
+           {
+            "amount": {
+             "amount_paise": 48000,
+             "currency": "INR"
+            },
+            "count": 1,
+            "tender": "cash"
+           }
+          ],
+          "total": {
+           "amount_paise": 50400,
+           "currency": "INR"
+          }
+         },
+         "business_day_id": "781c2cf3-5c86-5dca-8c74-ef356237bbac",
+         "cause": "late_device",
+         "created_at": "2026-11-24T13:09:40.000Z",
+         "display_number": "Z/2026-11-24/P1/R1",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7071",
+         "op_from_seq": 813,
+         "op_to_seq": 830,
+         "origin_device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "revision": 1
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listBusinessDays",
+   "method": "GET",
+   "path": "/v1/business-days",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "business_date": "2026-11-24",
+         "close": {
+          "closed_at": "2026-11-24T13:05:11.120Z",
+          "closing_device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+          "closing_member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+          "cutoff": "{\"0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e\":812}",
+          "series_ranges": [
+           {
+            "count": 1,
+            "doc_type": "tax_invoice",
+            "first_number": "A7K/2627/000001",
+            "last_number": "A7K/2627/000001",
+            "series_code": "A7K"
+           }
+          ],
+          "totals": {
+           "bill_count": 1,
+           "cgst": {
+            "amount_paise": 1200,
+            "currency": "INR"
+           },
+           "credit_note_count": 0,
+           "credit_note_total": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "discounts": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "gross": {
+            "amount_paise": 48000,
+            "currency": "INR"
+           },
+           "internal_consumption": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "net": {
+            "amount_paise": 48000,
+            "currency": "INR"
+           },
+           "non_gst": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "refund_total": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "round_off": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "service_charge": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "sgst": {
+            "amount_paise": 1200,
+            "currency": "INR"
+           },
+           "tenders": [
+            {
+             "amount": {
+              "amount_paise": 48000,
+              "currency": "INR"
+             },
+             "count": 1,
+             "tender": "cash"
+            }
+           ],
+           "total": {
+            "amount_paise": 50400,
+            "currency": "INR"
+           }
+          },
+          "z_number": "Z/2026-11-24/P1"
+         },
+         "id": "781c2cf3-5c86-5dca-8c74-ef356237bbac",
+         "late_document_count": 0,
+         "opened_at": "2026-11-24T13:05:11.120Z",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "revision_count": 0,
+         "status": "closed"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listCreditNotes",
+   "method": "GET",
+   "path": "/v1/credit-notes",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "bill_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+         "bill_invoice_date": "2026-11-24",
+         "bill_number": "A7K/2627/000001",
+         "business_date": "2026-11-24",
+         "calc_v": 1,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7011",
+         "invoice_date": "2026-11-24",
+         "lines": [
+          {
+           "bill_discount_alloc": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "category_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5001",
+           "category_name": "Starters",
+           "comp": false,
+           "item_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5101",
+           "item_name": "Paneer Tikka",
+           "line_discount": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "line_no": 1,
+           "modifier_delta": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "net": {
+            "amount_paise": 48000,
+            "currency": "INR"
+           },
+           "order_line_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f6011",
+           "qty_milli": 2000,
+           "tax_class": "fnb_standard",
+           "unit_price": {
+            "amount_paise": 24000,
+            "currency": "INR"
+           },
+           "variant_name": "Full"
+          }
+         ],
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "number": "A7M/2627/000001",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "refund_tender": "cash",
+         "round_off": {
+          "amount_paise": 0,
+          "currency": "INR"
+         },
+         "tax_lines": [
+          {
+           "cgst": {
+            "amount_paise": 1200,
+            "currency": "INR"
+           },
+           "charge_alloc": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "gst_applies": true,
+           "igst": {
+            "amount_paise": 0,
+            "currency": "INR"
+           },
+           "rate_bp": 500,
+           "sgst": {
+            "amount_paise": 1200,
+            "currency": "INR"
+           },
+           "tax_class": "fnb_standard",
+           "taxable": {
+            "amount_paise": 48000,
+            "currency": "INR"
+           }
+          }
+         ],
+         "total": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "verification": {
+          "calc_v": 1,
+          "checked_at": "2026-11-24T13:05:11.120Z",
+          "difference": {
+           "amount_paise": 0,
+           "currency": "INR"
+          },
+          "ruleset_id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+          "status": "verified"
+         }
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listDocumentGaps",
+   "method": "GET",
+   "path": "/v1/document-register/gaps",
+   "permission": "report.view.outlet",
+   "world": "gap-open",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "detected_at": "2026-11-24T13:05:11.120Z",
+         "financial_year": "2627",
+         "kind": "device",
+         "missing_from": 57,
+         "missing_to": 57,
+         "series_code": "A7K",
+         "status": "open",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listDocumentRegister",
+   "method": "GET",
+   "path": "/v1/document-register",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "count": 1,
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "doc_type": "tax_invoice",
+         "financial_year": "2627",
+         "first_number": "A7K/2627/000001",
+         "gap_count": 0,
+         "kind": "device",
+         "last_number": "A7K/2627/000001",
+         "last_seen_at": "2026-11-24T13:05:11.120Z",
+         "series_code": "A7K",
+         "state": "active",
+         "tax_registration_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a6b"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listInternalConsumptions",
+   "method": "GET",
+   "path": "/v1/internal-consumptions",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "business_date": "2026-11-24",
+         "check_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f6001",
+         "closed_at": "2026-11-24T13:05:11.120Z",
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7081",
+         "kind": "staff_meal",
+         "list_value": {
+          "amount_paise": 36000,
+          "currency": "INR"
+         },
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "reason_code_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5163",
+         "ref": "IC/P1/0004"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listPayments",
+   "method": "GET",
+   "path": "/v1/payments",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "amount": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "bill_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+         "business_date": "2026-11-24",
+         "change": {
+          "amount_paise": 600,
+          "currency": "INR"
+         },
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7021",
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "paid_at": "2026-11-24T13:05:11.120Z",
+         "shift_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7051",
+         "target_kind": "bill",
+         "tender": "cash",
+         "tendered": {
+          "amount_paise": 51000,
+          "currency": "INR"
+         }
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listRefunds",
+   "method": "GET",
+   "path": "/v1/refunds",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "amount": {
+          "amount_paise": 50400,
+          "currency": "INR"
+         },
+         "bill_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7001",
+         "business_date": "2026-11-24",
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7061",
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "payment_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7021",
+         "reason_code_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f5162",
+         "refunded_at": "2026-11-24T13:05:11.120Z",
+         "tender": "cash"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listShifts",
+   "method": "GET",
+   "path": "/v1/shifts",
+   "permission": "report.view.outlet",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "business_date": "2026-11-24",
+         "closed_at": "2026-11-24T13:09:40.000Z",
+         "counted": {
+          "amount_paise": 704000,
+          "currency": "INR"
+         },
+         "device_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a5e",
+         "expected": {
+          "amount_paise": 704000,
+          "currency": "INR"
+         },
+         "force_closed": false,
+         "handover_counted": true,
+         "id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f7051",
+         "member_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a64",
+         "opened_at": "2026-11-24T13:05:11.120Z",
+         "opening_float": {
+          "amount_paise": 200000,
+          "currency": "INR"
+         },
+         "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+         "status": "closed",
+         "variance": {
+          "amount_paise": 0,
+          "currency": "INR"
+         }
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listTaxRuleSetMasters",
+   "method": "GET",
+   "path": "/internal/v1/vendor/tax-rule-sets",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "calc_v": 1,
+         "created_at": "2026-11-24T13:05:11.120Z",
+         "effective_date": "2026-12-15",
+         "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+         "name": "GST restaurant services 2026 B",
+         "review_status": "unreviewed",
+         "revision": 1,
+         "rules": [
+          {
+           "cgst_bp": 250,
+           "doc_type": "tax_invoice",
+           "gst_applies": true,
+           "igst_bp": 0,
+           "order_channel": "dine_in",
+           "regime": "regular",
+           "sgst_bp": 250,
+           "specified_premises": false,
+           "tax_class": "fnb_standard"
+          }
+         ],
+         "state": "draft",
+         "version": 2
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "listTaxRuleSets",
+   "method": "GET",
+   "path": "/v1/tax-rule-sets",
+   "permission": "settings.read",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "items": [
+        {
+         "calc_v": 1,
+         "content_hash": "a3f5c0de9d1b7e44c2f9a8b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6",
+         "effective_date": "2026-04-01",
+         "id": "9107573a-9de6-569a-a692-fb53d5d4c799",
+         "name": "GST restaurant services 2026",
+         "published_at": "2026-11-24T13:05:11.120Z",
+         "review_status": "unreviewed",
+         "rules": [
+          {
+           "cgst_bp": 250,
+           "doc_type": "tax_invoice",
+           "gst_applies": true,
+           "igst_bp": 0,
+           "order_channel": "dine_in",
+           "regime": "regular",
+           "sgst_bp": 250,
+           "specified_premises": false,
+           "tax_class": "fnb_standard"
+          }
+         ],
+         "version": 1
+        }
+       ]
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "publishTaxRuleSet",
+   "method": "POST",
+   "path": "/internal/v1/vendor/tax-rule-sets/{rule_set_id}/publication",
+   "permission": "admin.taxrules.publish",
+   "world": "rule-set-signed",
+   "requires_grant": true,
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "content_hash": "a3f5c0de9d1b7e44c2f9a8b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "organisations_total": 3,
+       "published_at": "2026-11-24T13:09:11.120Z",
+       "review_status": "reviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "signoff": {
+        "reference_note": "CA advice note 2026-11 ref 12",
+        "reviewer_name": "A. Reviewer",
+        "signed_on": "2026-11-20"
+       },
+       "state": "published",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "grant.used",
+       "status": 403,
+       "title": "Approval grant refused",
+       "type": "urn:hostry:problem:grant.used"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_signed",
+       "status": 409,
+       "title": "Rule set not signed",
+       "type": "urn:hostry:problem:not_signed"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "effective_date_too_soon",
+       "status": 422,
+       "title": "Effective date too soon",
+       "type": "urn:hostry:problem:effective_date_too_soon"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "setDiscountLimit",
+   "method": "PUT",
+   "path": "/v1/outlets/{outlet_id}/discount-limit",
+   "permission": "bill.discount.limit.edit",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "op_id": "cloud-1/outlet:0190a1b2/731",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "strong_session_required",
+       "status": 403,
+       "title": "Strong session required",
+       "type": "urn:hostry:problem:strong_session_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "emit.unavailable",
+       "status": 503,
+       "title": "Cloud emit unavailable",
+       "type": "urn:hostry:problem:emit.unavailable"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "setNumberingMode",
+   "method": "PUT",
+   "path": "/v1/outlets/{outlet_id}/numbering-mode",
+   "permission": "settings.numbering.edit",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "op_id": "cloud-1/outlet:0190a1b2/731",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "strong_session_required",
+       "status": 403,
+       "title": "Strong session required",
+       "type": "urn:hostry:problem:strong_session_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "open_checks_exist",
+       "status": 409,
+       "title": "Open checks exist",
+       "type": "urn:hostry:problem:open_checks_exist"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "emit.unavailable",
+       "status": 503,
+       "title": "Cloud emit unavailable",
+       "type": "urn:hostry:problem:emit.unavailable"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "setOutletTaxProfile",
+   "method": "PUT",
+   "path": "/v1/outlets/{outlet_id}/tax-profile",
+   "permission": "settings.gst_profile.edit",
+   "security": [],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "op_id": "cloud-1/outlet:0190a1b2/731",
+       "outlet_id": "0190a1b2-c3d4-7e5f-8a9b-0c1d2e3f4a61",
+       "updated_at": "2026-11-24T13:05:11.120Z"
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "strong_session_required",
+       "status": 403,
+       "title": "Strong session required",
+       "type": "urn:hostry:problem:strong_session_required"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    },
+    {
+     "status": 503,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "emit.unavailable",
+       "status": 503,
+       "title": "Cloud emit unavailable",
+       "type": "urn:hostry:problem:emit.unavailable"
+      }
+     },
+     "headers": [
+      "Retry-After"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "signTaxRuleSet",
+   "method": "POST",
+   "path": "/internal/v1/vendor/tax-rule-sets/{rule_set_id}/signature",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "content_hash": "a3f5c0de9d1b7e44c2f9a8b6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6",
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "reviewed",
+       "revision": 1,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "signoff": {
+        "reference_note": "CA advice note 2026-11 ref 12",
+        "reviewer_name": "A. Reviewer",
+        "signed_on": "2026-11-20"
+       },
+       "state": "signed",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "updateTaxRuleSetDraft",
+   "method": "PATCH",
+   "path": "/internal/v1/vendor/tax-rule-sets/{rule_set_id}",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "calc_v": 1,
+       "created_at": "2026-11-24T13:05:11.120Z",
+       "effective_date": "2026-12-15",
+       "id": "72bdd3f5-68b5-59b0-8e62-2075a1f43c47",
+       "name": "GST restaurant services 2026 B",
+       "review_status": "unreviewed",
+       "revision": 2,
+       "rules": [
+        {
+         "cgst_bp": 250,
+         "doc_type": "tax_invoice",
+         "gst_applies": true,
+         "igst_bp": 0,
+         "order_channel": "dine_in",
+         "regime": "regular",
+         "sgst_bp": 250,
+         "specified_premises": false,
+         "tax_class": "fnb_standard"
+        }
+       ],
+       "state": "draft",
+       "version": 2
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    },
+    {
+     "status": 412,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "precondition_failed",
+       "status": 412,
+       "title": "Stale version",
+       "type": "urn:hostry:problem:precondition_failed"
+      }
+     }
+    },
+    {
+     "status": 422,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "validation",
+       "errors": [
+        {
+         "code": "required",
+         "field": "name",
+         "message": "must not be empty"
+        }
+       ],
+       "status": 422,
+       "title": "Validation failed",
+       "type": "urn:hostry:problem:validation"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "validateTaxRuleSet",
+   "method": "POST",
+   "path": "/internal/v1/vendor/tax-rule-sets/{rule_set_id}/validation",
+   "permission": "admin.taxrules.manage",
+   "world": "rule-set-draft",
+   "service_callers": [
+    "admin"
+   ],
+   "security": [
+    [
+     "serviceAuth",
+     "vendorBearerAuth"
+    ]
+   ],
+   "responses": [
+    {
+     "status": 200,
+     "content_type": "application/json",
+     "examples": {
+      "default": {
+       "errors": [],
+       "valid": true,
+       "vectors_passed": 65,
+       "vectors_total": 65
+      }
+     }
+    },
+    {
+     "status": 401,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "auth.invalid_token",
+       "status": 401,
+       "title": "Authentication required",
+       "type": "urn:hostry:problem:auth.invalid_token"
+      }
+     }
+    },
+    {
+     "status": 403,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "forbidden",
+       "status": 403,
+       "title": "Permission denied",
+       "type": "urn:hostry:problem:forbidden"
+      }
+     }
+    },
+    {
+     "status": 404,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "not_found",
+       "status": 404,
+       "title": "Not found",
+       "type": "urn:hostry:problem:not_found"
+      }
+     }
+    },
+    {
+     "status": 409,
+     "content_type": "application/problem+json",
+     "examples": {
+      "default": {
+       "code": "idempotency.in_progress",
+       "status": 409,
+       "title": "Conflict",
+       "type": "urn:hostry:problem:idempotency.in_progress"
+      }
+     }
+    }
+   ]
+  }
+ ]
+}
